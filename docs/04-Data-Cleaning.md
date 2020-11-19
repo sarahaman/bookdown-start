@@ -1,28 +1,7 @@
 # Data Cleaning
 
-## Packages 
 
 
-```r
-###############################################
-##########    ###  LIBRARIES  ###    ##########
-###############################################
-
-library(tidyverse)
-library(plotly)
-library(ggplot2)
-library(gganimate)
-library(magick)
-library(gifski)
-library(png)
-library(knitr)
-library(PerformanceAnalytics)
-library(ggpubr)
-library(lubridate)
-library(ggthemes)
-library(extrafont)
-library(tm)
-```
 
 ## The Cleaning Script
 
@@ -39,7 +18,7 @@ cardsRaw <- read_csv("cards.csv", col_names = TRUE)
 # head(cardsRaw)
 
 #SELECTING RELEVANT COLUMNS
-keepCols <- c("uuid", "mcmId", "mtgjsonV4Id", "multiverseId", "name", "artist", "type", "subtypes", "supertypes", "manaCost", "convertedManaCost", "keywords", "text", "flavorText",  "power", "toughness", "rarity", "edhrecRank", "isOnlineOnly")
+keepCols <- c("artist","uuid", "mcmId", "mtgjsonV4Id", "multiverseId", "name", "artist", "type", "subtypes", "supertypes", "manaCost", "convertedManaCost", "keywords", "text", "flavorText",  "power", "toughness", "rarity", "edhrecRank", "isOnlineOnly")
 cards <- select_(cardsRaw, .dots = keepCols)
 # head(cards)
 
@@ -140,8 +119,19 @@ mtg <- left_join(cards, sets, by = "mcmId")
 # head(mtg)
 # sum(is.na(mtg$releaseDate))
 
+###############################################
+##########    ##    PRICES     ##    ##########
+###############################################
 
-# write.csv(mtg, "cleanData.csv")
+# READING IN THE DATA
+
+prices19 <- read_csv("mean_2019_prices.csv", col_names = TRUE)
+mtg_prices19 <- inner_join(mtg, prices19, by = c("mtgjsonV4Id" = "uuid"))
+
+columnOrder <- c("uuid", "mtgjsonV4Id", "name", "artist", "type", "subtypes", "supertypes", "keywords", "text", "flavorText", "power", "toughness", "rarity", "edhrecRank", "isOnlineOnly", "convertedManaCost", "genericManaCost", "manaColor", "colorManaCost", "setName", "releaseDate", "mtgo", "mtgoFoil", "paper", "paperFoil")
+mtg_prices19 <- mtg_prices19[, columnOrder]
+
+# write.csv(mtg_prices19, "cleanData_New.csv")
 ```
 
 ### Post-Download Formatting
@@ -162,51 +152,172 @@ mtg$rarity <- factor(mtg$rarity, levels = c("common", "uncommon", "rare", "mythi
   # forces some to numeric, however upon investigation the cards turned to NA's are 'booster' cards, which are like spell cards
   # these cards can be identified by their key words
 mtg$power <- as.numeric(mtg$power)
-```
-
-```
-## Warning: NAs introduced by coercion
-```
-
-```r
 mtg$toughness <- as.numeric(mtg$toughness)
 ```
 
-```
-## Warning: NAs introduced by coercion
-```
-
 
 ```r
-head(mtg, 20)
+head(mtg, 5) %>%
+  kableFormat("Clean Magic the Gathering Data")
 ```
 
-```
-## # A tibble: 20 x 23
-##    uuid  mcmId mtgjsonV4Id multiverseId name  artist type  subtypes supertypes
-##    <chr> <dbl> <chr>              <dbl> <chr> <chr>  <chr> <list>   <chr>     
-##  1 3851~ 16413 1669af17-d~       130483 Abun~ Rebec~ Ench~ <chr [1~ <NA>      
-##  2 b8a6~ 16227 047d5499-a~       132072 Acad~ Steph~ Crea~ <chr [2~ <NA>      
-##  3 1172~ 16511 ee19938c-4~       129458 Adar~ John ~ Land  <chr [1~ <NA>      
-##  4 9acf~ 16289 8774e18f-3~       135206 Affl~ Roger~ Inst~ <chr [1~ <NA>      
-##  5 0dea~ 16414 4e875bca-0~       130525 Aggr~ Chris~ Inst~ <chr [1~ <NA>      
-##  6 4429~ 16290 13fbd62d-8~       135228 Agon~ Adam ~ Sorc~ <chr [1~ <NA>      
-##  7 76dd~ 16228 2854f284-9~       129459 Air ~ Kev W~ Crea~ <chr [1~ <NA>      
-##  8 76d4~ 16228 9d9ce25a-f~           NA Air ~ Kev W~ Crea~ <chr [1~ <NA>      
-##  9 2972~ 16229 f9db3498-1~       129913 Amba~ Jim M~ Lege~ <chr [2~ Legendary 
-## 10 5119~ 16351 fe4aa077-8~       134753 Anab~ Greg ~ Crea~ <chr [1~ <NA>      
-## 11 0809~ 16351 067159f1-c~           NA Anab~ Greg ~ Crea~ <chr [1~ <NA>      
-## 12 5f82~ 16165 ad41be73-5~       130550 Ance~ Pete ~ Crea~ <chr [2~ <NA>      
-## 13 b7c1~ 16165 fcd5d3ab-d~           NA Ance~ Pete ~ Crea~ <chr [2~ <NA>      
-## 14 57aa~ 16166 9eb2e54c-a~       129465 Ange~ Volka~ Crea~ <chr [1~ <NA>      
-## 15 8fd4~ 16166 e2be2630-a~           NA Ange~ Volka~ Crea~ <chr [1~ <NA>      
-## 16 da0a~ 16475 cf706172-3~       129466 Ange~ Alan ~ Arti~ <chr [1~ <NA>      
-## 17 55bd~ 16167 8fb2ccd5-7~       129711 Ange~ Mark ~ Sorc~ <chr [1~ <NA>      
-## 18 c565~ 16167 53438513-1~           NA Ange~ Mark ~ Sorc~ <chr [1~ <NA>      
-## 19 3b77~ 16168 bef2dc94-7~       129710 Ange~ Jim M~ Ench~ <chr [1~ <NA>      
-## 20 fadd~ 16169 cff007ed-d~       129671 Ange~ John ~ Crea~ <chr [1~ <NA>      
-## # ... with 14 more variables: convertedManaCost <dbl>, keywords <list>,
-## #   text <chr>, flavorText <chr>, power <dbl>, toughness <dbl>, rarity <ord>,
-## #   edhrecRank <dbl>, isOnlineOnly <dbl>, genericManaCost <chr>,
-## #   manaColor <chr>, colorManaCost <chr>, setName <chr>, releaseDate <date>
-```
+<table class="table table-striped table-condensed table-bordered" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>(\#tab:unnamed-chunk-4)Clean Magic the Gathering Data</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> artist </th>
+   <th style="text-align:left;"> uuid </th>
+   <th style="text-align:right;"> mcmId </th>
+   <th style="text-align:left;"> mtgjsonV4Id </th>
+   <th style="text-align:right;"> multiverseId </th>
+   <th style="text-align:left;"> name </th>
+   <th style="text-align:left;"> type </th>
+   <th style="text-align:left;"> subtypes </th>
+   <th style="text-align:left;"> supertypes </th>
+   <th style="text-align:right;"> convertedManaCost </th>
+   <th style="text-align:left;"> keywords </th>
+   <th style="text-align:left;"> text </th>
+   <th style="text-align:left;"> flavorText </th>
+   <th style="text-align:right;"> power </th>
+   <th style="text-align:right;"> toughness </th>
+   <th style="text-align:left;"> rarity </th>
+   <th style="text-align:right;"> edhrecRank </th>
+   <th style="text-align:right;"> isOnlineOnly </th>
+   <th style="text-align:left;"> genericManaCost </th>
+   <th style="text-align:left;"> manaColor </th>
+   <th style="text-align:left;"> colorManaCost </th>
+   <th style="text-align:left;"> setName </th>
+   <th style="text-align:left;"> releaseDate </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Rebecca Guay </td>
+   <td style="text-align:left;"> 38513fa0-ea83-5642-8ecd-4f0b3daa6768 </td>
+   <td style="text-align:right;"> 16413 </td>
+   <td style="text-align:left;"> 1669af17-d287-5094-b005-4b143441442f </td>
+   <td style="text-align:right;"> 130483 </td>
+   <td style="text-align:left;"> Abundance </td>
+   <td style="text-align:left;"> Enchantment </td>
+   <td style="text-align:left;"> NA </td>
+   <td style="text-align:left;"> NA </td>
+   <td style="text-align:right;"> 4 </td>
+   <td style="text-align:left;"> NA </td>
+   <td style="text-align:left;"> If you would draw a card you may instead choose land or nonland and reveal cards from the top of your library until you reveal a card of the chosen kind Put that card into your hand and put all other cards revealed this way on the bottom of your library in any order </td>
+   <td style="text-align:left;"> NA </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:left;"> rare </td>
+   <td style="text-align:right;"> 1099 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:left;"> 2 </td>
+   <td style="text-align:left;"> G </td>
+   <td style="text-align:left;"> 2 </td>
+   <td style="text-align:left;"> NA </td>
+   <td style="text-align:left;"> NA </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Stephen Daniele </td>
+   <td style="text-align:left;"> b8a68840-4044-52c0-a14e-0a1c630ba42c </td>
+   <td style="text-align:right;"> 16227 </td>
+   <td style="text-align:left;"> 047d5499-a21c-5f5c-9679-1599fcaf9815 </td>
+   <td style="text-align:right;"> 132072 </td>
+   <td style="text-align:left;"> Academy Researchers </td>
+   <td style="text-align:left;"> Creature </td>
+   <td style="text-align:left;"> Human , Wizard </td>
+   <td style="text-align:left;"> NA </td>
+   <td style="text-align:right;"> 3 </td>
+   <td style="text-align:left;"> NA </td>
+   <td style="text-align:left;"> When Academy Researchers enters the battlefield you may put an Aura card from your hand onto the battlefield attached to Academy Researchers </td>
+   <td style="text-align:left;"> They brandish their latest theories as warriors would wield weapons </td>
+   <td style="text-align:right;"> 2 </td>
+   <td style="text-align:right;"> 2 </td>
+   <td style="text-align:left;"> uncommon </td>
+   <td style="text-align:right;"> 12014 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:left;"> 1 </td>
+   <td style="text-align:left;"> U </td>
+   <td style="text-align:left;"> 2 </td>
+   <td style="text-align:left;"> NA </td>
+   <td style="text-align:left;"> NA </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> John Avon </td>
+   <td style="text-align:left;"> 11727081-4070-56db-8162-b970dd7f94bc </td>
+   <td style="text-align:right;"> 16511 </td>
+   <td style="text-align:left;"> ee19938c-4007-58f1-8904-fae28007b422 </td>
+   <td style="text-align:right;"> 129458 </td>
+   <td style="text-align:left;"> Adarkar Wastes </td>
+   <td style="text-align:left;"> Land </td>
+   <td style="text-align:left;"> NA </td>
+   <td style="text-align:left;"> NA </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:left;"> NA </td>
+   <td style="text-align:left;"> T Add C
+T Add W or U Adarkar Wastes deals 1 damage to you </td>
+   <td style="text-align:left;"> NA </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:left;"> rare </td>
+   <td style="text-align:right;"> 597 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:left;"> No Generic Cost </td>
+   <td style="text-align:left;"> No Color </td>
+   <td style="text-align:left;"> No Color Cost </td>
+   <td style="text-align:left;"> NA </td>
+   <td style="text-align:left;"> NA </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Roger Raupp </td>
+   <td style="text-align:left;"> 9acf4d13-d68f-5fec-93b4-caf0a14725a5 </td>
+   <td style="text-align:right;"> 16289 </td>
+   <td style="text-align:left;"> 8774e18f-3752-5c06-af94-5da3960da9ed </td>
+   <td style="text-align:right;"> 135206 </td>
+   <td style="text-align:left;"> Afflict </td>
+   <td style="text-align:left;"> Instant </td>
+   <td style="text-align:left;"> NA </td>
+   <td style="text-align:left;"> NA </td>
+   <td style="text-align:right;"> 3 </td>
+   <td style="text-align:left;"> NA </td>
+   <td style="text-align:left;"> Target creature gets 11 until end of turn
+Draw a card </td>
+   <td style="text-align:left;"> One rarely notices a heartbeat save when it is stolen </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:left;"> common </td>
+   <td style="text-align:right;"> 16583 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:left;"> 2 </td>
+   <td style="text-align:left;"> B </td>
+   <td style="text-align:left;"> 1 </td>
+   <td style="text-align:left;"> NA </td>
+   <td style="text-align:left;"> NA </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Christopher Moeller </td>
+   <td style="text-align:left;"> 0dea6b2e-25bc-5c31-aa1b-a7690af6b853 </td>
+   <td style="text-align:right;"> 16414 </td>
+   <td style="text-align:left;"> 4e875bca-0c52-5d60-889d-1db67e261737 </td>
+   <td style="text-align:right;"> 130525 </td>
+   <td style="text-align:left;"> Aggressive Urge </td>
+   <td style="text-align:left;"> Instant </td>
+   <td style="text-align:left;"> NA </td>
+   <td style="text-align:left;"> NA </td>
+   <td style="text-align:right;"> 2 </td>
+   <td style="text-align:left;"> NA </td>
+   <td style="text-align:left;"> Target creature gets +1+1 until end of turn
+Draw a card </td>
+   <td style="text-align:left;"> The power of the wild concentrated in a single charge </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:left;"> common </td>
+   <td style="text-align:right;"> 10248 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:left;"> 1 </td>
+   <td style="text-align:left;"> G </td>
+   <td style="text-align:left;"> 1 </td>
+   <td style="text-align:left;"> NA </td>
+   <td style="text-align:left;"> NA </td>
+  </tr>
+</tbody>
+</table>

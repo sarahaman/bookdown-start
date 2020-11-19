@@ -24,7 +24,7 @@
 <meta name="author" content="Sara Haman, Miles Tweed, Conor Howlett, Kevin Howlett" />
 
 
-<meta name="date" content="2020-11-18" />
+<meta name="date" content="2020-11-19" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -51,6 +51,8 @@
 
 
 <script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
 <script src="libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
 <script src="libs/plotly-binding-4.9.2.1/plotly.js"></script>
 <script src="libs/typedarray-0.1/typedarray.min.js"></script>
@@ -58,6 +60,12 @@
 <script src="libs/crosstalk-1.1.0.1/js/crosstalk.min.js"></script>
 <link href="libs/plotly-htmlwidgets-css-1.52.2/plotly-htmlwidgets.css" rel="stylesheet" />
 <script src="libs/plotly-main-1.52.2/plotly-latest.min.js"></script>
+<script src="libs/echarts4r-4.8.0/echarts-en.min.js"></script>
+<script src="libs/echarts4r-4.8.0/ecStat.min.js"></script>
+<script src="libs/echarts4r-4.8.0/dataTool.min.js"></script>
+<script src="libs/echarts4r-binding-0.3.3/echarts4r.js"></script>
+<script src="libs/echarts-wordcloud-1.0.0/echarts-wordcloud.min.js"></script>
+<script src="libs/westeros-1.0.0/westeros.js"></script>
 
 
 <style type="text/css">
@@ -146,20 +154,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2" data-path="data-the-gathering.html"><a href="data-the-gathering.html"><i class="fa fa-check"></i><b>2</b> Data the Gathering</a><ul>
 <li class="chapter" data-level="2.1" data-path="data-the-gathering.html"><a href="data-the-gathering.html#market-data"><i class="fa fa-check"></i><b>2.1</b> 2019 Market Data</a></li>
 <li class="chapter" data-level="2.2" data-path="data-the-gathering.html"><a href="data-the-gathering.html#market-data-1"><i class="fa fa-check"></i><b>2.2</b> 2020 Market Data</a></li>
+<li class="chapter" data-level="2.3" data-path="data-the-gathering.html"><a href="data-the-gathering.html#attributes-of-the-data"><i class="fa fa-check"></i><b>2.3</b> Attributes of the Data</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="data-quality-metrics.html"><a href="data-quality-metrics.html"><i class="fa fa-check"></i><b>3</b> Data Quality Metrics</a><ul>
-<li class="chapter" data-level="3.1" data-path="data-quality-metrics.html"><a href="data-quality-metrics.html#set-up"><i class="fa fa-check"></i><b>3.1</b> Set-up</a></li>
+<li class="chapter" data-level="3.1" data-path="data-quality-metrics.html"><a href="data-quality-metrics.html#libararies"><i class="fa fa-check"></i><b>3.1</b> Libararies</a></li>
 <li class="chapter" data-level="3.2" data-path="data-quality-metrics.html"><a href="data-quality-metrics.html#the-functions"><i class="fa fa-check"></i><b>3.2</b> The Functions</a></li>
 <li class="chapter" data-level="3.3" data-path="data-quality-metrics.html"><a href="data-quality-metrics.html#quality-assessments"><i class="fa fa-check"></i><b>3.3</b> Quality Assessments</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="data-cleaning.html"><a href="data-cleaning.html"><i class="fa fa-check"></i><b>4</b> Data Cleaning</a><ul>
-<li class="chapter" data-level="4.1" data-path="data-cleaning.html"><a href="data-cleaning.html#packages"><i class="fa fa-check"></i><b>4.1</b> Packages</a></li>
-<li class="chapter" data-level="4.2" data-path="data-cleaning.html"><a href="data-cleaning.html#the-cleaning-script"><i class="fa fa-check"></i><b>4.2</b> The Cleaning Script</a><ul>
-<li class="chapter" data-level="4.2.1" data-path="data-cleaning.html"><a href="data-cleaning.html#post-download-formatting"><i class="fa fa-check"></i><b>4.2.1</b> Post-Download Formatting</a></li>
+<li class="chapter" data-level="4.1" data-path="data-cleaning.html"><a href="data-cleaning.html#the-cleaning-script"><i class="fa fa-check"></i><b>4.1</b> The Cleaning Script</a><ul>
+<li class="chapter" data-level="4.1.1" data-path="data-cleaning.html"><a href="data-cleaning.html#post-download-formatting"><i class="fa fa-check"></i><b>4.1.1</b> Post-Download Formatting</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="descriptive-statistics.html"><a href="descriptive-statistics.html"><i class="fa fa-check"></i><b>5</b> Descriptive Statistics</a><ul>
-<li class="chapter" data-level="5.1" data-path="descriptive-statistics.html"><a href="descriptive-statistics.html#set-up-1"><i class="fa fa-check"></i><b>5.1</b> Set-up</a></li>
+<li class="chapter" data-level="5.1" data-path="descriptive-statistics.html"><a href="descriptive-statistics.html#set-up"><i class="fa fa-check"></i><b>5.1</b> Set-up</a></li>
 <li class="chapter" data-level="5.2" data-path="descriptive-statistics.html"><a href="descriptive-statistics.html#descriptives"><i class="fa fa-check"></i><b>5.2</b> Descriptives</a></li>
 <li class="chapter" data-level="5.3" data-path="descriptive-statistics.html"><a href="descriptive-statistics.html#distribution-of-prices"><i class="fa fa-check"></i><b>5.3</b> Distribution of Prices</a></li>
 <li class="chapter" data-level="5.4" data-path="descriptive-statistics.html"><a href="descriptive-statistics.html#correlation-of-numerical-data"><i class="fa fa-check"></i><b>5.4</b> Correlation of Numerical Data</a></li>
@@ -170,14 +178,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="6" data-path="feature-analysis.html"><a href="feature-analysis.html"><i class="fa fa-check"></i><b>6</b> Feature Analysis</a><ul>
 <li class="chapter" data-level="6.1" data-path="feature-analysis.html"><a href="feature-analysis.html#prices"><i class="fa fa-check"></i><b>6.1</b> Prices</a></li>
-<li class="chapter" data-level="6.2" data-path="feature-analysis.html"><a href="feature-analysis.html#artist-influence"><i class="fa fa-check"></i><b>6.2</b> Artist Influence</a></li>
-<li class="chapter" data-level="6.3" data-path="feature-analysis.html"><a href="feature-analysis.html#game-mechanics"><i class="fa fa-check"></i><b>6.3</b> Game Mechanics</a></li>
-<li class="chapter" data-level="6.4" data-path="feature-analysis.html"><a href="feature-analysis.html#text-features"><i class="fa fa-check"></i><b>6.4</b> Text Features</a></li>
+<li class="chapter" data-level="6.2" data-path="feature-analysis.html"><a href="feature-analysis.html#artist-influence"><i class="fa fa-check"></i><b>6.2</b> Artist Influence</a><ul>
+<li class="chapter" data-level="6.2.1" data-path="feature-analysis.html"><a href="feature-analysis.html#hall-of-fame"><i class="fa fa-check"></i><b>6.2.1</b> Hall of Fame</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="discussion.html"><a href="discussion.html"><i class="fa fa-check"></i><b>7</b> Discussion</a><ul>
-<li class="chapter" data-level="7.1" data-path="discussion.html"><a href="discussion.html#conclusion"><i class="fa fa-check"></i><b>7.1</b> Conclusion</a></li>
-<li class="chapter" data-level="7.2" data-path="discussion.html"><a href="discussion.html#future-directions"><i class="fa fa-check"></i><b>7.2</b> Future Directions</a></li>
-<li class="chapter" data-level="7.3" data-path="discussion.html"><a href="discussion.html#what-we-learned-along-the-way"><i class="fa fa-check"></i><b>7.3</b> What We Learned Along the Way</a></li>
+<li class="chapter" data-level="6.3" data-path="feature-analysis.html"><a href="feature-analysis.html#game-mechanics"><i class="fa fa-check"></i><b>6.3</b> Game Mechanics</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="text-analysis.html"><a href="text-analysis.html"><i class="fa fa-check"></i><b>7</b> Text Analysis</a><ul>
+<li class="chapter" data-level="7.1" data-path="text-analysis.html"><a href="text-analysis.html#tidying-the-text"><i class="fa fa-check"></i><b>7.1</b> Tidying the Text</a></li>
+<li class="chapter" data-level="7.2" data-path="text-analysis.html"><a href="text-analysis.html#all-cards"><i class="fa fa-check"></i><b>7.2</b> All cards</a></li>
+<li class="chapter" data-level="7.3" data-path="text-analysis.html"><a href="text-analysis.html#characteristic-words-by-type"><i class="fa fa-check"></i><b>7.3</b> Characteristic Words by Type</a></li>
+<li class="chapter" data-level="7.4" data-path="text-analysis.html"><a href="text-analysis.html#characteristic-words-by-subtype"><i class="fa fa-check"></i><b>7.4</b> Characteristic Words by Subtype</a></li>
+<li class="chapter" data-level="7.5" data-path="text-analysis.html"><a href="text-analysis.html#words-and-prices"><i class="fa fa-check"></i><b>7.5</b> Words and Prices</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="discussion.html"><a href="discussion.html"><i class="fa fa-check"></i><b>8</b> Discussion</a><ul>
+<li class="chapter" data-level="8.1" data-path="discussion.html"><a href="discussion.html#future-directions"><i class="fa fa-check"></i><b>8.1</b> Future Directions</a></li>
+<li class="chapter" data-level="8.2" data-path="discussion.html"><a href="discussion.html#what-we-learned-along-the-way"><i class="fa fa-check"></i><b>8.2</b> What We Learned Along the Way</a></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -201,16 +216,42 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="data-the-gathering" class="section level1">
 <h1><span class="header-section-number">Chapter 2</span> Data the Gathering</h1>
-<p>Magic the Gathering cards represent a constantly fluctuating ecosystem of distinct cards and market demand. New sets of cards are released multiple times a year, and since the features of the new cards influence how applicable older cards are to the evolving game, the prestige of the cards is constantly changing. The cards also exist in different mediums.There is an online version of Magic the Gathering which accompanies the classical printed card game. The cost of cards between these mediums fluctuates widely, as there is obviously a limited supply of printed cards. Given this information, we thought that it was necessary to examine up-to-date market prices about the cards. This is where we reached an impasse, data collection-wise. We built a scraper that could pull up-to-date market data off of the official Magic the Gathering card market but, because of the data included in the card market, scant information about the cards themselves could be pulled from this site. Detailed card information could be found at MTGJSON (<a href="https://mtgjson.com/" class="uri">https://mtgjson.com/</a>), a website dedicated to scraping current information about all of the Magic the Gathering Cards. However, the most recent market data they had was pulled at the end of 2019. Because the card markets fluctuate, we did not believe that data pulled in 2019 could provide us with the most accurate information about current trends between features of Magic the Gathering cards and their prices. So, we decided to use both of these data sets and combine them where we could.</p>
-<p>The data from the cards was downloaded from MTGJSON in CSV format and cleaned in R. We combined information about the cards and the sets they belong to in order to provide a holistic view of the cards. You can download the data for the cards {here}(<a href="https://github.com/sarahaman/MtG_Group_Project/blob/main/cards.csv" class="uri">https://github.com/sarahaman/MtG_Group_Project/blob/main/cards.csv</a>) and for the sets {here}(<a href="https://github.com/sarahaman/MtG_Group_Project/blob/main/sets.csv" class="uri">https://github.com/sarahaman/MtG_Group_Project/blob/main/sets.csv</a>).</p>
-<p>The market data was not immediately accessible in a format that could be transfered directly into R. Because the members of our team were unfamiliar with both web-scraping and JSON-wrangling in R, we utilized Python and MongoDB to access the raw data and transform into usable CSV’s. These CSV’s were then cleaned and formatted for analysis in R. For the sake of replicability, we have provided links to the annotated Python scripts used to convert the raw data into a format that could be processed in R. The raw data can be downloaded from the following Github Repository: {MtG_Group_Project}(<a href="https://github.com/sarahaman/MtG_Group_Project" class="uri">https://github.com/sarahaman/MtG_Group_Project</a>).</p>
+<p>Magic the Gathering cards represent a constantly fluctuating ecosystem of distinct cards and market demand. New sets of cards are released multiple times a year, and since the features of the new cards influence how applicable older cards are to the evolving game, the prestige of the cards is constantly changing. The cards also exist in different mediums.There is an online version of Magic the Gathering which accompanies the classical printed card game. The cost of cards between these mediums fluctuates widely, as there is obviously a limited supply of printed cards. Given this information, we thought that it was necessary to examine up-to-date market prices about the cards. This is where we reached an impasse, data collection-wise. We built a scraper that could pull up-to-date market data off of the official Magic the Gathering card market but, because of the data included in the card market, scant information about the cards themselves could be pulled from this site. Detailed card information could be found at <a href="https://mtgjson.com/">MTGJSON</a>, a website dedicated to scraping current information about all of the Magic the Gathering Cards. However, the most recent market data they had was pulled at the end of 2019. Because the card markets fluctuate, we did not believe that data pulled in 2019 could provide us with the most accurate information about current trends between features of Magic the Gathering cards and their prices. So, we decided to use both of these data sets and combine them where we could.</p>
+<p>The data from the cards was downloaded from MTGJSON in CSV format and cleaned in R. We combined information about the cards and the sets they belong to in order to provide a holistic view of the cards. You can download the data for the cards <a href="https://github.com/sarahaman/MtG_Group_Project/blob/main/cards.csv">here</a> and for the sets <a href="https://github.com/sarahaman/MtG_Group_Project/blob/main/sets.csv">here</a>.</p>
+<p>The market data was not immediately accessible in a format that could be transfered directly into R. Because the members of our team were unfamiliar with both web-scraping and JSON-wrangling in R, we utilized Python and MongoDB to access the raw data and transform into usable CSV’s. These CSV’s were then cleaned and formatted for analysis in R. For the sake of replicability, we have provided links to the annotated Python scripts used to convert the raw data into a format that could be processed in R. The raw data can be downloaded from the following Github Repository: <a href="https://github.com/sarahaman/MtG_Group_Project">MtG_Group_Project</a>.</p>
 <div id="market-data" class="section level2">
 <h2><span class="header-section-number">2.1</span> 2019 Market Data</h2>
-<p>{Click here!}(<a href="https://github.com/sarahaman/MtG_Group_Project/blob/main/tocsv.ipynb" class="uri">https://github.com/sarahaman/MtG_Group_Project/blob/main/tocsv.ipynb</a>)</p>
+<p><a href="https://github.com/sarahaman/MtG_Group_Project/blob/main/tocsv.ipynb">Click here!</a></p>
 </div>
 <div id="market-data-1" class="section level2">
 <h2><span class="header-section-number">2.2</span> 2020 Market Data</h2>
-<p>{Click here!}(<a href="https://github.com/sarahaman/MtG_Group_Project/blob/main/MTG_market_webscrape.py" class="uri">https://github.com/sarahaman/MtG_Group_Project/blob/main/MTG_market_webscrape.py</a>)</p>
+<p><a href="https://github.com/sarahaman/MtG_Group_Project/blob/main/MTG_market_webscrape.py">Click here!</a></p>
+</div>
+<div id="attributes-of-the-data" class="section level2">
+<h2><span class="header-section-number">2.3</span> Attributes of the Data</h2>
+<p>Data Attributes Guide</p>
+<ul>
+<li>UUID: skew number of card.</li>
+<li>Name: The name of the card.</li>
+<li>Type: The type of card eg: (Creature, Sorcery, Land, etc.)</li>
+<li>Subtype(s): Applies to Creature Types, denotes what tribes or species a creature belongs to eg: (Merfolk, Goblin, Wizard, etc).</li>
+<li>Keywords: Ability keywords/commonly adopted game mechanics printed on a card eg: (Flying, Haste, Trample, etc.)</li>
+<li>Text: Longer description of all game mechanics belonging to the card.</li>
+<li>Flavor Text: Non-game mechanics based text that provides insight into the lore of the card.</li>
+<li>Power: The attack attribute belonging to cards with a creature type (an integer).</li>
+<li>Toughness: The defense/health attribute belonging to cards of the creature type (an integer).</li>
+<li>Rarity: The commonness or exclusivity of a card eg:(uncommon, rare, mythic rare, common).</li>
+<li>Converted Mana Cost: The total mana cost to play the card during a game.</li>
+<li>Generic Mana Cost: How much unspecified mana a card costs.</li>
+<li>Mana Color: The color(s) of mana that a card costs.</li>
+<li>Color Mana Cost: The amount of colored mana that a card costs.</li>
+<li>Set Name: The name of the set in which the card was printed.</li>
+<li>Release Date: The date of release for a card.</li>
+<li>MTGO: Magic The Gathering Online card.</li>
+<li>MTGO Foil: Magic The Gathering Online foil (shiney) card.</li>
+<li>Paper: The card is physically printed on paper.</li>
+<li>Paper Foil: Physically printed foil (holographic) .</li>
+</ul>
 
 </div>
 </div>

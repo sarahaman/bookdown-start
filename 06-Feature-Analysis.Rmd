@@ -1,5 +1,6 @@
 # Feature Analysis
 
+The code for the analysis and occassional brief commentary is included below. The process of the exploration is expanded on in our verbal project report. 
 
 ```{r, message=FALSE, warning=FALSE, include=FALSE}
 
@@ -35,9 +36,397 @@ library(rayshader)
 library(kableExtra)
 library(stringi)
 
+# SETTING UP FORMATTING 
+
+kableFormat <- function(dat, caption) {
+  kable(dat, "html", escape = FALSE, caption = caption) %>%
+  kable_styling(bootstrap_options = c("striped", "condensed", "bordered"),
+                full_width = FALSE)
+}
+
+```
+
+
+```{r, message=FALSE, warning=FALSE}
+
+#READING IN THE DATA 
+
+#MTG Data with 2019 Market
+mtg <- read_csv("cleanData_New.csv", col_names = TRUE)
+
+#MTG Data with 2019 Market for use in text
+cmtg <- mtg[,-1]
+
+#MTG Data with 2020 Market
+marketDf <- read_csv("mtgMarketInfo.csv", col_names = TRUE)
+
+```
+
+
+```{r, message=FALSE, warning=FALSE}
+# TOKENIZING SUBTYPES
+mtg$subtypes <- str_split(mtg$subtypes, ",")
+
+# TOKENIZING KEYWORDS
+mtg$keywords <- str_split(mtg$keywords, ",")
+
+# TURNING RARITY INTO A FACTOR 
+mtg$rarity <- factor(mtg$rarity, levels = c("common", "uncommon", "rare", "mythic"), ordered = TRUE)
+
+#FORMATTING POWER AND TOUGHNESS CORRECTLY
+  # forces some to numeric, however upon investigation the cards turned to NA's are 'booster' cards, which are like spell cards
+  # these cards can be identified by their key words
+mtg$power <- as.numeric(mtg$power)
+mtg$toughness <- as.numeric(mtg$toughness)
+
 ```
 
 ## Prices
+
+```{r, warning=FALSE}
+
+marketDf$Market.Price <- as.numeric(gsub("\\$", "", marketDf$`Market Price`))
+marketDf$Listed.Median <- as.numeric(gsub("\\$", "", marketDf$`Listed Median`))
+marketDf$Card.Name <- marketDf$`Card Name`
+marketDf$Set.Name <- marketDf$`Set Name`
+mergedDf <- dplyr::left_join(marketDf, mtg, by=c("Card.Name" = "name"))
+mergedDf$releaseDate <- as.Date(mergedDf$releaseDate)
+
+```
+
+
+```{r, message=FALSE, warning=FALSE}
+# Group by both rarity and card "type"
+# Averaged market prices of cards in each of these groups
+typeDf <- aggregate( Market.Price ~ rarity+type, mergedDf, mean )
+# Histogram of average market price by card type (i.e. land, creature, etc.)
+fig <- typeDf %>%
+  plot_ly(
+  type='histogram',
+  nbinsx = 40,
+  x=~Market.Price,
+  bingroup=1, color = ~rarity) %>%
+  layout(title = 'Average Market Price by Card Type',
+         xaxis = list(title = 'Avg Market Price [USD]',range = c(-3, 65)))
+fig
+
+# Boxplot average market price by card type (i.e. land, creature, etc.)
+typeDf %>%
+  plot_ly() %>% 
+  add_trace(x = ~as.numeric(rarity),y = ~Market.Price, color = ~rarity, type = "box", 
+            hoverinfo = 'name+y') %>%
+  add_markers(x = ~jitter(as.numeric(rarity)), y = ~Market.Price, color = ~rarity,
+              marker = list(size = 6),
+              hoverinfo = "text",
+              text = ~paste0("Type: ",type,
+                             "<br>Rarity: ",rarity,
+                             "<br>Avg Price: ",round(Market.Price,2)),
+              showlegend = FALSE) %>% 
+  layout(legend = list(orientation = "h",
+                       x =0.6, xanchor = "center",
+                       y = 1, yanchor = "bottom"
+                       ),
+         xaxis = list(title = "Rarity",
+                      showticklabels = FALSE),
+         yaxis = list(title = "Avg Market Price [USD]",
+                      showticklabels = FALSE),
+         title = list(text = 'Price by Card Type',
+                      x = 0.08))
+```
+
+```{r, message=FALSE, warning=FALSE}
+setDf <- aggregate( Market.Price ~ rarity+Set.Name, mergedDf, mean )
+# Histogram of average market price by card set (i.e. Alpha Edition, Arabian Nights, etc.)
+fig <- setDf %>%
+  plot_ly(
+  type='histogram',
+  nbinsx = 30,
+  x=~Market.Price,
+  bingroup=1, color = ~rarity) %>%
+  layout(title = 'Average Market Price by Card Set',
+         xaxis = list(title = 'Avg Market Price [USD]',range = c(-10, 140)))
+fig
+# Boxplot average market price by card set (i.e. Beta Edition, Alpha Edition, etc.)
+setDf %>%
+  plot_ly() %>% 
+  add_trace(x = ~as.numeric(rarity),y = ~Market.Price, color = ~rarity, type = "box", 
+            hoverinfo = 'name+y') %>%
+  add_markers(x = ~jitter(as.numeric(rarity)), y = ~Market.Price, color = ~rarity,
+              marker = list(size = 6),
+              hoverinfo = "text",
+              text = ~paste0("Set: ",Set.Name,
+                             "<br>Rarity: ",rarity,
+                             "<br>Avg Price: ",round(Market.Price,2)),
+              showlegend = FALSE) %>% 
+  layout(legend = list(orientation = "h",
+                       x =0.6, xanchor = "center",
+                       y = 1, yanchor = "bottom"
+                       ),
+         xaxis = list(title = "Rarity",
+                      showticklabels = FALSE),
+         yaxis = list(title = "Avg Market Price [USD]",
+                      showticklabels = FALSE),
+         title = list(text = 'Price by Card Set',
+                      x = 0.08))
+```
+
+
+```{r, message=FALSE, warning=FALSE}
+# Create new attribute of summed power and toughness
+mergedDf$power.toughness <- mergedDf$power + mergedDf$toughness
+# The next four plots (arranged with ggarrange) investigate the relationship
+# of market price vs toughness, mana cost, and power
+power.scatter <- mergedDf %>% 
+  ggplot(.,aes(y = Market.Price, x = power, color = rarity)) +
+  geom_point()+ylab('Market Price')+xlab('Power')+ylim(0,610)+
+  ggtitle('Price v. Power')+theme(plot.title = element_text(hjust = 0.5))+theme(legend.position="none")+theme(panel.background = element_blank())
+toughness.scatter <- mergedDf %>% 
+  ggplot(.,aes(y = Market.Price, x = toughness, color = rarity)) +
+  geom_point()+ylab('Market Price')+xlab('Toughness')+ylim(0,610)+
+  ggtitle('Price v. Toughness')+theme(plot.title = element_text(hjust = 0.5)) + theme(legend.position="none")+theme(panel.background = element_blank())
+mana.scatter <- subset(mergedDf, mergedDf$convertedManaCost != max(mergedDf$convertedManaCost, na.rm=T)) %>% 
+  ggplot(.,aes(y = Market.Price, x = convertedManaCost, color = rarity)) +
+  geom_point()+ylab('Market Price')+xlab('Mana Cost')+ylim(0,610)+
+  ggtitle('Price v. Mana Cost')+theme(plot.title = element_text(hjust = 0.5)) + theme(legend.position="none")+theme(panel.background = element_blank())
+  
+net.scatter <- mergedDf %>% 
+  ggplot(.,aes(y = Market.Price, x = power.toughness, color = rarity)) +
+  geom_point()+ylab('Market Price')+xlab('Power + Toughness')+ylim(0,610)+
+  ggtitle('Price v. Power + Toughness')+theme(plot.title = element_text(hjust = 0.5))+theme(panel.background = element_blank())
+ggarrange(power.scatter, toughness.scatter, mana.scatter, net.scatter)
+```
+
+
+
+```{r, message=FALSE, warning=FALSE}
+# 3D scatter plot of power, toughness, mana cost (w/ color mapped to rarity)
+# Shows linear relationship between power, toughness, and mana
+fig <- plot_ly(mergedDf, x = ~power, y = ~toughness, z = ~convertedManaCost, color = ~rarity)
+fig <- fig %>% add_markers(hoverinfo = "text",
+              text = ~paste0("Power: ",power,
+                             "<br>Toughness: ",toughness,
+                             "<br>Mana Cost: ",convertedManaCost
+                             ))
+fig <- fig %>% layout(scene = list(xaxis = list(title = 'Power'),
+                     yaxis = list(title = 'Toughness'),
+                     zaxis = list(title = 'Mana Cost')),
+                     title = list(text = 'Mana Cost v Power/Toughness'))
+fig
+```
+
+
 ## Artist Influence
+
+```{r}
+# Group by both rarity and card artist
+# Averaged market prices of cards in each of these groups
+
+artistDf <- aggregate( Market.Price ~ rarity+artist, mergedDf, mean )
+# Histogram of artists' average card selling price
+fig <- artistDf %>%
+  plot_ly(
+  type='histogram',
+  nbinsx = 30,
+  x=~Market.Price,
+  bingroup=1, color = ~rarity) %>%
+  layout(title = 'Average Market Price by Artist',
+         xaxis = list(title = 'Avg Market Price [USD]',range = c(-10, 135)))
+fig
+```
+
+
+```{r}
+# Boxplot of artists' selling prices
+artistDf %>%
+  plot_ly() %>% 
+  add_trace(x = ~as.numeric(rarity),y = ~Market.Price, color = ~rarity, type = "box", 
+            hoverinfo = 'name+y') %>%
+  add_markers(x = ~jitter(as.numeric(rarity)), y = ~Market.Price, color = ~rarity,
+              marker = list(size = 6),
+              hoverinfo = "text",
+              text = ~paste0("<br>Rarity: ",rarity,
+                             "<br>Avg Price: ",round(Market.Price,2)),
+              showlegend = FALSE) %>% 
+  layout(legend = list(orientation = "h",
+                       x =0.6, xanchor = "center",
+                       y = 1, yanchor = "bottom"
+                       ),
+         xaxis = list(title = "Rarity",
+                      showticklabels = FALSE),
+         yaxis = list(title = "Avg Market Price [USD]",
+                      showticklabels = FALSE),
+         title = list(text = 'Price by Card Artist',
+                      x = 0.08))
+```
+
+
+### Hall of Fame
+
+```{r, include=FALSE}
+# cleaned Card data with price data
+cards <-  read_csv('AllCardsAlt.csv')
+cards <- tibble(cards)
+cards <- cards[,-1]
+cards <- cards %>% mutate('year' = format(cards$releaseDate, format='%Y'))
+cards$year <- cards$year %>% as.character()
+cards$frameVersion <- cards$frameVersion %>% as.character()
+```
+
+
+The following artist have made art for cards that sold for over $1000.
+
+```{r, warning=FALSE}
+# artist vs price
+cards[,c("artist","mtgo","mtgoFoil","paper","paperFoil")] %>% 
+  gather(mtgo,mtgoFoil,paper,paperFoil, 
+         key='paperType', 
+         value='price',
+         na.rm = T) %>% 
+  filter(!is.na(artist) & price >= 1000) %>%
+  ggplot(aes(x = artist, y = price, fill=I('blueviolet'))) + 
+  geom_col(position='dodge') + 
+  theme(axis.text.x = element_text(angle = 90))+
+  geom_hline(aes(yintercept=1000),linetype=2) + 
+  geom_text(aes(1,1000,label = 1000, vjust = -1)) + 
+  labs(title = 'Artists', caption='Greater than $1000') +
+  xlab('Artist') + 
+  ylab('Price (USD)')
+```
+
 ## Game Mechanics
-## Text Features
+
+```{r}
+
+#the card data read from csv, stored as dataframe
+mtg <- read.csv('cleanData_New.csv', header = T)
+mtg <- as.data.frame(mtg)
+#converting string data to numeric
+mtg[,'power'] <- as.numeric(mtg[,'power'])
+mtg[,'toughness'] <- as.numeric(mtg[,'toughness'])
+
+```
+
+```{r, message=FALSE, warning=FALSE}
+#filtering the data to remove NA's and outliers, aggregating toughness/power into "stats"
+mtg.0 <- mtg %>%
+  replace_na(list(toughness = 0, power = 0)) %>%
+  mutate(stats = power + toughness) %>%
+  filter(convertedManaCost < 100)
+#fitting linear regression line
+fit <- lm(convertedManaCost ~ stats, data=mtg.0)
+#creating plot
+fig <- plot_ly(data = mtg.0) %>%
+  add_markers(x = ~stats, y = ~convertedManaCost) %>%
+  add_lines(x = ~stats, y = fitted(fit)) %>%
+  layout(showlegend = F) %>%
+  layout(xaxis = list(title = "Card Stats"), yaxis = list(title = "Mana Cost")) %>%
+  layout(title="Creature Stats vs Mana Cost Regression")
+fig
+```
+
+
+```{r, message=FALSE, warning=FALSE}
+#subsetting the data for creature cards
+# removing NA's
+#gouping by creature subtype and summarising 
+mtg.1 <- mtg %>%
+  filter(type == 'Creature') %>%
+  replace_na(list(toughness = 0, power = 0)) %>%
+  mutate(stats = power + toughness) %>%
+  select(stats, convertedManaCost, subtypes) %>%
+  group_by(subtypes) %>%
+  summarise_at(vars(stats:convertedManaCost), mean, na.rm = TRUE)
+# Initiating the interactive plot
+fig1 <- plot_ly(data = mtg.1, x = ~stats, y = ~convertedManaCost, color = ~subtypes)
+# Adding title to the axis legend
+fig1 <- fig1 %>%
+  layout(xaxis = list(title = "Mean Creature Stats"), yaxis = list(title = "Mean Mana Cost"))
+# Adding title to plot, creating interactive markers for each point
+fig1 <- fig1 %>% layout(showlegend = FALSE,
+                      title='Mean Mana Cost and Stats by Subtype') %>%
+  add_markers(hoverinfo = 'text',
+              text = ~paste('</br> Subtype: ', subtypes,
+                            '</br> Creature Stats: ', stats,
+                            '</br> Mean Mana Cost: ', convertedManaCost))
+fig1
+```
+
+```{r, message=FALSE, warning=FALSE}
+# Subsetting the data to show only creatures
+# Then groups by subtypes and total stats
+# Last, summarises the mean mana cost for each group
+mtg.2 <- mtg %>%
+  filter(type == 'Creature') %>%
+  replace_na(list(toughness = 0, power = 0)) %>%
+  mutate(stats = power + toughness) %>%
+  select(stats, convertedManaCost, subtypes) %>%
+  group_by(subtypes, stats) %>%
+  summarise(meanManaCost = mean(convertedManaCost))
+# Initiates the interactive plot
+fig2 <- plot_ly(data = mtg.2, x = ~stats, y = ~meanManaCost, color = ~subtypes)
+# Adds title to the axes legend
+fig2 <- fig2 %>%
+  layout(xaxis = list(title = "Creature Stats"), yaxis = list(title = "Mean Mana Cost"))
+# Adss title to plot, then creates interactive markers for each point
+fig2 <- fig2 %>% layout(showlegend = FALSE,
+                      title='Mean Mana Cost by Creature Stats and Subtype') %>%
+  add_markers(hoverinfo = 'text',
+              text = ~paste('</br> Subtype: ', subtypes,
+                            '</br> Creature Stats: ', stats,
+                            '</br> Mean Mana Cost: ', meanManaCost))
+fig2
+```
+
+```{r, message=FALSE, warning=FALSE}
+# reading the market data csv
+marketDf <- read.csv('mtgMarketInfo.csv', header=TRUE)
+#removing the symbols and converting to numeric
+marketDf$Market.Price = as.numeric(gsub("\\$", "", marketDf$Market.Price))
+marketDf$Listed.Median = as.numeric(gsub("\\$", "", marketDf$Listed.Median))
+#stripping whitespace from strings
+marketDf$Rarity = gsub(" ", "", marketDf$Rarity, fixed = TRUE)
+#filtering data to remove outliers
+marketDf1 <- marketDf %>%
+  filter(Listed.Median <= 50, Market.Price <= 50)
+#plotting the data in ggplot
+p <- ggplot(
+  marketDf1,
+  aes(x = Listed.Median, y = Market.Price, color = Rarity)
+) +
+  geom_point(show.legend = FALSE, alpha =0.7) +
+  scale_color_viridis_d() +
+  scale_size(range = c(1, 12)) +
+  scale_x_log10() +
+  labs(x = "Listed Median Price", y="Market Price") +
+  ggtitle('Market Price vs Listed Median Price by Set')
+#printing the static ggplot
+p
+#adding an animated transition for the plot in gganimate
+a <- p + transition_states(Set.Name) +
+  labs(title = "Set: {closest_state}")
+#creating parameters and rendering the animation as GIF with gifski
+animate(a, fps = 3, width = 750, height = 450, renderer=gifski_renderer())
+```
+
+```{r, message=FALSE, warning=FALSE}
+#subsetting the data and summarizing by grouped set and rarity
+marketDf2 <- marketDf %>%
+  select(Set.Name, Rarity, Listed.Median) %>%
+  filter(Rarity=="C" | Rarity=="U" | Rarity=="R" | Rarity=="M") %>%
+  na.omit() %>%
+  group_by(Set.Name,Rarity) %>%
+  summarise(mean.listed = mean(Listed.Median)) %>%
+  filter(mean.listed <= 40)
+#creating bar chart in ggplot
+p<-ggplot(data=marketDf2, aes(x=Rarity, y=mean.listed, fill=Rarity)) +
+  geom_bar(stat="identity") +
+  scale_fill_hue(c=45, l=80) +
+  labs(title = 'Mean Card Value by Rarity and Set',
+        y = "Mean Listed Price")
+p
+#converting plot into animated timelapse(by set)
+a <- p + transition_states(Set.Name) +
+  labs(title= "Set: {closest_state}")
+#rendering plot as a GIF
+animate(a, fps = 3, width = 750, height = 450, renderer=gifski_renderer())
+```

@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 7 Discussion | Data: The Mungening</title>
+  <title>Chapter 8 Discussion | Data: The Mungening</title>
   <meta name="description" content="‘Magic the Gathering’ Project for NCF 2020 Graduate Program" />
   <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 7 Discussion | Data: The Mungening" />
+  <meta property="og:title" content="Chapter 8 Discussion | Data: The Mungening" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="seankross/bookdown-start" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 7 Discussion | Data: The Mungening" />
+  <meta name="twitter:title" content="Chapter 8 Discussion | Data: The Mungening" />
   
   <meta name="twitter:description" content="‘Magic the Gathering’ Project for NCF 2020 Graduate Program" />
   
@@ -24,14 +24,14 @@
 <meta name="author" content="Sara Haman, Miles Tweed, Conor Howlett, Kevin Howlett" />
 
 
-<meta name="date" content="2020-11-18" />
+<meta name="date" content="2020-11-19" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="feature-analysis.html"/>
+<link rel="prev" href="text-analysis.html"/>
 
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -51,6 +51,8 @@
 
 
 <script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
 <script src="libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
 <script src="libs/plotly-binding-4.9.2.1/plotly.js"></script>
 <script src="libs/typedarray-0.1/typedarray.min.js"></script>
@@ -58,6 +60,12 @@
 <script src="libs/crosstalk-1.1.0.1/js/crosstalk.min.js"></script>
 <link href="libs/plotly-htmlwidgets-css-1.52.2/plotly-htmlwidgets.css" rel="stylesheet" />
 <script src="libs/plotly-main-1.52.2/plotly-latest.min.js"></script>
+<script src="libs/echarts4r-4.8.0/echarts-en.min.js"></script>
+<script src="libs/echarts4r-4.8.0/ecStat.min.js"></script>
+<script src="libs/echarts4r-4.8.0/dataTool.min.js"></script>
+<script src="libs/echarts4r-binding-0.3.3/echarts4r.js"></script>
+<script src="libs/echarts-wordcloud-1.0.0/echarts-wordcloud.min.js"></script>
+<script src="libs/westeros-1.0.0/westeros.js"></script>
 
 
 <style type="text/css">
@@ -146,20 +154,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2" data-path="data-the-gathering.html"><a href="data-the-gathering.html"><i class="fa fa-check"></i><b>2</b> Data the Gathering</a><ul>
 <li class="chapter" data-level="2.1" data-path="data-the-gathering.html"><a href="data-the-gathering.html#market-data"><i class="fa fa-check"></i><b>2.1</b> 2019 Market Data</a></li>
 <li class="chapter" data-level="2.2" data-path="data-the-gathering.html"><a href="data-the-gathering.html#market-data-1"><i class="fa fa-check"></i><b>2.2</b> 2020 Market Data</a></li>
+<li class="chapter" data-level="2.3" data-path="data-the-gathering.html"><a href="data-the-gathering.html#attributes-of-the-data"><i class="fa fa-check"></i><b>2.3</b> Attributes of the Data</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="data-quality-metrics.html"><a href="data-quality-metrics.html"><i class="fa fa-check"></i><b>3</b> Data Quality Metrics</a><ul>
-<li class="chapter" data-level="3.1" data-path="data-quality-metrics.html"><a href="data-quality-metrics.html#set-up"><i class="fa fa-check"></i><b>3.1</b> Set-up</a></li>
+<li class="chapter" data-level="3.1" data-path="data-quality-metrics.html"><a href="data-quality-metrics.html#libararies"><i class="fa fa-check"></i><b>3.1</b> Libararies</a></li>
 <li class="chapter" data-level="3.2" data-path="data-quality-metrics.html"><a href="data-quality-metrics.html#the-functions"><i class="fa fa-check"></i><b>3.2</b> The Functions</a></li>
 <li class="chapter" data-level="3.3" data-path="data-quality-metrics.html"><a href="data-quality-metrics.html#quality-assessments"><i class="fa fa-check"></i><b>3.3</b> Quality Assessments</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="data-cleaning.html"><a href="data-cleaning.html"><i class="fa fa-check"></i><b>4</b> Data Cleaning</a><ul>
-<li class="chapter" data-level="4.1" data-path="data-cleaning.html"><a href="data-cleaning.html#packages"><i class="fa fa-check"></i><b>4.1</b> Packages</a></li>
-<li class="chapter" data-level="4.2" data-path="data-cleaning.html"><a href="data-cleaning.html#the-cleaning-script"><i class="fa fa-check"></i><b>4.2</b> The Cleaning Script</a><ul>
-<li class="chapter" data-level="4.2.1" data-path="data-cleaning.html"><a href="data-cleaning.html#post-download-formatting"><i class="fa fa-check"></i><b>4.2.1</b> Post-Download Formatting</a></li>
+<li class="chapter" data-level="4.1" data-path="data-cleaning.html"><a href="data-cleaning.html#the-cleaning-script"><i class="fa fa-check"></i><b>4.1</b> The Cleaning Script</a><ul>
+<li class="chapter" data-level="4.1.1" data-path="data-cleaning.html"><a href="data-cleaning.html#post-download-formatting"><i class="fa fa-check"></i><b>4.1.1</b> Post-Download Formatting</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="descriptive-statistics.html"><a href="descriptive-statistics.html"><i class="fa fa-check"></i><b>5</b> Descriptive Statistics</a><ul>
-<li class="chapter" data-level="5.1" data-path="descriptive-statistics.html"><a href="descriptive-statistics.html#set-up-1"><i class="fa fa-check"></i><b>5.1</b> Set-up</a></li>
+<li class="chapter" data-level="5.1" data-path="descriptive-statistics.html"><a href="descriptive-statistics.html#set-up"><i class="fa fa-check"></i><b>5.1</b> Set-up</a></li>
 <li class="chapter" data-level="5.2" data-path="descriptive-statistics.html"><a href="descriptive-statistics.html#descriptives"><i class="fa fa-check"></i><b>5.2</b> Descriptives</a></li>
 <li class="chapter" data-level="5.3" data-path="descriptive-statistics.html"><a href="descriptive-statistics.html#distribution-of-prices"><i class="fa fa-check"></i><b>5.3</b> Distribution of Prices</a></li>
 <li class="chapter" data-level="5.4" data-path="descriptive-statistics.html"><a href="descriptive-statistics.html#correlation-of-numerical-data"><i class="fa fa-check"></i><b>5.4</b> Correlation of Numerical Data</a></li>
@@ -170,14 +178,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="6" data-path="feature-analysis.html"><a href="feature-analysis.html"><i class="fa fa-check"></i><b>6</b> Feature Analysis</a><ul>
 <li class="chapter" data-level="6.1" data-path="feature-analysis.html"><a href="feature-analysis.html#prices"><i class="fa fa-check"></i><b>6.1</b> Prices</a></li>
-<li class="chapter" data-level="6.2" data-path="feature-analysis.html"><a href="feature-analysis.html#artist-influence"><i class="fa fa-check"></i><b>6.2</b> Artist Influence</a></li>
-<li class="chapter" data-level="6.3" data-path="feature-analysis.html"><a href="feature-analysis.html#game-mechanics"><i class="fa fa-check"></i><b>6.3</b> Game Mechanics</a></li>
-<li class="chapter" data-level="6.4" data-path="feature-analysis.html"><a href="feature-analysis.html#text-features"><i class="fa fa-check"></i><b>6.4</b> Text Features</a></li>
+<li class="chapter" data-level="6.2" data-path="feature-analysis.html"><a href="feature-analysis.html#artist-influence"><i class="fa fa-check"></i><b>6.2</b> Artist Influence</a><ul>
+<li class="chapter" data-level="6.2.1" data-path="feature-analysis.html"><a href="feature-analysis.html#hall-of-fame"><i class="fa fa-check"></i><b>6.2.1</b> Hall of Fame</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="discussion.html"><a href="discussion.html"><i class="fa fa-check"></i><b>7</b> Discussion</a><ul>
-<li class="chapter" data-level="7.1" data-path="discussion.html"><a href="discussion.html#conclusion"><i class="fa fa-check"></i><b>7.1</b> Conclusion</a></li>
-<li class="chapter" data-level="7.2" data-path="discussion.html"><a href="discussion.html#future-directions"><i class="fa fa-check"></i><b>7.2</b> Future Directions</a></li>
-<li class="chapter" data-level="7.3" data-path="discussion.html"><a href="discussion.html#what-we-learned-along-the-way"><i class="fa fa-check"></i><b>7.3</b> What We Learned Along the Way</a></li>
+<li class="chapter" data-level="6.3" data-path="feature-analysis.html"><a href="feature-analysis.html#game-mechanics"><i class="fa fa-check"></i><b>6.3</b> Game Mechanics</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="text-analysis.html"><a href="text-analysis.html"><i class="fa fa-check"></i><b>7</b> Text Analysis</a><ul>
+<li class="chapter" data-level="7.1" data-path="text-analysis.html"><a href="text-analysis.html#tidying-the-text"><i class="fa fa-check"></i><b>7.1</b> Tidying the Text</a></li>
+<li class="chapter" data-level="7.2" data-path="text-analysis.html"><a href="text-analysis.html#all-cards"><i class="fa fa-check"></i><b>7.2</b> All cards</a></li>
+<li class="chapter" data-level="7.3" data-path="text-analysis.html"><a href="text-analysis.html#characteristic-words-by-type"><i class="fa fa-check"></i><b>7.3</b> Characteristic Words by Type</a></li>
+<li class="chapter" data-level="7.4" data-path="text-analysis.html"><a href="text-analysis.html#characteristic-words-by-subtype"><i class="fa fa-check"></i><b>7.4</b> Characteristic Words by Subtype</a></li>
+<li class="chapter" data-level="7.5" data-path="text-analysis.html"><a href="text-analysis.html#words-and-prices"><i class="fa fa-check"></i><b>7.5</b> Words and Prices</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="discussion.html"><a href="discussion.html"><i class="fa fa-check"></i><b>8</b> Discussion</a><ul>
+<li class="chapter" data-level="8.1" data-path="discussion.html"><a href="discussion.html#future-directions"><i class="fa fa-check"></i><b>8.1</b> Future Directions</a></li>
+<li class="chapter" data-level="8.2" data-path="discussion.html"><a href="discussion.html#what-we-learned-along-the-way"><i class="fa fa-check"></i><b>8.2</b> What We Learned Along the Way</a></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -200,15 +215,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
             <section class="normal" id="section-">
 <div id="discussion" class="section level1">
-<h1><span class="header-section-number">Chapter 7</span> Discussion</h1>
-<div id="conclusion" class="section level2">
-<h2><span class="header-section-number">7.1</span> Conclusion</h2>
-</div>
+<h1><span class="header-section-number">Chapter 8</span> Discussion</h1>
 <div id="future-directions" class="section level2">
-<h2><span class="header-section-number">7.2</span> Future Directions</h2>
+<h2><span class="header-section-number">8.1</span> Future Directions</h2>
+<p>The results of the exploratory data analysis imply that topic modeling (LDA; Latent Derelict Allocation) would be fruitful, if only just to satisfy curiosity.</p>
 </div>
 <div id="what-we-learned-along-the-way" class="section level2">
-<h2><span class="header-section-number">7.3</span> What We Learned Along the Way</h2>
+<h2><span class="header-section-number">8.2</span> What We Learned Along the Way</h2>
+<p><strong>Kevin</strong>
+In terms of data analysis methods, this project has contributed substantially to my understanding of Plotly functionality, interactive plot production, and general good practices for displaying data in an accessible/readable way. Prior to generating these Magic the Gathering plots, I had little to no experience in creating interactive figures, but am now comfortable making box plots, histograms, and 3D scatter plots with “hover-text” and zooming options, and I am sure these new skills will translate well to numerous other projects and plot types.</p>
+<p>As for what I learned from the data, I can safely tell you that Magic the Gathering has a massive amount of cards that are mostly cheap and expendable, but some that are so expensive you might want to reevaluate your life if you are considering purchasing them. There was substantial variability in the card prices, leading to some terribly low correlations between price and most other card attributes. However, I did find some interesting info about about average card price by artist (apparently April Lee and a couple other artists are producing art for some extraordinarily valuable cards). I also learned that (surprise, surprise!) mana cost correlates pretty directly with other card attributes, like power and toughness. I also confirmed my suspicion that “rare” and “mythic” cards have a tendency to be a bit pricier than “common” and “uncommon”.</p>
+<p><strong>Sara</strong>
+I gained an incredible amount of respect for anyone who has ever knit a Bookdown which complies code from multiple authors. Other than my near-defeat at the hands of Knitr, this was a very enjoyable project. It was less focused than my last project for this class, which turned into a small report, but that allowed us more creativity with how we explored the data and let us explore the data in more thorough detail. Rather than simply producing a single plot and crying - “Look! Demographics” - our group looked at most every aspect of the data which seemed significant. I was also able to mess around with text data, which I haven’t been able to do in a while, which was fun. I did not have the time to preform topic modeling, which I wanted to, because we were short on time, but I suppose I’ll have to wait until Machine Learning to scratch that itch. Regardless, I did a lot of munging with the data for this project and it was fun because I quite like problem solving and that’s what munging distills down to. I also enjoyed playing around with plotly and the raytracer packages - though our raytraced graphic is perhaps not the best use of the raytracer. I knew absolutely nothing about Magic the Gathering coming into this project, and am happy to have learned something about what is apparently a quite lucrative card game while investigating data on it.</p>
+<p>My contributions to the project were aiding in the project direction, gathering the cards data, cleaning and combining the cards and 2019 market data, completing the text analysis portion, completing the data quality portion, assisting with the write-ups, taking point on arranging group meetings, and putting together the Bookdown. This is the first time I’ve made a Bookdown alone, which I’m pretty, to be colloquial, hype about.</p>
+<p><strong>Conor</strong>
+This project was so enjoyable for me, for many reasons. I have had an interest in card games ever since the 90’s when Pokemon infiltrated the minds of every child in America. Magic: The Gathering is a game I have enjoyed for a number of years, and getting the opportunity to explore it deeper through heaps of data with the aid of some of my hard-working peers has been a great experience. I have not only learned a lot about the cards data, but have expanded my knowledge on data visualization techniques and had the opportunity to think critically about the most effective methods for conveying my findings to others. Interactive plots and animated/timelapse plots are a new tool that I will surely be excited to utilize throughout my future data science academia and career.</p>
+<p><strong>Miles</strong>
+I had played Magic the Gathering when I was younger and I found it fascinating to see how the card game I remembered could have such a following that it generates market data. I was not entirely surprised that a majority of the cards were in the lower price range, however, I was certainly surprised by how much someone would be willing to pay for a piece of paper or, more surprisingly, some bytes. One thing that I found personally interesting was how we could see the foil variant of the cards appearing and becoming popular. I remember witnessing that while it was happening and being able to see it in the data felt rewarding.</p>
+<p>This was the first opportunity that I had to unpack and work with data in JSON format. I marveled at the amount of information that can be stored in deeper and deeper levels and I gained some knowledge on manipulating that data and how to stick it together. I found that I was much more successful with this manipulation in Python instead of R but I really began to enjoy manipulating the data and creating visualization in R. It is great to be able to create informative, aesthetically pleasing, and even interactive plots and the visualization that came from my group impressed me.</p>
 
 </div>
 </div>
@@ -217,7 +241,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           </div>
         </div>
       </div>
-<a href="feature-analysis.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="text-analysis.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 
     </div>
   </div>

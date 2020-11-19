@@ -24,7 +24,7 @@
 <meta name="author" content="Sara Haman, Miles Tweed, Conor Howlett, Kevin Howlett" />
 
 
-<meta name="date" content="2020-11-18" />
+<meta name="date" content="2020-11-19" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -51,6 +51,8 @@
 
 
 <script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
 <script src="libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
 <script src="libs/plotly-binding-4.9.2.1/plotly.js"></script>
 <script src="libs/typedarray-0.1/typedarray.min.js"></script>
@@ -58,6 +60,12 @@
 <script src="libs/crosstalk-1.1.0.1/js/crosstalk.min.js"></script>
 <link href="libs/plotly-htmlwidgets-css-1.52.2/plotly-htmlwidgets.css" rel="stylesheet" />
 <script src="libs/plotly-main-1.52.2/plotly-latest.min.js"></script>
+<script src="libs/echarts4r-4.8.0/echarts-en.min.js"></script>
+<script src="libs/echarts4r-4.8.0/ecStat.min.js"></script>
+<script src="libs/echarts4r-4.8.0/dataTool.min.js"></script>
+<script src="libs/echarts4r-binding-0.3.3/echarts4r.js"></script>
+<script src="libs/echarts-wordcloud-1.0.0/echarts-wordcloud.min.js"></script>
+<script src="libs/westeros-1.0.0/westeros.js"></script>
 
 
 <style type="text/css">
@@ -146,20 +154,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2" data-path="data-the-gathering.html"><a href="data-the-gathering.html"><i class="fa fa-check"></i><b>2</b> Data the Gathering</a><ul>
 <li class="chapter" data-level="2.1" data-path="data-the-gathering.html"><a href="data-the-gathering.html#market-data"><i class="fa fa-check"></i><b>2.1</b> 2019 Market Data</a></li>
 <li class="chapter" data-level="2.2" data-path="data-the-gathering.html"><a href="data-the-gathering.html#market-data-1"><i class="fa fa-check"></i><b>2.2</b> 2020 Market Data</a></li>
+<li class="chapter" data-level="2.3" data-path="data-the-gathering.html"><a href="data-the-gathering.html#attributes-of-the-data"><i class="fa fa-check"></i><b>2.3</b> Attributes of the Data</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="data-quality-metrics.html"><a href="data-quality-metrics.html"><i class="fa fa-check"></i><b>3</b> Data Quality Metrics</a><ul>
-<li class="chapter" data-level="3.1" data-path="data-quality-metrics.html"><a href="data-quality-metrics.html#set-up"><i class="fa fa-check"></i><b>3.1</b> Set-up</a></li>
+<li class="chapter" data-level="3.1" data-path="data-quality-metrics.html"><a href="data-quality-metrics.html#libararies"><i class="fa fa-check"></i><b>3.1</b> Libararies</a></li>
 <li class="chapter" data-level="3.2" data-path="data-quality-metrics.html"><a href="data-quality-metrics.html#the-functions"><i class="fa fa-check"></i><b>3.2</b> The Functions</a></li>
 <li class="chapter" data-level="3.3" data-path="data-quality-metrics.html"><a href="data-quality-metrics.html#quality-assessments"><i class="fa fa-check"></i><b>3.3</b> Quality Assessments</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="data-cleaning.html"><a href="data-cleaning.html"><i class="fa fa-check"></i><b>4</b> Data Cleaning</a><ul>
-<li class="chapter" data-level="4.1" data-path="data-cleaning.html"><a href="data-cleaning.html#packages"><i class="fa fa-check"></i><b>4.1</b> Packages</a></li>
-<li class="chapter" data-level="4.2" data-path="data-cleaning.html"><a href="data-cleaning.html#the-cleaning-script"><i class="fa fa-check"></i><b>4.2</b> The Cleaning Script</a><ul>
-<li class="chapter" data-level="4.2.1" data-path="data-cleaning.html"><a href="data-cleaning.html#post-download-formatting"><i class="fa fa-check"></i><b>4.2.1</b> Post-Download Formatting</a></li>
+<li class="chapter" data-level="4.1" data-path="data-cleaning.html"><a href="data-cleaning.html#the-cleaning-script"><i class="fa fa-check"></i><b>4.1</b> The Cleaning Script</a><ul>
+<li class="chapter" data-level="4.1.1" data-path="data-cleaning.html"><a href="data-cleaning.html#post-download-formatting"><i class="fa fa-check"></i><b>4.1.1</b> Post-Download Formatting</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="descriptive-statistics.html"><a href="descriptive-statistics.html"><i class="fa fa-check"></i><b>5</b> Descriptive Statistics</a><ul>
-<li class="chapter" data-level="5.1" data-path="descriptive-statistics.html"><a href="descriptive-statistics.html#set-up-1"><i class="fa fa-check"></i><b>5.1</b> Set-up</a></li>
+<li class="chapter" data-level="5.1" data-path="descriptive-statistics.html"><a href="descriptive-statistics.html#set-up"><i class="fa fa-check"></i><b>5.1</b> Set-up</a></li>
 <li class="chapter" data-level="5.2" data-path="descriptive-statistics.html"><a href="descriptive-statistics.html#descriptives"><i class="fa fa-check"></i><b>5.2</b> Descriptives</a></li>
 <li class="chapter" data-level="5.3" data-path="descriptive-statistics.html"><a href="descriptive-statistics.html#distribution-of-prices"><i class="fa fa-check"></i><b>5.3</b> Distribution of Prices</a></li>
 <li class="chapter" data-level="5.4" data-path="descriptive-statistics.html"><a href="descriptive-statistics.html#correlation-of-numerical-data"><i class="fa fa-check"></i><b>5.4</b> Correlation of Numerical Data</a></li>
@@ -170,14 +178,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="6" data-path="feature-analysis.html"><a href="feature-analysis.html"><i class="fa fa-check"></i><b>6</b> Feature Analysis</a><ul>
 <li class="chapter" data-level="6.1" data-path="feature-analysis.html"><a href="feature-analysis.html#prices"><i class="fa fa-check"></i><b>6.1</b> Prices</a></li>
-<li class="chapter" data-level="6.2" data-path="feature-analysis.html"><a href="feature-analysis.html#artist-influence"><i class="fa fa-check"></i><b>6.2</b> Artist Influence</a></li>
-<li class="chapter" data-level="6.3" data-path="feature-analysis.html"><a href="feature-analysis.html#game-mechanics"><i class="fa fa-check"></i><b>6.3</b> Game Mechanics</a></li>
-<li class="chapter" data-level="6.4" data-path="feature-analysis.html"><a href="feature-analysis.html#text-features"><i class="fa fa-check"></i><b>6.4</b> Text Features</a></li>
+<li class="chapter" data-level="6.2" data-path="feature-analysis.html"><a href="feature-analysis.html#artist-influence"><i class="fa fa-check"></i><b>6.2</b> Artist Influence</a><ul>
+<li class="chapter" data-level="6.2.1" data-path="feature-analysis.html"><a href="feature-analysis.html#hall-of-fame"><i class="fa fa-check"></i><b>6.2.1</b> Hall of Fame</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="discussion.html"><a href="discussion.html"><i class="fa fa-check"></i><b>7</b> Discussion</a><ul>
-<li class="chapter" data-level="7.1" data-path="discussion.html"><a href="discussion.html#conclusion"><i class="fa fa-check"></i><b>7.1</b> Conclusion</a></li>
-<li class="chapter" data-level="7.2" data-path="discussion.html"><a href="discussion.html#future-directions"><i class="fa fa-check"></i><b>7.2</b> Future Directions</a></li>
-<li class="chapter" data-level="7.3" data-path="discussion.html"><a href="discussion.html#what-we-learned-along-the-way"><i class="fa fa-check"></i><b>7.3</b> What We Learned Along the Way</a></li>
+<li class="chapter" data-level="6.3" data-path="feature-analysis.html"><a href="feature-analysis.html#game-mechanics"><i class="fa fa-check"></i><b>6.3</b> Game Mechanics</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="text-analysis.html"><a href="text-analysis.html"><i class="fa fa-check"></i><b>7</b> Text Analysis</a><ul>
+<li class="chapter" data-level="7.1" data-path="text-analysis.html"><a href="text-analysis.html#tidying-the-text"><i class="fa fa-check"></i><b>7.1</b> Tidying the Text</a></li>
+<li class="chapter" data-level="7.2" data-path="text-analysis.html"><a href="text-analysis.html#all-cards"><i class="fa fa-check"></i><b>7.2</b> All cards</a></li>
+<li class="chapter" data-level="7.3" data-path="text-analysis.html"><a href="text-analysis.html#characteristic-words-by-type"><i class="fa fa-check"></i><b>7.3</b> Characteristic Words by Type</a></li>
+<li class="chapter" data-level="7.4" data-path="text-analysis.html"><a href="text-analysis.html#characteristic-words-by-subtype"><i class="fa fa-check"></i><b>7.4</b> Characteristic Words by Subtype</a></li>
+<li class="chapter" data-level="7.5" data-path="text-analysis.html"><a href="text-analysis.html#words-and-prices"><i class="fa fa-check"></i><b>7.5</b> Words and Prices</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="discussion.html"><a href="discussion.html"><i class="fa fa-check"></i><b>8</b> Discussion</a><ul>
+<li class="chapter" data-level="8.1" data-path="discussion.html"><a href="discussion.html#future-directions"><i class="fa fa-check"></i><b>8.1</b> Future Directions</a></li>
+<li class="chapter" data-level="8.2" data-path="discussion.html"><a href="discussion.html#what-we-learned-along-the-way"><i class="fa fa-check"></i><b>8.2</b> What We Learned Along the Way</a></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -202,7 +217,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="header">
 <h1 class="title">Data: The Mungening</h1>
 <p class="author"><em>Sara Haman, Miles Tweed, Conor Howlett, Kevin Howlett</em></p>
-<p class="date"><em>2020-11-18</em></p>
+<p class="date"><em>2020-11-19</em></p>
 </div>
 <div id="preface" class="section level1 unnumbered">
 <h1>Preface</h1>

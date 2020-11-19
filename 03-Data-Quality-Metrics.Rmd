@@ -1,5 +1,5 @@
 # Data Quality Metrics
-First, I import the packages that I use in this section and read in the uncleaned data.
+First, we import the packages that we use in this section and read in the uncleaned data.
 
 ## Libararies
 
@@ -55,5 +55,31 @@ kableFormat <- function(dat, caption) {
 
 ## The Functions
 
+**CONSISTENT REPRESENTATION**
+
+```{r}
+con_rep <- function(df){
+  "
+  A function that quantitatively scores an input data frame on the consistancy of representation data quality metric.
+  
+  Input: 
+    df: a data frame
+  Output: 
+    con_rep_score: A numeric score on consistency of representation ranging from 1 to 0, where 1 is perfectly consistent representation and 0 is inconsistent representation.
+  "
+  
+  type = vector()
+  for(i in 1:ncol(df)){
+    col_type <- typeof(df[1,i])
+    type[i] <- col_type
+  }
+  
+  con_rep_score <- 1 - ((length(unique(type)) - 1)/6)
+  return(con_rep_score)
+}
+```
+
+
 ## Quality Assessments
 We assessed data quality using the metrics outlined in Pipino, Lee, and Wang (2002). For each of these metrics, we provide a brief commentary on how the data fared. Several of the data quality metrics were more pertinent to our analysis, so we provide deeper insight into them.
+

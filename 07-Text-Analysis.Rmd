@@ -1,0 +1,340 @@
+# Text Analysis
+
+
+```{r, message=FALSE, warning=FALSE}
+
+library(tidyverse)
+library(tidytext)
+library(textdata)
+library(ggplot2)
+library(gridExtra)
+library(scales)
+library(wordcloud)
+library(reshape2)
+library(tm)
+library(textstem)
+library(RColorBrewer)
+library(echarts4r)
+library(devtools)
+library(rayshader)
+library(kableExtra)
+library(plotly)
+library(stringi)
+library(topicmodels)
+
+# SETTING UP FORMATTING 
+
+kableFormat <- function(dat, caption) {
+  kable(dat, "html", escape = FALSE, caption = caption) %>%
+  kable_styling(bootstrap_options = c("striped", "condensed", "bordered"),
+                full_width = FALSE)
+}
+
+```
+
+```{r}
+
+# SETTING UP FORMATTING 
+
+kableFormat <- function(dat, caption) {
+  kable(dat, "html", escape = FALSE, caption = caption) %>%
+  kable_styling(bootstrap_options = c("striped", "condensed", "bordered"),
+                full_width = FALSE)
+}
+```
+
+
+```{r, message=FALSE, warning=FALSE}
+
+#READING IN THE DATA 
+
+cmtg <- read_csv("cleanData_New.csv", col_names = TRUE)
+cmtg <- cmtg[,-1] ; cmtg <- cmtg[,-4]
+
+
+```
+
+```{r, warning=FALSE}
+
+# TOKENIZING SUBTYPES
+cmtg$subtypes <- str_split(cmtg$subtypes, ",")
+
+# TOKENIZING KEYWORDS
+cmtg$keywords <- str_split(cmtg$keywords, ",")
+
+# TURNING RARITY INTO A FACTOR 
+cmtg$rarity <- factor(cmtg$rarity, levels = c("common", "uncommon", "rare", "mythic"), ordered = TRUE)
+
+#FORMATTING POWER AND TOUGHNESS CORRECTLY
+  # forces some to numeric, however upon investigation the cards turned to NA's are 'booster' cards, which are like spell cards
+  # these cards can be identified by their key words
+
+cmtg$power <- as.numeric(cmtg$power)
+cmtg$toughness <- as.numeric(cmtg$toughness)
+
+```
+
+
+## Tidying the Text 
+
+```{r}
+# PRE-PROCESSING
+
+# General cleaning
+text_mtg <- distinct(cmtg, flavorText, .keep_all=TRUE)
+text_mtg$allText <- paste(text_mtg$text, text_mtg$flavorText) 
+text_mtg <- text_mtg[, !(names(text_mtg) %in% c('flavorText', 'text'))]
+text_mtg$allText <- text_mtg$allText %>%
+  removeNumbers() %>%
+  str_replace_all("[^[:alnum:]]", " ") %>%
+  stri_trans_tolower() %>%
+  str_squish()
+
+# Handling type
+text_mtg$type <- text_mtg$type %>%
+  removeNumbers() %>%
+  str_replace_all("[^[:alnum:]]", " ") %>%
+  stri_trans_tolower() %>%
+  str_squish()
+
+text_mtg <- text_mtg %>%
+  mutate(type = str_remove_all(type, "legendary |snow |world | ongoing |basic ")) 
+
+# Handling subtypes
+
+text_mtg <- text_mtg %>%
+  unnest(subtypes)
+
+text_mtg$subtypes <- text_mtg$subtypes %>%
+  str_replace_all("[^[:alnum:]]", " ") %>%
+  stri_trans_tolower() %>%
+  str_squish()
+
+```
+
+
+```{r}
+text_mtg %>%
+  select(type, subtypes, allText) %>%
+  group_by(type, subtypes) %>%
+  mutate(word_count = n()) %>%
+  select(type, subtypes, word_count) %>% 
+  distinct() %>%
+  ungroup() %>%
+  arrange(desc(word_count)) %>%
+  filter(word_count > 100) %>%
+  kableFormat("Three Sources Stats")
+```
+
+
+```{r}
+# ALL CARDS INFORMATION
+all_cards <- text_mtg[23] %>%
+  summarise(allText = paste(allText, collapse = ","))
+
+# GROUPED BY TYPE COMBINATION
+
+# Identifying significant types
+n_occur_type <- data.frame(table(text_mtg$type))
+significant_types <- n_occur_type %>%
+  filter(n_occur_type$Freq > 50) %>%
+  select(Var1)
+
+type_cards <- aggregate(allText ~ type, text_mtg[c(4, 23)],paste,collapse="") %>%
+  subset(type %in% as.vector(unlist(significant_types)))
+
+# GROUPED BY SUBTYPE
+
+# Identifying significant subtypes 
+
+n_occur <- data.frame(table(text_mtg$subtypes))
+significant_subtypes <- n_occur %>%
+  filter(n_occur$Freq > 100) %>%
+  select(Var1)
+
+subtype_cards <- aggregate(allText ~ subtypes, text_mtg[c(5, 23)],paste,collapse="") %>%
+  subset(subtypes %in% as.vector(unlist(significant_subtypes)))
+
+# REMOVING TEMPORARY VARIABLES FROM THE ENVIRONMENT
+remove(significant_subtypes, significant_types, n_occur, n_occur_type)
+
+```
+
+```{r}
+
+# PREPARATION FUNCTION
+prepare_text <- function(df){
+  
+  df <- df %>%
+    unnest_tokens(word,allText)
+  df <- df %>%
+    anti_join(stop_words)
+  
+  return(df)
+
+  }
+
+```
+
+## All cards
+
+```{r}
+all_cards_count <- prepare_text(all_cards) %>%
+  mutate(word = lemmatize_words(word)) %>%
+  count(word,sort=TRUE)
+```
+
+
+```{r}
+# TEXT STATISTICS 
+
+mean_use <- mean(all_cards_count$n)
+median_use <- median(all_cards_count$n)
+```
+
+
+```{r}
+AllFreqBar <- all_cards_count%>%
+  head(10)%>%
+  ggplot(mapping = aes(x = reorder(word,n), n, text = paste("Count:", n))) + 
+  geom_bar(stat = "identity",fill="lightblue", alpha = 0.90) +
+ 
+ labs(title = "Top 10 Most Used Words on MTG Cards", x = "", y = "Frequency") +
+  scale_y_continuous(breaks = pretty_breaks()) +
+  coord_flip() +
+  theme_bw() +
+  theme(panel.grid.major.x = element_line(size = 1.25),
+        axis.text.x = element_text(size = 12, face = "bold"),
+        text=element_text(size=16,  family="serif"), 
+        axis.title.y = element_text(vjust=2),
+        plot.title = element_text(hjust = 0.5), 
+        legend.position = "none") +
+geom_hline(yintercept = mean_use, linetype="dotted", 
+                color = "red", size=0.5) +
+geom_hline(yintercept = median_use, linetype="dotted", 
+                color = "black", size=0.5)
+
+ggplotly(AllFreqBar, tooltip="text")
+
+
+```
+
+```{r, fig.width=40}
+
+# plot_gg(AllFreqBar, width=7, height=5, raytrace=TRUE, multicore=TRUE)
+
+```
+
+
+```{r}
+all_cards_count %>%
+  head(100) %>%
+  e_charts() %>%
+  e_cloud(word, n, shape='square') %>% 
+  e_title("Highest frequency words", "All Magic the Gathering Cards") %>% 
+  e_tooltip(trigger = "item") %>%
+  e_theme("westeros") %>%
+  e_color(background='#edf4f5')
+
+```
+
+
+## Characteristic Words by Type 
+
+
+```{r, message = FALSE}
+type_count <- prepare_text(type_cards) %>%
+  mutate(word = lemmatize_words(word)) %>%
+  count(type, word,sort=TRUE)
+
+type_tf_idf <- type_count %>%
+  bind_tf_idf(word, type, n) %>%
+  group_by(type)%>%
+  select(-n)%>%
+  arrange(desc(tf_idf))
+
+```
+
+```{r, fig.height= 30, fig.width=10}
+
+type_tf_idf_plot <- type_tf_idf %>%
+  group_by(type) %>%
+  slice_max(tf_idf, n = 10) %>%
+  ungroup() %>%
+  ggplot(aes(tf_idf, fct_reorder(word, tf_idf), fill = type)) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~type, ncol = 1, scales = "free") +
+  labs(title = "TF-IDF Results by Type", 
+       x = "tf-idf", 
+       y = NULL) +
+  theme(axis.titleaxis.text=element_text(size=20),
+        axis.title=element_text(size=14,face="bold"),
+        plot.title = element_text(hjust = 0.5, vjust=10)) +
+  theme_bw()
+type_tf_idf_plot
+```
+
+
+## Characteristic Words by Subtype
+
+```{r}
+
+subtype_count <- prepare_text(subtype_cards) %>%
+  mutate(word = lemmatize_words(word)) %>%
+  count(subtypes, word,sort=TRUE)
+
+subtype_tf_idf <- subtype_count %>%
+  bind_tf_idf(word, subtypes, n) %>%
+  group_by(subtypes)%>%
+  select(-n)%>%
+  arrange(desc(tf_idf))
+
+```
+
+```{r, fig.height= 90, fig.width=10}
+
+mycolors <- colorRampPalette(brewer.pal(8, "Set2"))(30)
+
+subtype_tf_idf %>%
+  group_by(subtypes) %>%
+  slice_max(tf_idf, n = 10) %>%
+  ungroup() %>%
+  ggplot(aes(tf_idf, fct_reorder(word, tf_idf), fill = subtypes)) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~subtypes, ncol = 1, scales = "free") +
+  scale_fill_manual(values = mycolors) +
+  labs(title="TF-IDF Report for Subtypes",
+       subtitle = "", 
+       x = "tf-id valuef", 
+       y = NULL) + 
+    theme(axis.text=element_text(size=10),
+        axis.title=element_text(size=14,face="bold")) 
+```
+
+## Words and Prices
+
+```{r}
+
+word_price <- text_mtg[19:23] %>%
+  summarise(allText = allText, meanPrice = rowMeans(text_mtg[,19:22]))
+
+word_price_count <- prepare_text(word_price) %>%
+  group_by(word) %>%
+  filter(n()>5) %>%
+  summarise(mean_price_word = mean(meanPrice)) 
+
+word_price_count%>%
+  arrange(desc((mean_price_word))) %>%
+  head(10) %>%
+  kableFormat("Words Associated with Greatest Mean Cost")
+
+word_price_count%>%
+  arrange((mean_price_word)) %>%
+  head(10) %>%
+  kableFormat("Words Associated with Lowest Mean Cost")
+
+mean(word_price_count$mean_price_word)
+
+```
+
+

@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 10 BY TYPE | Data: The Mungening</title>
+  <meta name="description" content="‘Magic the Gathering’ Project for NCF 2020 Graduate Program" />
+  <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 10 BY TYPE | Data: The Mungening" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="‘Magic the Gathering’ Project for NCF 2020 Graduate Program" />
+  <meta name="github-repo" content="seankross/bookdown-start" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 10 BY TYPE | Data: The Mungening" />
+  
+  <meta name="twitter:description" content="‘Magic the Gathering’ Project for NCF 2020 Graduate Program" />
+  
+
+<meta name="author" content="Sara Haman, Miles Tweed, Conor Howlett, Kevin Howlett" />
+
+
+<meta name="date" content="2020-11-19" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="all-cards.html"/>
+<link rel="next" href="by-subbtype.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<script src="libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
+<script src="libs/plotly-binding-4.9.2.1/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.1.0.1/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.1.0.1/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-1.52.2/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-1.52.2/plotly-latest.min.js"></script>
+<script src="libs/echarts4r-4.8.0/echarts-en.min.js"></script>
+<script src="libs/echarts4r-4.8.0/ecStat.min.js"></script>
+<script src="libs/echarts4r-4.8.0/dataTool.min.js"></script>
+<script src="libs/echarts4r-binding-0.3.3/echarts4r.js"></script>
+<script src="libs/echarts-wordcloud-1.0.0/echarts-wordcloud.min.js"></script>
+<script src="libs/westeros-1.0.0/westeros.js"></script>
+
+
+<style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">A Minimal Bookdown Book</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
+<li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
+<li class="chapter" data-level="2" data-path="data-the-gathering.html"><a href="data-the-gathering.html"><i class="fa fa-check"></i><b>2</b> Data the Gathering</a><ul>
+<li class="chapter" data-level="2.1" data-path="data-the-gathering.html"><a href="data-the-gathering.html#market-data"><i class="fa fa-check"></i><b>2.1</b> 2019 Market Data</a></li>
+<li class="chapter" data-level="2.2" data-path="data-the-gathering.html"><a href="data-the-gathering.html#market-data-1"><i class="fa fa-check"></i><b>2.2</b> 2020 Market Data</a></li>
+<li class="chapter" data-level="2.3" data-path="data-the-gathering.html"><a href="data-the-gathering.html#attributes-of-the-data"><i class="fa fa-check"></i><b>2.3</b> Attributes of the Data</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="data-quality-metrics.html"><a href="data-quality-metrics.html"><i class="fa fa-check"></i><b>3</b> Data Quality Metrics</a><ul>
+<li class="chapter" data-level="3.1" data-path="data-quality-metrics.html"><a href="data-quality-metrics.html#libararies"><i class="fa fa-check"></i><b>3.1</b> Libararies</a></li>
+<li class="chapter" data-level="3.2" data-path="data-quality-metrics.html"><a href="data-quality-metrics.html#the-functions"><i class="fa fa-check"></i><b>3.2</b> The Functions</a></li>
+<li class="chapter" data-level="3.3" data-path="data-quality-metrics.html"><a href="data-quality-metrics.html#quality-assessments"><i class="fa fa-check"></i><b>3.3</b> Quality Assessments</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="data-cleaning.html"><a href="data-cleaning.html"><i class="fa fa-check"></i><b>4</b> Data Cleaning</a><ul>
+<li class="chapter" data-level="4.1" data-path="data-cleaning.html"><a href="data-cleaning.html#the-cleaning-script"><i class="fa fa-check"></i><b>4.1</b> The Cleaning Script</a><ul>
+<li class="chapter" data-level="4.1.1" data-path="data-cleaning.html"><a href="data-cleaning.html#post-download-formatting"><i class="fa fa-check"></i><b>4.1.1</b> Post-Download Formatting</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="descriptive-statistics.html"><a href="descriptive-statistics.html"><i class="fa fa-check"></i><b>5</b> Descriptive Statistics</a><ul>
+<li class="chapter" data-level="5.1" data-path="descriptive-statistics.html"><a href="descriptive-statistics.html#set-up"><i class="fa fa-check"></i><b>5.1</b> Set-up</a></li>
+<li class="chapter" data-level="5.2" data-path="descriptive-statistics.html"><a href="descriptive-statistics.html#descriptives"><i class="fa fa-check"></i><b>5.2</b> Descriptives</a></li>
+<li class="chapter" data-level="5.3" data-path="descriptive-statistics.html"><a href="descriptive-statistics.html#distribution-of-prices"><i class="fa fa-check"></i><b>5.3</b> Distribution of Prices</a></li>
+<li class="chapter" data-level="5.4" data-path="descriptive-statistics.html"><a href="descriptive-statistics.html#correlation-of-numerical-data"><i class="fa fa-check"></i><b>5.4</b> Correlation of Numerical Data</a></li>
+<li class="chapter" data-level="5.5" data-path="descriptive-statistics.html"><a href="descriptive-statistics.html#printing-type"><i class="fa fa-check"></i><b>5.5</b> Printing type</a></li>
+<li class="chapter" data-level="5.6" data-path="descriptive-statistics.html"><a href="descriptive-statistics.html#frame-version"><i class="fa fa-check"></i><b>5.6</b> Frame Version</a></li>
+<li class="chapter" data-level="5.7" data-path="descriptive-statistics.html"><a href="descriptive-statistics.html#release-date"><i class="fa fa-check"></i><b>5.7</b> Release Date</a></li>
+<li class="chapter" data-level="5.8" data-path="descriptive-statistics.html"><a href="descriptive-statistics.html#rarity"><i class="fa fa-check"></i><b>5.8</b> Rarity</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="feature-analysis.html"><a href="feature-analysis.html"><i class="fa fa-check"></i><b>6</b> Feature Analysis</a><ul>
+<li class="chapter" data-level="6.1" data-path="feature-analysis.html"><a href="feature-analysis.html#prices"><i class="fa fa-check"></i><b>6.1</b> Prices</a></li>
+<li class="chapter" data-level="6.2" data-path="feature-analysis.html"><a href="feature-analysis.html#artist-influence"><i class="fa fa-check"></i><b>6.2</b> Artist Influence</a><ul>
+<li class="chapter" data-level="6.2.1" data-path="feature-analysis.html"><a href="feature-analysis.html#hall-of-fame"><i class="fa fa-check"></i><b>6.2.1</b> Hall of Fame</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="feature-analysis.html"><a href="feature-analysis.html#game-mechanics"><i class="fa fa-check"></i><b>6.3</b> Game Mechanics</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="text-analysis.html"><a href="text-analysis.html"><i class="fa fa-check"></i><b>7</b> Text Analysis</a></li>
+<li class="chapter" data-level="8" data-path="tidytext.html"><a href="tidytext.html"><i class="fa fa-check"></i><b>8</b> TIDYTEXT</a></li>
+<li class="chapter" data-level="9" data-path="all-cards.html"><a href="all-cards.html"><i class="fa fa-check"></i><b>9</b> ALL CARDS</a></li>
+<li class="chapter" data-level="10" data-path="by-type.html"><a href="by-type.html"><i class="fa fa-check"></i><b>10</b> BY TYPE</a></li>
+<li class="chapter" data-level="11" data-path="by-subbtype.html"><a href="by-subbtype.html"><i class="fa fa-check"></i><b>11</b> BY SUBBTYPE</a></li>
+<li class="chapter" data-level="12" data-path="words-and-prices.html"><a href="words-and-prices.html"><i class="fa fa-check"></i><b>12</b> WORDS AND PRICES</a></li>
+<li class="chapter" data-level="13" data-path="discussion.html"><a href="discussion.html"><i class="fa fa-check"></i><b>13</b> Discussion</a><ul>
+<li class="chapter" data-level="13.1" data-path="discussion.html"><a href="discussion.html#future-directions"><i class="fa fa-check"></i><b>13.1</b> Future Directions</a></li>
+<li class="chapter" data-level="13.2" data-path="discussion.html"><a href="discussion.html#what-we-learned-along-the-way"><i class="fa fa-check"></i><b>13.2</b> What We Learned Along the Way</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Data: The Mungening</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="by-type" class="section level1">
+<h1><span class="header-section-number">Chapter 10</span> BY TYPE</h1>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="by-type.html#cb60-1"></a>type_count &lt;-<span class="st"> </span><span class="kw">prepare_text</span>(type_cards) <span class="op">%&gt;%</span></span>
+<span id="cb60-2"><a href="by-type.html#cb60-2"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">word =</span> <span class="kw">lemmatize_words</span>(word)) <span class="op">%&gt;%</span></span>
+<span id="cb60-3"><a href="by-type.html#cb60-3"></a><span class="st">  </span><span class="kw">count</span>(type, word,<span class="dt">sort=</span><span class="ot">TRUE</span>)</span>
+<span id="cb60-4"><a href="by-type.html#cb60-4"></a></span>
+<span id="cb60-5"><a href="by-type.html#cb60-5"></a>type_tf_idf &lt;-<span class="st"> </span>type_count <span class="op">%&gt;%</span></span>
+<span id="cb60-6"><a href="by-type.html#cb60-6"></a><span class="st">  </span><span class="kw">bind_tf_idf</span>(word, type, n) <span class="op">%&gt;%</span></span>
+<span id="cb60-7"><a href="by-type.html#cb60-7"></a><span class="st">  </span><span class="kw">group_by</span>(type)<span class="op">%&gt;%</span></span>
+<span id="cb60-8"><a href="by-type.html#cb60-8"></a><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>n)<span class="op">%&gt;%</span></span>
+<span id="cb60-9"><a href="by-type.html#cb60-9"></a><span class="st">  </span><span class="kw">arrange</span>(<span class="kw">desc</span>(tf_idf))</span></code></pre></div>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="by-type.html#cb61-1"></a>type_tf_idf_plot &lt;-<span class="st"> </span>type_tf_idf <span class="op">%&gt;%</span></span>
+<span id="cb61-2"><a href="by-type.html#cb61-2"></a><span class="st">  </span><span class="kw">group_by</span>(type) <span class="op">%&gt;%</span></span>
+<span id="cb61-3"><a href="by-type.html#cb61-3"></a><span class="st">  </span><span class="kw">slice_max</span>(tf_idf, <span class="dt">n =</span> <span class="dv">10</span>) <span class="op">%&gt;%</span></span>
+<span id="cb61-4"><a href="by-type.html#cb61-4"></a><span class="st">  </span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span></span>
+<span id="cb61-5"><a href="by-type.html#cb61-5"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(tf_idf, <span class="kw">fct_reorder</span>(word, tf_idf), <span class="dt">fill =</span> type)) <span class="op">+</span></span>
+<span id="cb61-6"><a href="by-type.html#cb61-6"></a><span class="st">  </span><span class="kw">geom_col</span>(<span class="dt">show.legend =</span> <span class="ot">FALSE</span>) <span class="op">+</span></span>
+<span id="cb61-7"><a href="by-type.html#cb61-7"></a><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>type, <span class="dt">ncol =</span> <span class="dv">1</span>, <span class="dt">scales =</span> <span class="st">&quot;free&quot;</span>) <span class="op">+</span></span>
+<span id="cb61-8"><a href="by-type.html#cb61-8"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;TF-IDF Results by Type&quot;</span>, </span>
+<span id="cb61-9"><a href="by-type.html#cb61-9"></a>       <span class="dt">x =</span> <span class="st">&quot;tf-idf&quot;</span>, </span>
+<span id="cb61-10"><a href="by-type.html#cb61-10"></a>       <span class="dt">y =</span> <span class="ot">NULL</span>) <span class="op">+</span></span>
+<span id="cb61-11"><a href="by-type.html#cb61-11"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.titleaxis.text=</span><span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">20</span>),</span>
+<span id="cb61-12"><a href="by-type.html#cb61-12"></a>        <span class="dt">axis.title=</span><span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">14</span>,<span class="dt">face=</span><span class="st">&quot;bold&quot;</span>),</span>
+<span id="cb61-13"><a href="by-type.html#cb61-13"></a>        <span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">hjust =</span> <span class="fl">0.5</span>, <span class="dt">vjust=</span><span class="dv">10</span>)) <span class="op">+</span></span>
+<span id="cb61-14"><a href="by-type.html#cb61-14"></a><span class="st">  </span><span class="kw">theme_bw</span>()</span>
+<span id="cb61-15"><a href="by-type.html#cb61-15"></a>type_tf_idf_plot</span></code></pre></div>
+<p><img src="07-Text-Analysis_files/figure-html/unnamed-chunk-15-1.png" width="960" /></p>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="all-cards.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="by-subbtype.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

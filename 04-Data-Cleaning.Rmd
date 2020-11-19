@@ -34,7 +34,16 @@ library(rayshader)
 library(kableExtra)
 library(stringi)
 
+# SETTING UP FORMATTING 
+
+kableFormat <- function(dat, caption) {
+  kable(dat, "html", escape = FALSE, caption = caption) %>%
+  kable_styling(bootstrap_options = c("striped", "condensed", "bordered"),
+                full_width = FALSE)
+}
+
 ```
+
 
 ## The Cleaning Script
 
@@ -50,7 +59,7 @@ cardsRaw <- read_csv("cards.csv", col_names = TRUE)
 # head(cardsRaw)
 
 #SELECTING RELEVANT COLUMNS
-keepCols <- c("uuid", "mcmId", "mtgjsonV4Id", "multiverseId", "name", "artist", "type", "subtypes", "supertypes", "manaCost", "convertedManaCost", "keywords", "text", "flavorText",  "power", "toughness", "rarity", "edhrecRank", "isOnlineOnly")
+keepCols <- c("artist","uuid", "mcmId", "mtgjsonV4Id", "multiverseId", "name", "artist", "type", "subtypes", "supertypes", "manaCost", "convertedManaCost", "keywords", "text", "flavorText",  "power", "toughness", "rarity", "edhrecRank", "isOnlineOnly")
 cards <- select_(cardsRaw, .dots = keepCols)
 # head(cards)
 
@@ -151,8 +160,19 @@ mtg <- left_join(cards, sets, by = "mcmId")
 # head(mtg)
 # sum(is.na(mtg$releaseDate))
 
+###############################################
+##########    ##    PRICES     ##    ##########
+###############################################
 
-# write.csv(mtg, "cleanData.csv")
+# READING IN THE DATA
+
+prices19 <- read_csv("mean_2019_prices.csv", col_names = TRUE)
+mtg_prices19 <- inner_join(mtg, prices19, by = c("mtgjsonV4Id" = "uuid"))
+
+columnOrder <- c("uuid", "mtgjsonV4Id", "name", "artist", "type", "subtypes", "supertypes", "keywords", "text", "flavorText", "power", "toughness", "rarity", "edhrecRank", "isOnlineOnly", "convertedManaCost", "genericManaCost", "manaColor", "colorManaCost", "setName", "releaseDate", "mtgo", "mtgoFoil", "paper", "paperFoil")
+mtg_prices19 <- mtg_prices19[, columnOrder]
+
+# write.csv(mtg_prices19, "cleanData_New.csv")
 
 ```
 
@@ -179,7 +199,7 @@ mtg$toughness <- as.numeric(mtg$toughness)
 
 ```{r}
 
-head(mtg, 20) %>%
-  kalbleFormat("Clean Magic the Gathering Data")
+head(mtg, 5) %>%
+  kableFormat("Clean Magic the Gathering Data")
 
 ```

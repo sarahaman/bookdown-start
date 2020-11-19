@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 7 Text Analysis | Data: The Mungening</title>
+  <meta name="description" content="‘Magic the Gathering’ Project for NCF 2020 Graduate Program" />
+  <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 7 Text Analysis | Data: The Mungening" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="‘Magic the Gathering’ Project for NCF 2020 Graduate Program" />
+  <meta name="github-repo" content="seankross/bookdown-start" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 7 Text Analysis | Data: The Mungening" />
+  
+  <meta name="twitter:description" content="‘Magic the Gathering’ Project for NCF 2020 Graduate Program" />
+  
+
+<meta name="author" content="Sara Haman, Miles Tweed, Conor Howlett, Kevin Howlett" />
+
+
+<meta name="date" content="2020-11-19" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="feature-analysis.html"/>
+<link rel="next" href="discussion.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<script src="libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
+<script src="libs/plotly-binding-4.9.2.1/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.1.0.1/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.1.0.1/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-1.52.2/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-1.52.2/plotly-latest.min.js"></script>
+<script src="libs/echarts4r-4.8.0/echarts-en.min.js"></script>
+<script src="libs/echarts4r-4.8.0/ecStat.min.js"></script>
+<script src="libs/echarts4r-4.8.0/dataTool.min.js"></script>
+<script src="libs/echarts4r-binding-0.3.3/echarts4r.js"></script>
+<script src="libs/echarts-wordcloud-1.0.0/echarts-wordcloud.min.js"></script>
+<script src="libs/westeros-1.0.0/westeros.js"></script>
+
+
+<style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">A Minimal Bookdown Book</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
+<li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
+<li class="chapter" data-level="2" data-path="data-the-gathering.html"><a href="data-the-gathering.html"><i class="fa fa-check"></i><b>2</b> Data the Gathering</a><ul>
+<li class="chapter" data-level="2.1" data-path="data-the-gathering.html"><a href="data-the-gathering.html#market-data"><i class="fa fa-check"></i><b>2.1</b> 2019 Market Data</a></li>
+<li class="chapter" data-level="2.2" data-path="data-the-gathering.html"><a href="data-the-gathering.html#market-data-1"><i class="fa fa-check"></i><b>2.2</b> 2020 Market Data</a></li>
+<li class="chapter" data-level="2.3" data-path="data-the-gathering.html"><a href="data-the-gathering.html#attributes-of-the-data"><i class="fa fa-check"></i><b>2.3</b> Attributes of the Data</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="data-quality-metrics.html"><a href="data-quality-metrics.html"><i class="fa fa-check"></i><b>3</b> Data Quality Metrics</a><ul>
+<li class="chapter" data-level="3.1" data-path="data-quality-metrics.html"><a href="data-quality-metrics.html#libararies"><i class="fa fa-check"></i><b>3.1</b> Libararies</a></li>
+<li class="chapter" data-level="3.2" data-path="data-quality-metrics.html"><a href="data-quality-metrics.html#the-functions"><i class="fa fa-check"></i><b>3.2</b> The Functions</a></li>
+<li class="chapter" data-level="3.3" data-path="data-quality-metrics.html"><a href="data-quality-metrics.html#quality-assessments"><i class="fa fa-check"></i><b>3.3</b> Quality Assessments</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="data-cleaning.html"><a href="data-cleaning.html"><i class="fa fa-check"></i><b>4</b> Data Cleaning</a><ul>
+<li class="chapter" data-level="4.1" data-path="data-cleaning.html"><a href="data-cleaning.html#the-cleaning-script"><i class="fa fa-check"></i><b>4.1</b> The Cleaning Script</a><ul>
+<li class="chapter" data-level="4.1.1" data-path="data-cleaning.html"><a href="data-cleaning.html#post-download-formatting"><i class="fa fa-check"></i><b>4.1.1</b> Post-Download Formatting</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="descriptive-statistics.html"><a href="descriptive-statistics.html"><i class="fa fa-check"></i><b>5</b> Descriptive Statistics</a><ul>
+<li class="chapter" data-level="5.1" data-path="descriptive-statistics.html"><a href="descriptive-statistics.html#set-up"><i class="fa fa-check"></i><b>5.1</b> Set-up</a></li>
+<li class="chapter" data-level="5.2" data-path="descriptive-statistics.html"><a href="descriptive-statistics.html#descriptives"><i class="fa fa-check"></i><b>5.2</b> Descriptives</a></li>
+<li class="chapter" data-level="5.3" data-path="descriptive-statistics.html"><a href="descriptive-statistics.html#distribution-of-prices"><i class="fa fa-check"></i><b>5.3</b> Distribution of Prices</a></li>
+<li class="chapter" data-level="5.4" data-path="descriptive-statistics.html"><a href="descriptive-statistics.html#correlation-of-numerical-data"><i class="fa fa-check"></i><b>5.4</b> Correlation of Numerical Data</a></li>
+<li class="chapter" data-level="5.5" data-path="descriptive-statistics.html"><a href="descriptive-statistics.html#printing-type"><i class="fa fa-check"></i><b>5.5</b> Printing type</a></li>
+<li class="chapter" data-level="5.6" data-path="descriptive-statistics.html"><a href="descriptive-statistics.html#frame-version"><i class="fa fa-check"></i><b>5.6</b> Frame Version</a></li>
+<li class="chapter" data-level="5.7" data-path="descriptive-statistics.html"><a href="descriptive-statistics.html#release-date"><i class="fa fa-check"></i><b>5.7</b> Release Date</a></li>
+<li class="chapter" data-level="5.8" data-path="descriptive-statistics.html"><a href="descriptive-statistics.html#rarity"><i class="fa fa-check"></i><b>5.8</b> Rarity</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="feature-analysis.html"><a href="feature-analysis.html"><i class="fa fa-check"></i><b>6</b> Feature Analysis</a><ul>
+<li class="chapter" data-level="6.1" data-path="feature-analysis.html"><a href="feature-analysis.html#prices"><i class="fa fa-check"></i><b>6.1</b> Prices</a></li>
+<li class="chapter" data-level="6.2" data-path="feature-analysis.html"><a href="feature-analysis.html#artist-influence"><i class="fa fa-check"></i><b>6.2</b> Artist Influence</a><ul>
+<li class="chapter" data-level="6.2.1" data-path="feature-analysis.html"><a href="feature-analysis.html#hall-of-fame"><i class="fa fa-check"></i><b>6.2.1</b> Hall of Fame</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="feature-analysis.html"><a href="feature-analysis.html#game-mechanics"><i class="fa fa-check"></i><b>6.3</b> Game Mechanics</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="text-analysis.html"><a href="text-analysis.html"><i class="fa fa-check"></i><b>7</b> Text Analysis</a><ul>
+<li class="chapter" data-level="7.1" data-path="text-analysis.html"><a href="text-analysis.html#tidying-the-text"><i class="fa fa-check"></i><b>7.1</b> Tidying the Text</a></li>
+<li class="chapter" data-level="7.2" data-path="text-analysis.html"><a href="text-analysis.html#all-cards"><i class="fa fa-check"></i><b>7.2</b> All cards</a></li>
+<li class="chapter" data-level="7.3" data-path="text-analysis.html"><a href="text-analysis.html#characteristic-words-by-type"><i class="fa fa-check"></i><b>7.3</b> Characteristic Words by Type</a></li>
+<li class="chapter" data-level="7.4" data-path="text-analysis.html"><a href="text-analysis.html#characteristic-words-by-subtype"><i class="fa fa-check"></i><b>7.4</b> Characteristic Words by Subtype</a></li>
+<li class="chapter" data-level="7.5" data-path="text-analysis.html"><a href="text-analysis.html#words-and-prices"><i class="fa fa-check"></i><b>7.5</b> Words and Prices</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="discussion.html"><a href="discussion.html"><i class="fa fa-check"></i><b>8</b> Discussion</a><ul>
+<li class="chapter" data-level="8.1" data-path="discussion.html"><a href="discussion.html#future-directions"><i class="fa fa-check"></i><b>8.1</b> Future Directions</a></li>
+<li class="chapter" data-level="8.2" data-path="discussion.html"><a href="discussion.html#what-we-learned-along-the-way"><i class="fa fa-check"></i><b>8.2</b> What We Learned Along the Way</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Data: The Mungening</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="text-analysis" class="section level1">
+<h1><span class="header-section-number">Chapter 7</span> Text Analysis</h1>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="text-analysis.html#cb45-1"></a><span class="kw">library</span>(tidyverse)</span>
+<span id="cb45-2"><a href="text-analysis.html#cb45-2"></a><span class="kw">library</span>(tidytext)</span>
+<span id="cb45-3"><a href="text-analysis.html#cb45-3"></a><span class="kw">library</span>(textdata)</span>
+<span id="cb45-4"><a href="text-analysis.html#cb45-4"></a><span class="kw">library</span>(ggplot2)</span>
+<span id="cb45-5"><a href="text-analysis.html#cb45-5"></a><span class="kw">library</span>(gridExtra)</span>
+<span id="cb45-6"><a href="text-analysis.html#cb45-6"></a><span class="kw">library</span>(scales)</span>
+<span id="cb45-7"><a href="text-analysis.html#cb45-7"></a><span class="kw">library</span>(wordcloud)</span>
+<span id="cb45-8"><a href="text-analysis.html#cb45-8"></a><span class="kw">library</span>(reshape2)</span>
+<span id="cb45-9"><a href="text-analysis.html#cb45-9"></a><span class="kw">library</span>(tm)</span>
+<span id="cb45-10"><a href="text-analysis.html#cb45-10"></a><span class="kw">library</span>(textstem)</span>
+<span id="cb45-11"><a href="text-analysis.html#cb45-11"></a><span class="kw">library</span>(RColorBrewer)</span>
+<span id="cb45-12"><a href="text-analysis.html#cb45-12"></a><span class="kw">library</span>(echarts4r)</span>
+<span id="cb45-13"><a href="text-analysis.html#cb45-13"></a><span class="kw">library</span>(devtools)</span>
+<span id="cb45-14"><a href="text-analysis.html#cb45-14"></a><span class="kw">library</span>(rayshader)</span>
+<span id="cb45-15"><a href="text-analysis.html#cb45-15"></a><span class="kw">library</span>(kableExtra)</span>
+<span id="cb45-16"><a href="text-analysis.html#cb45-16"></a><span class="kw">library</span>(plotly)</span>
+<span id="cb45-17"><a href="text-analysis.html#cb45-17"></a><span class="kw">library</span>(stringi)</span>
+<span id="cb45-18"><a href="text-analysis.html#cb45-18"></a><span class="kw">library</span>(topicmodels)</span>
+<span id="cb45-19"><a href="text-analysis.html#cb45-19"></a></span>
+<span id="cb45-20"><a href="text-analysis.html#cb45-20"></a><span class="co"># SETTING UP FORMATTING </span></span>
+<span id="cb45-21"><a href="text-analysis.html#cb45-21"></a></span>
+<span id="cb45-22"><a href="text-analysis.html#cb45-22"></a>kableFormat &lt;-<span class="st"> </span><span class="cf">function</span>(dat, caption) {</span>
+<span id="cb45-23"><a href="text-analysis.html#cb45-23"></a>  <span class="kw">kable</span>(dat, <span class="st">&quot;html&quot;</span>, <span class="dt">escape =</span> <span class="ot">FALSE</span>, <span class="dt">caption =</span> caption) <span class="op">%&gt;%</span></span>
+<span id="cb45-24"><a href="text-analysis.html#cb45-24"></a><span class="st">  </span><span class="kw">kable_styling</span>(<span class="dt">bootstrap_options =</span> <span class="kw">c</span>(<span class="st">&quot;striped&quot;</span>, <span class="st">&quot;condensed&quot;</span>, <span class="st">&quot;bordered&quot;</span>),</span>
+<span id="cb45-25"><a href="text-analysis.html#cb45-25"></a>                <span class="dt">full_width =</span> <span class="ot">FALSE</span>)</span>
+<span id="cb45-26"><a href="text-analysis.html#cb45-26"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="text-analysis.html#cb46-1"></a><span class="co"># SETTING UP FORMATTING </span></span>
+<span id="cb46-2"><a href="text-analysis.html#cb46-2"></a></span>
+<span id="cb46-3"><a href="text-analysis.html#cb46-3"></a>kableFormat &lt;-<span class="st"> </span><span class="cf">function</span>(dat, caption) {</span>
+<span id="cb46-4"><a href="text-analysis.html#cb46-4"></a>  <span class="kw">kable</span>(dat, <span class="st">&quot;html&quot;</span>, <span class="dt">escape =</span> <span class="ot">FALSE</span>, <span class="dt">caption =</span> caption) <span class="op">%&gt;%</span></span>
+<span id="cb46-5"><a href="text-analysis.html#cb46-5"></a><span class="st">  </span><span class="kw">kable_styling</span>(<span class="dt">bootstrap_options =</span> <span class="kw">c</span>(<span class="st">&quot;striped&quot;</span>, <span class="st">&quot;condensed&quot;</span>, <span class="st">&quot;bordered&quot;</span>),</span>
+<span id="cb46-6"><a href="text-analysis.html#cb46-6"></a>                <span class="dt">full_width =</span> <span class="ot">FALSE</span>)</span>
+<span id="cb46-7"><a href="text-analysis.html#cb46-7"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="text-analysis.html#cb47-1"></a><span class="co">#READING IN THE DATA </span></span>
+<span id="cb47-2"><a href="text-analysis.html#cb47-2"></a></span>
+<span id="cb47-3"><a href="text-analysis.html#cb47-3"></a>cmtg &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;cleanData_New.csv&quot;</span>, <span class="dt">col_names =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb47-4"><a href="text-analysis.html#cb47-4"></a>cmtg &lt;-<span class="st"> </span>cmtg[,<span class="op">-</span><span class="dv">1</span>] ; cmtg &lt;-<span class="st"> </span>cmtg[,<span class="op">-</span><span class="dv">4</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="text-analysis.html#cb48-1"></a><span class="co"># TOKENIZING SUBTYPES</span></span>
+<span id="cb48-2"><a href="text-analysis.html#cb48-2"></a>cmtg<span class="op">$</span>subtypes &lt;-<span class="st"> </span><span class="kw">str_split</span>(cmtg<span class="op">$</span>subtypes, <span class="st">&quot;,&quot;</span>)</span>
+<span id="cb48-3"><a href="text-analysis.html#cb48-3"></a></span>
+<span id="cb48-4"><a href="text-analysis.html#cb48-4"></a><span class="co"># TOKENIZING KEYWORDS</span></span>
+<span id="cb48-5"><a href="text-analysis.html#cb48-5"></a>cmtg<span class="op">$</span>keywords &lt;-<span class="st"> </span><span class="kw">str_split</span>(cmtg<span class="op">$</span>keywords, <span class="st">&quot;,&quot;</span>)</span>
+<span id="cb48-6"><a href="text-analysis.html#cb48-6"></a></span>
+<span id="cb48-7"><a href="text-analysis.html#cb48-7"></a><span class="co"># TURNING RARITY INTO A FACTOR </span></span>
+<span id="cb48-8"><a href="text-analysis.html#cb48-8"></a>cmtg<span class="op">$</span>rarity &lt;-<span class="st"> </span><span class="kw">factor</span>(cmtg<span class="op">$</span>rarity, <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">&quot;common&quot;</span>, <span class="st">&quot;uncommon&quot;</span>, <span class="st">&quot;rare&quot;</span>, <span class="st">&quot;mythic&quot;</span>), <span class="dt">ordered =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb48-9"><a href="text-analysis.html#cb48-9"></a></span>
+<span id="cb48-10"><a href="text-analysis.html#cb48-10"></a><span class="co">#FORMATTING POWER AND TOUGHNESS CORRECTLY</span></span>
+<span id="cb48-11"><a href="text-analysis.html#cb48-11"></a>  <span class="co"># forces some to numeric, however upon investigation the cards turned to NA&#39;s are &#39;booster&#39; cards, which are like spell cards</span></span>
+<span id="cb48-12"><a href="text-analysis.html#cb48-12"></a>  <span class="co"># these cards can be identified by their key words</span></span>
+<span id="cb48-13"><a href="text-analysis.html#cb48-13"></a></span>
+<span id="cb48-14"><a href="text-analysis.html#cb48-14"></a>cmtg<span class="op">$</span>power &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(cmtg<span class="op">$</span>power)</span>
+<span id="cb48-15"><a href="text-analysis.html#cb48-15"></a>cmtg<span class="op">$</span>toughness &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(cmtg<span class="op">$</span>toughness)</span></code></pre></div>
+<div id="tidying-the-text" class="section level2">
+<h2><span class="header-section-number">7.1</span> Tidying the Text</h2>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="text-analysis.html#cb49-1"></a><span class="co"># PRE-PROCESSING</span></span>
+<span id="cb49-2"><a href="text-analysis.html#cb49-2"></a></span>
+<span id="cb49-3"><a href="text-analysis.html#cb49-3"></a><span class="co"># General cleaning</span></span>
+<span id="cb49-4"><a href="text-analysis.html#cb49-4"></a>text_mtg &lt;-<span class="st"> </span><span class="kw">distinct</span>(cmtg, flavorText, <span class="dt">.keep_all=</span><span class="ot">TRUE</span>)</span>
+<span id="cb49-5"><a href="text-analysis.html#cb49-5"></a>text_mtg<span class="op">$</span>allText &lt;-<span class="st"> </span><span class="kw">paste</span>(text_mtg<span class="op">$</span>text, text_mtg<span class="op">$</span>flavorText) </span>
+<span id="cb49-6"><a href="text-analysis.html#cb49-6"></a>text_mtg &lt;-<span class="st"> </span>text_mtg[, <span class="op">!</span>(<span class="kw">names</span>(text_mtg) <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;flavorText&#39;</span>, <span class="st">&#39;text&#39;</span>))]</span>
+<span id="cb49-7"><a href="text-analysis.html#cb49-7"></a>text_mtg<span class="op">$</span>allText &lt;-<span class="st"> </span>text_mtg<span class="op">$</span>allText <span class="op">%&gt;%</span></span>
+<span id="cb49-8"><a href="text-analysis.html#cb49-8"></a><span class="st">  </span><span class="kw">removeNumbers</span>() <span class="op">%&gt;%</span></span>
+<span id="cb49-9"><a href="text-analysis.html#cb49-9"></a><span class="st">  </span><span class="kw">str_replace_all</span>(<span class="st">&quot;[^[:alnum:]]&quot;</span>, <span class="st">&quot; &quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb49-10"><a href="text-analysis.html#cb49-10"></a><span class="st">  </span><span class="kw">stri_trans_tolower</span>() <span class="op">%&gt;%</span></span>
+<span id="cb49-11"><a href="text-analysis.html#cb49-11"></a><span class="st">  </span><span class="kw">str_squish</span>()</span>
+<span id="cb49-12"><a href="text-analysis.html#cb49-12"></a></span>
+<span id="cb49-13"><a href="text-analysis.html#cb49-13"></a><span class="co"># Handling type</span></span>
+<span id="cb49-14"><a href="text-analysis.html#cb49-14"></a>text_mtg<span class="op">$</span>type &lt;-<span class="st"> </span>text_mtg<span class="op">$</span>type <span class="op">%&gt;%</span></span>
+<span id="cb49-15"><a href="text-analysis.html#cb49-15"></a><span class="st">  </span><span class="kw">removeNumbers</span>() <span class="op">%&gt;%</span></span>
+<span id="cb49-16"><a href="text-analysis.html#cb49-16"></a><span class="st">  </span><span class="kw">str_replace_all</span>(<span class="st">&quot;[^[:alnum:]]&quot;</span>, <span class="st">&quot; &quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb49-17"><a href="text-analysis.html#cb49-17"></a><span class="st">  </span><span class="kw">stri_trans_tolower</span>() <span class="op">%&gt;%</span></span>
+<span id="cb49-18"><a href="text-analysis.html#cb49-18"></a><span class="st">  </span><span class="kw">str_squish</span>()</span>
+<span id="cb49-19"><a href="text-analysis.html#cb49-19"></a></span>
+<span id="cb49-20"><a href="text-analysis.html#cb49-20"></a>text_mtg &lt;-<span class="st"> </span>text_mtg <span class="op">%&gt;%</span></span>
+<span id="cb49-21"><a href="text-analysis.html#cb49-21"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">type =</span> <span class="kw">str_remove_all</span>(type, <span class="st">&quot;legendary |snow |world | ongoing |basic &quot;</span>)) </span>
+<span id="cb49-22"><a href="text-analysis.html#cb49-22"></a></span>
+<span id="cb49-23"><a href="text-analysis.html#cb49-23"></a><span class="co"># Handling subtypes</span></span>
+<span id="cb49-24"><a href="text-analysis.html#cb49-24"></a></span>
+<span id="cb49-25"><a href="text-analysis.html#cb49-25"></a>text_mtg &lt;-<span class="st"> </span>text_mtg <span class="op">%&gt;%</span></span>
+<span id="cb49-26"><a href="text-analysis.html#cb49-26"></a><span class="st">  </span><span class="kw">unnest</span>(subtypes)</span>
+<span id="cb49-27"><a href="text-analysis.html#cb49-27"></a></span>
+<span id="cb49-28"><a href="text-analysis.html#cb49-28"></a>text_mtg<span class="op">$</span>subtypes &lt;-<span class="st"> </span>text_mtg<span class="op">$</span>subtypes <span class="op">%&gt;%</span></span>
+<span id="cb49-29"><a href="text-analysis.html#cb49-29"></a><span class="st">  </span><span class="kw">str_replace_all</span>(<span class="st">&quot;[^[:alnum:]]&quot;</span>, <span class="st">&quot; &quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb49-30"><a href="text-analysis.html#cb49-30"></a><span class="st">  </span><span class="kw">stri_trans_tolower</span>() <span class="op">%&gt;%</span></span>
+<span id="cb49-31"><a href="text-analysis.html#cb49-31"></a><span class="st">  </span><span class="kw">str_squish</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="text-analysis.html#cb50-1"></a>text_mtg <span class="op">%&gt;%</span></span>
+<span id="cb50-2"><a href="text-analysis.html#cb50-2"></a><span class="st">  </span><span class="kw">select</span>(type, subtypes, allText) <span class="op">%&gt;%</span></span>
+<span id="cb50-3"><a href="text-analysis.html#cb50-3"></a><span class="st">  </span><span class="kw">group_by</span>(type, subtypes) <span class="op">%&gt;%</span></span>
+<span id="cb50-4"><a href="text-analysis.html#cb50-4"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">word_count =</span> <span class="kw">n</span>()) <span class="op">%&gt;%</span></span>
+<span id="cb50-5"><a href="text-analysis.html#cb50-5"></a><span class="st">  </span><span class="kw">select</span>(type, subtypes, word_count) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb50-6"><a href="text-analysis.html#cb50-6"></a><span class="st">  </span><span class="kw">distinct</span>() <span class="op">%&gt;%</span></span>
+<span id="cb50-7"><a href="text-analysis.html#cb50-7"></a><span class="st">  </span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span></span>
+<span id="cb50-8"><a href="text-analysis.html#cb50-8"></a><span class="st">  </span><span class="kw">arrange</span>(<span class="kw">desc</span>(word_count)) <span class="op">%&gt;%</span></span>
+<span id="cb50-9"><a href="text-analysis.html#cb50-9"></a><span class="st">  </span><span class="kw">filter</span>(word_count <span class="op">&gt;</span><span class="st"> </span><span class="dv">100</span>) <span class="op">%&gt;%</span></span>
+<span id="cb50-10"><a href="text-analysis.html#cb50-10"></a><span class="st">  </span><span class="kw">kableFormat</span>(<span class="st">&quot;Three Sources Stats&quot;</span>)</span></code></pre></div>
+<table class="table table-striped table-condensed table-bordered" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:unnamed-chunk-6">Table 7.1: </span>Three Sources Stats
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+type
+</th>
+<th style="text-align:left;">
+subtypes
+</th>
+<th style="text-align:right;">
+word_count
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+instant
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:right;">
+2177
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+creature
+</td>
+<td style="text-align:left;">
+human
+</td>
+<td style="text-align:right;">
+1881
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sorcery
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:right;">
+1876
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+enchantment
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:right;">
+981
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+artifact
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:right;">
+802
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+enchantment
+</td>
+<td style="text-align:left;">
+aura
+</td>
+<td style="text-align:right;">
+706
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+creature
+</td>
+<td style="text-align:left;">
+soldier
+</td>
+<td style="text-align:right;">
+586
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+creature
+</td>
+<td style="text-align:left;">
+warrior
+</td>
+<td style="text-align:right;">
+581
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+creature
+</td>
+<td style="text-align:left;">
+wizard
+</td>
+<td style="text-align:right;">
+498
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+creature
+</td>
+<td style="text-align:left;">
+zombie
+</td>
+<td style="text-align:right;">
+355
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+creature
+</td>
+<td style="text-align:left;">
+goblin
+</td>
+<td style="text-align:right;">
+353
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+creature
+</td>
+<td style="text-align:left;">
+elf
+</td>
+<td style="text-align:right;">
+344
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+creature
+</td>
+<td style="text-align:left;">
+cleric
+</td>
+<td style="text-align:right;">
+332
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+creature
+</td>
+<td style="text-align:left;">
+elemental
+</td>
+<td style="text-align:right;">
+325
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+creature
+</td>
+<td style="text-align:left;">
+spirit
+</td>
+<td style="text-align:right;">
+324
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+land
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:right;">
+321
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+creature
+</td>
+<td style="text-align:left;">
+shaman
+</td>
+<td style="text-align:right;">
+294
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+creature
+</td>
+<td style="text-align:left;">
+beast
+</td>
+<td style="text-align:right;">
+293
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+creature
+</td>
+<td style="text-align:left;">
+knight
+</td>
+<td style="text-align:right;">
+282
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+creature
+</td>
+<td style="text-align:left;">
+rogue
+</td>
+<td style="text-align:right;">
+216
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+creature
+</td>
+<td style="text-align:left;">
+bird
+</td>
+<td style="text-align:right;">
+196
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+creature
+</td>
+<td style="text-align:left;">
+merfolk
+</td>
+<td style="text-align:right;">
+195
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+creature
+</td>
+<td style="text-align:left;">
+vampire
+</td>
+<td style="text-align:right;">
+183
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+creature
+</td>
+<td style="text-align:left;">
+druid
+</td>
+<td style="text-align:right;">
+177
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+creature
+</td>
+<td style="text-align:left;">
+cat
+</td>
+<td style="text-align:right;">
+161
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+creature
+</td>
+<td style="text-align:left;">
+insect
+</td>
+<td style="text-align:right;">
+140
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+artifact
+</td>
+<td style="text-align:left;">
+equipment
+</td>
+<td style="text-align:right;">
+133
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+creature
+</td>
+<td style="text-align:left;">
+scout
+</td>
+<td style="text-align:right;">
+129
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+creature
+</td>
+<td style="text-align:left;">
+wall
+</td>
+<td style="text-align:right;">
+128
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+creature
+</td>
+<td style="text-align:left;">
+giant
+</td>
+<td style="text-align:right;">
+127
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+creature
+</td>
+<td style="text-align:left;">
+horror
+</td>
+<td style="text-align:right;">
+125
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+creature
+</td>
+<td style="text-align:left;">
+dragon
+</td>
+<td style="text-align:right;">
+123
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+creature
+</td>
+<td style="text-align:left;">
+angel
+</td>
+<td style="text-align:right;">
+121
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+artifact creature
+</td>
+<td style="text-align:left;">
+construct
+</td>
+<td style="text-align:right;">
+110
+</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="text-analysis.html#cb51-1"></a><span class="co"># ALL CARDS INFORMATION</span></span>
+<span id="cb51-2"><a href="text-analysis.html#cb51-2"></a>all_cards &lt;-<span class="st"> </span>text_mtg[<span class="dv">23</span>] <span class="op">%&gt;%</span></span>
+<span id="cb51-3"><a href="text-analysis.html#cb51-3"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">allText =</span> <span class="kw">paste</span>(allText, <span class="dt">collapse =</span> <span class="st">&quot;,&quot;</span>))</span>
+<span id="cb51-4"><a href="text-analysis.html#cb51-4"></a></span>
+<span id="cb51-5"><a href="text-analysis.html#cb51-5"></a><span class="co"># GROUPED BY TYPE COMBINATION</span></span>
+<span id="cb51-6"><a href="text-analysis.html#cb51-6"></a></span>
+<span id="cb51-7"><a href="text-analysis.html#cb51-7"></a><span class="co"># Identifying significant types</span></span>
+<span id="cb51-8"><a href="text-analysis.html#cb51-8"></a>n_occur_type &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="kw">table</span>(text_mtg<span class="op">$</span>type))</span>
+<span id="cb51-9"><a href="text-analysis.html#cb51-9"></a>significant_types &lt;-<span class="st"> </span>n_occur_type <span class="op">%&gt;%</span></span>
+<span id="cb51-10"><a href="text-analysis.html#cb51-10"></a><span class="st">  </span><span class="kw">filter</span>(n_occur_type<span class="op">$</span>Freq <span class="op">&gt;</span><span class="st"> </span><span class="dv">50</span>) <span class="op">%&gt;%</span></span>
+<span id="cb51-11"><a href="text-analysis.html#cb51-11"></a><span class="st">  </span><span class="kw">select</span>(Var1)</span>
+<span id="cb51-12"><a href="text-analysis.html#cb51-12"></a></span>
+<span id="cb51-13"><a href="text-analysis.html#cb51-13"></a>type_cards &lt;-<span class="st"> </span><span class="kw">aggregate</span>(allText <span class="op">~</span><span class="st"> </span>type, text_mtg[<span class="kw">c</span>(<span class="dv">4</span>, <span class="dv">23</span>)],paste,<span class="dt">collapse=</span><span class="st">&quot;&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb51-14"><a href="text-analysis.html#cb51-14"></a><span class="st">  </span><span class="kw">subset</span>(type <span class="op">%in%</span><span class="st"> </span><span class="kw">as.vector</span>(<span class="kw">unlist</span>(significant_types)))</span>
+<span id="cb51-15"><a href="text-analysis.html#cb51-15"></a></span>
+<span id="cb51-16"><a href="text-analysis.html#cb51-16"></a><span class="co"># GROUPED BY SUBTYPE</span></span>
+<span id="cb51-17"><a href="text-analysis.html#cb51-17"></a></span>
+<span id="cb51-18"><a href="text-analysis.html#cb51-18"></a><span class="co"># Identifying significant subtypes </span></span>
+<span id="cb51-19"><a href="text-analysis.html#cb51-19"></a></span>
+<span id="cb51-20"><a href="text-analysis.html#cb51-20"></a>n_occur &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="kw">table</span>(text_mtg<span class="op">$</span>subtypes))</span>
+<span id="cb51-21"><a href="text-analysis.html#cb51-21"></a>significant_subtypes &lt;-<span class="st"> </span>n_occur <span class="op">%&gt;%</span></span>
+<span id="cb51-22"><a href="text-analysis.html#cb51-22"></a><span class="st">  </span><span class="kw">filter</span>(n_occur<span class="op">$</span>Freq <span class="op">&gt;</span><span class="st"> </span><span class="dv">100</span>) <span class="op">%&gt;%</span></span>
+<span id="cb51-23"><a href="text-analysis.html#cb51-23"></a><span class="st">  </span><span class="kw">select</span>(Var1)</span>
+<span id="cb51-24"><a href="text-analysis.html#cb51-24"></a></span>
+<span id="cb51-25"><a href="text-analysis.html#cb51-25"></a>subtype_cards &lt;-<span class="st"> </span><span class="kw">aggregate</span>(allText <span class="op">~</span><span class="st"> </span>subtypes, text_mtg[<span class="kw">c</span>(<span class="dv">5</span>, <span class="dv">23</span>)],paste,<span class="dt">collapse=</span><span class="st">&quot;&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb51-26"><a href="text-analysis.html#cb51-26"></a><span class="st">  </span><span class="kw">subset</span>(subtypes <span class="op">%in%</span><span class="st"> </span><span class="kw">as.vector</span>(<span class="kw">unlist</span>(significant_subtypes)))</span>
+<span id="cb51-27"><a href="text-analysis.html#cb51-27"></a></span>
+<span id="cb51-28"><a href="text-analysis.html#cb51-28"></a><span class="co"># REMOVING TEMPORARY VARIABLES FROM THE ENVIRONMENT</span></span>
+<span id="cb51-29"><a href="text-analysis.html#cb51-29"></a><span class="kw">remove</span>(significant_subtypes, significant_types, n_occur, n_occur_type)</span></code></pre></div>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="text-analysis.html#cb52-1"></a><span class="co"># PREPARATION FUNCTION</span></span>
+<span id="cb52-2"><a href="text-analysis.html#cb52-2"></a>prepare_text &lt;-<span class="st"> </span><span class="cf">function</span>(df){</span>
+<span id="cb52-3"><a href="text-analysis.html#cb52-3"></a>  </span>
+<span id="cb52-4"><a href="text-analysis.html#cb52-4"></a>  df &lt;-<span class="st"> </span>df <span class="op">%&gt;%</span></span>
+<span id="cb52-5"><a href="text-analysis.html#cb52-5"></a><span class="st">    </span><span class="kw">unnest_tokens</span>(word,allText)</span>
+<span id="cb52-6"><a href="text-analysis.html#cb52-6"></a>  df &lt;-<span class="st"> </span>df <span class="op">%&gt;%</span></span>
+<span id="cb52-7"><a href="text-analysis.html#cb52-7"></a><span class="st">    </span><span class="kw">anti_join</span>(stop_words)</span>
+<span id="cb52-8"><a href="text-analysis.html#cb52-8"></a>  </span>
+<span id="cb52-9"><a href="text-analysis.html#cb52-9"></a>  <span class="kw">return</span>(df)</span>
+<span id="cb52-10"><a href="text-analysis.html#cb52-10"></a></span>
+<span id="cb52-11"><a href="text-analysis.html#cb52-11"></a>  }</span></code></pre></div>
+</div>
+<div id="all-cards" class="section level2">
+<h2><span class="header-section-number">7.2</span> All cards</h2>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="text-analysis.html#cb53-1"></a>all_cards_count &lt;-<span class="st"> </span><span class="kw">prepare_text</span>(all_cards) <span class="op">%&gt;%</span></span>
+<span id="cb53-2"><a href="text-analysis.html#cb53-2"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">word =</span> <span class="kw">lemmatize_words</span>(word)) <span class="op">%&gt;%</span></span>
+<span id="cb53-3"><a href="text-analysis.html#cb53-3"></a><span class="st">  </span><span class="kw">count</span>(word,<span class="dt">sort=</span><span class="ot">TRUE</span>)</span></code></pre></div>
+<pre><code>## Joining, by = &quot;word&quot;</code></pre>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="text-analysis.html#cb55-1"></a><span class="co"># TEXT STATISTICS </span></span>
+<span id="cb55-2"><a href="text-analysis.html#cb55-2"></a></span>
+<span id="cb55-3"><a href="text-analysis.html#cb55-3"></a>mean_use &lt;-<span class="st"> </span><span class="kw">mean</span>(all_cards_count<span class="op">$</span>n)</span>
+<span id="cb55-4"><a href="text-analysis.html#cb55-4"></a>median_use &lt;-<span class="st"> </span><span class="kw">median</span>(all_cards_count<span class="op">$</span>n)</span></code></pre></div>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="text-analysis.html#cb56-1"></a>AllFreqBar &lt;-<span class="st"> </span>all_cards_count<span class="op">%&gt;%</span></span>
+<span id="cb56-2"><a href="text-analysis.html#cb56-2"></a><span class="st">  </span><span class="kw">head</span>(<span class="dv">10</span>)<span class="op">%&gt;%</span></span>
+<span id="cb56-3"><a href="text-analysis.html#cb56-3"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> <span class="kw">reorder</span>(word,n), n, <span class="dt">text =</span> <span class="kw">paste</span>(<span class="st">&quot;Count:&quot;</span>, n))) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb56-4"><a href="text-analysis.html#cb56-4"></a><span class="st">  </span><span class="kw">geom_bar</span>(<span class="dt">stat =</span> <span class="st">&quot;identity&quot;</span>,<span class="dt">fill=</span><span class="st">&quot;lightblue&quot;</span>, <span class="dt">alpha =</span> <span class="fl">0.90</span>) <span class="op">+</span></span>
+<span id="cb56-5"><a href="text-analysis.html#cb56-5"></a><span class="st"> </span></span>
+<span id="cb56-6"><a href="text-analysis.html#cb56-6"></a><span class="st"> </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;Top 10 Most Used Words on MTG Cards&quot;</span>, <span class="dt">x =</span> <span class="st">&quot;&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Frequency&quot;</span>) <span class="op">+</span></span>
+<span id="cb56-7"><a href="text-analysis.html#cb56-7"></a><span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="dt">breaks =</span> <span class="kw">pretty_breaks</span>()) <span class="op">+</span></span>
+<span id="cb56-8"><a href="text-analysis.html#cb56-8"></a><span class="st">  </span><span class="kw">coord_flip</span>() <span class="op">+</span></span>
+<span id="cb56-9"><a href="text-analysis.html#cb56-9"></a><span class="st">  </span><span class="kw">theme_bw</span>() <span class="op">+</span></span>
+<span id="cb56-10"><a href="text-analysis.html#cb56-10"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">panel.grid.major.x =</span> <span class="kw">element_line</span>(<span class="dt">size =</span> <span class="fl">1.25</span>),</span>
+<span id="cb56-11"><a href="text-analysis.html#cb56-11"></a>        <span class="dt">axis.text.x =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">12</span>, <span class="dt">face =</span> <span class="st">&quot;bold&quot;</span>),</span>
+<span id="cb56-12"><a href="text-analysis.html#cb56-12"></a>        <span class="dt">text=</span><span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">16</span>,  <span class="dt">family=</span><span class="st">&quot;serif&quot;</span>), </span>
+<span id="cb56-13"><a href="text-analysis.html#cb56-13"></a>        <span class="dt">axis.title.y =</span> <span class="kw">element_text</span>(<span class="dt">vjust=</span><span class="dv">2</span>),</span>
+<span id="cb56-14"><a href="text-analysis.html#cb56-14"></a>        <span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">hjust =</span> <span class="fl">0.5</span>), </span>
+<span id="cb56-15"><a href="text-analysis.html#cb56-15"></a>        <span class="dt">legend.position =</span> <span class="st">&quot;none&quot;</span>) <span class="op">+</span></span>
+<span id="cb56-16"><a href="text-analysis.html#cb56-16"></a><span class="kw">geom_hline</span>(<span class="dt">yintercept =</span> mean_use, <span class="dt">linetype=</span><span class="st">&quot;dotted&quot;</span>, </span>
+<span id="cb56-17"><a href="text-analysis.html#cb56-17"></a>                <span class="dt">color =</span> <span class="st">&quot;red&quot;</span>, <span class="dt">size=</span><span class="fl">0.5</span>) <span class="op">+</span></span>
+<span id="cb56-18"><a href="text-analysis.html#cb56-18"></a><span class="kw">geom_hline</span>(<span class="dt">yintercept =</span> median_use, <span class="dt">linetype=</span><span class="st">&quot;dotted&quot;</span>, </span>
+<span id="cb56-19"><a href="text-analysis.html#cb56-19"></a>                <span class="dt">color =</span> <span class="st">&quot;black&quot;</span>, <span class="dt">size=</span><span class="fl">0.5</span>)</span>
+<span id="cb56-20"><a href="text-analysis.html#cb56-20"></a></span>
+<span id="cb56-21"><a href="text-analysis.html#cb56-21"></a><span class="kw">ggplotly</span>(AllFreqBar, <span class="dt">tooltip=</span><span class="st">&quot;text&quot;</span>)</span></code></pre></div>
+<div id="htmlwidget-44da5e0240da8d3e9740" style="width:672px;height:480px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-44da5e0240da8d3e9740">{"x":{"data":[{"orientation":"h","width":[0.899999999999999,0.899999999999999,0.899999999999999,0.9,0.9,0.9,0.9,0.9,0.9,0.9],"base":[0,0,0,0,0,0,0,0,0,0],"x":[15218,7902,6605,5467,3895,3626,3378,3245,3092,3053],"y":[10,9,8,7,6,5,4,3,2,1],"text":["Count: 15218","Count: 7902","Count: 6605","Count: 5467","Count: 3895","Count: 3626","Count: 3378","Count: 3245","Count: 3092","Count: 3053"],"type":"bar","marker":{"autocolorscale":false,"color":"rgba(173,216,230,0.9)","line":{"width":1.88976377952756,"color":"transparent"}},"showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[18.0847910734004,18.0847910734004],"y":[0.4,10.6],"text":"","type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(255,0,0,1)","dash":"dot"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[2,2],"y":[0.4,10.6],"text":"","type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)","dash":"dot"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":51.7326691573267,"r":7.30593607305936,"b":51.0751349107513,"l":104.474885844749},"plot_bgcolor":"rgba(255,255,255,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"serif","size":21.2536322125363},"title":{"text":"Top 10 Most Used Words on MTG Cards","font":{"color":"rgba(0,0,0,1)","family":"serif","size":25.5043586550436},"x":0.5,"xref":"paper"},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-760.9,15978.9],"tickmode":"array","ticktext":["0","5000","10000","15000"],"tickvals":[0,5000,10000,15000],"categoryorder":"array","categoryarray":["0","5000","10000","15000"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"serif","size":15.9402241594022},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":1.6604400166044,"zeroline":false,"anchor":"y","title":{"text":"Frequency","font":{"color":"rgba(0,0,0,1)","family":"serif","size":21.2536322125363}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[0.4,10.6],"tickmode":"array","ticktext":["fly","block","player","deal","damage","battlefield","control","card","target","creature"],"tickvals":[1,2,3,4,5,6,7,8,9,10],"categoryorder":"array","categoryarray":["fly","block","player","deal","damage","battlefield","control","card","target","creature"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"serif","size":17.0029057700291},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":{"text":"","font":{"color":"rgba(0,0,0,1)","family":"serif","size":21.2536322125363}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":"transparent","line":{"color":"rgba(51,51,51,1)","width":0.66417600664176,"linetype":"solid"},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.88976377952756,"font":{"color":"rgba(0,0,0,1)","family":"serif","size":17.0029057700291}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","showSendToCloud":false},"source":"A","attrs":{"25742bf67cc8":{"x":{},"y":{},"text":{},"type":"bar"},"25744024183d":{"yintercept":{}},"2574432c33a6":{"yintercept":{}}},"cur_data":"25742bf67cc8","visdat":{"25742bf67cc8":["function (y) ","x"],"25744024183d":["function (y) ","x"],"2574432c33a6":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="text-analysis.html#cb57-1"></a><span class="co"># plot_gg(AllFreqBar, width=7, height=5, raytrace=TRUE, multicore=TRUE)</span></span></code></pre></div>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="text-analysis.html#cb58-1"></a>all_cards_count <span class="op">%&gt;%</span></span>
+<span id="cb58-2"><a href="text-analysis.html#cb58-2"></a><span class="st">  </span><span class="kw">head</span>(<span class="dv">100</span>) <span class="op">%&gt;%</span></span>
+<span id="cb58-3"><a href="text-analysis.html#cb58-3"></a><span class="st">  </span><span class="kw">e_charts</span>() <span class="op">%&gt;%</span></span>
+<span id="cb58-4"><a href="text-analysis.html#cb58-4"></a><span class="st">  </span><span class="kw">e_cloud</span>(word, n, <span class="dt">shape=</span><span class="st">&#39;square&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb58-5"><a href="text-analysis.html#cb58-5"></a><span class="st">  </span><span class="kw">e_title</span>(<span class="st">&quot;Highest frequency words&quot;</span>, <span class="st">&quot;All Magic the Gathering Cards&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb58-6"><a href="text-analysis.html#cb58-6"></a><span class="st">  </span><span class="kw">e_tooltip</span>(<span class="dt">trigger =</span> <span class="st">&quot;item&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb58-7"><a href="text-analysis.html#cb58-7"></a><span class="st">  </span><span class="kw">e_theme</span>(<span class="st">&quot;westeros&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb58-8"><a href="text-analysis.html#cb58-8"></a><span class="st">  </span><span class="kw">e_color</span>(<span class="dt">background=</span><span class="st">&#39;#edf4f5&#39;</span>)</span></code></pre></div>
+<div id="htmlwidget-ceebcde3b5cc6efa2fd4" style="width:100%;height:500px;" class="echarts4r html-widget"></div>
+<script type="application/json" data-for="htmlwidget-ceebcde3b5cc6efa2fd4">{"x":{"theme":"westeros","tl":false,"draw":true,"renderer":"canvas","events":[],"buttons":[],"opts":{"series":[{"type":"wordCloud","data":[{"value":15218,"name":"creature"},{"value":7902,"name":"target"},{"value":6605,"name":"card"},{"value":5467,"name":"control"},{"value":3895,"name":"battlefield"},{"value":3626,"name":"damage"},{"value":3378,"name":"deal"},{"value":3245,"name":"player"},{"value":3092,"name":"block"},{"value":3053,"name":"fly"},{"value":2890,"name":"enter"},{"value":2881,"name":"life"},{"value":2804,"name":"spell"},{"value":2562,"name":"gain"},{"value":2436,"name":"cast"},{"value":2297,"name":"counter"},{"value":2246,"name":"sacrifice"},{"value":2223,"name":"attack"},{"value":2155,"name":"hand"},{"value":1990,"name":"draw"},{"value":1944,"name":"land"},{"value":1690,"name":"library"},{"value":1650,"name":"enchant"},{"value":1587,"name":"artifact"},{"value":1587,"name":"opponent"},{"value":1556,"name":"destroy"},{"value":1539,"name":"graveyard"},{"value":1415,"name":"return"},{"value":1374,"name":"tap"},{"value":1358,"name":"add"},{"value":1257,"name":"cost"},{"value":1233,"name":"begin"},{"value":1233,"name":"power"},{"value":1227,"name":"discard"},{"value":1154,"name":"mana"},{"value":1137,"name":"pay"},{"value":1115,"name":"create"},{"value":1091,"name":"combat"},{"value":1086,"name":"strike"},{"value":1051,"name":"token"},{"value":1025,"name":"time"},{"value":1009,"name":"lose"},{"value":983,"name":"ability"},{"value":965,"name":"choose"},{"value":964,"name":"exile"},{"value":919,"name":"untap"},{"value":906,"name":"die"},{"value":851,"name":"permanent"},{"value":844,"name":"upkeep"},{"value":804,"name":"owner"},{"value":802,"name":"goblin"},{"value":700,"name":"trample"},{"value":695,"name":"do"},{"value":692,"name":"step"},{"value":682,"name":"color"},{"value":680,"name":"equal"},{"value":671,"name":"haste"},{"value":629,"name":"black"},{"value":628,"name":"top"},{"value":617,"name":"reveal"},{"value":614,"name":"controller"},{"value":601,"name":"na"},{"value":582,"name":"activate"},{"value":569,"name":"world"},{"value":562,"name":"death"},{"value":550,"name":"leave"},{"value":541,"name":"white"},{"value":531,"name":"fight"},{"value":531,"name":"shuffle"},{"value":529,"name":"search"},{"value":506,"name":"reach"},{"value":500,"name":"regenerate"},{"value":496,"name":"forest"},{"value":491,"name":"enchantment"},{"value":482,"name":"defend"},{"value":452,"name":"band"},{"value":449,"name":"battle"},{"value":449,"name":"green"},{"value":449,"name":"prevent"},{"value":443,"name":"red"},{"value":440,"name":"protection"},{"value":434,"name":"vigilance"},{"value":430,"name":"war"},{"value":410,"name":"defender"},{"value":408,"name":"planeswalker"},{"value":389,"name":"warrior"},{"value":388,"name":"blood"},{"value":385,"name":"sorcery"},{"value":384,"name":"equip"},{"value":383,"name":"type"},{"value":379,"name":"soldier"},{"value":372,"name":"mind"},{"value":363,"name":"fear"},{"value":362,"name":"spirit"},{"value":361,"name":"dragon"},{"value":360,"name":"additional"},{"value":359,"name":"dead"},{"value":357,"name":"fall"},{"value":357,"name":"fire"},{"value":356,"name":"elf"}],"shape":"square"}],"title":[{"text":"Highest frequency words","subtext":"All Magic the Gathering Cards"}],"tooltip":{"trigger":"item"},"backgroundColor":"#edf4f5"},"dispose":true},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="characteristic-words-by-type" class="section level2">
+<h2><span class="header-section-number">7.3</span> Characteristic Words by Type</h2>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="text-analysis.html#cb59-1"></a>type_count &lt;-<span class="st"> </span><span class="kw">prepare_text</span>(type_cards) <span class="op">%&gt;%</span></span>
+<span id="cb59-2"><a href="text-analysis.html#cb59-2"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">word =</span> <span class="kw">lemmatize_words</span>(word)) <span class="op">%&gt;%</span></span>
+<span id="cb59-3"><a href="text-analysis.html#cb59-3"></a><span class="st">  </span><span class="kw">count</span>(type, word,<span class="dt">sort=</span><span class="ot">TRUE</span>)</span>
+<span id="cb59-4"><a href="text-analysis.html#cb59-4"></a></span>
+<span id="cb59-5"><a href="text-analysis.html#cb59-5"></a>type_tf_idf &lt;-<span class="st"> </span>type_count <span class="op">%&gt;%</span></span>
+<span id="cb59-6"><a href="text-analysis.html#cb59-6"></a><span class="st">  </span><span class="kw">bind_tf_idf</span>(word, type, n) <span class="op">%&gt;%</span></span>
+<span id="cb59-7"><a href="text-analysis.html#cb59-7"></a><span class="st">  </span><span class="kw">group_by</span>(type)<span class="op">%&gt;%</span></span>
+<span id="cb59-8"><a href="text-analysis.html#cb59-8"></a><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>n)<span class="op">%&gt;%</span></span>
+<span id="cb59-9"><a href="text-analysis.html#cb59-9"></a><span class="st">  </span><span class="kw">arrange</span>(<span class="kw">desc</span>(tf_idf))</span></code></pre></div>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="text-analysis.html#cb60-1"></a>type_tf_idf_plot &lt;-<span class="st"> </span>type_tf_idf <span class="op">%&gt;%</span></span>
+<span id="cb60-2"><a href="text-analysis.html#cb60-2"></a><span class="st">  </span><span class="kw">group_by</span>(type) <span class="op">%&gt;%</span></span>
+<span id="cb60-3"><a href="text-analysis.html#cb60-3"></a><span class="st">  </span><span class="kw">slice_max</span>(tf_idf, <span class="dt">n =</span> <span class="dv">10</span>) <span class="op">%&gt;%</span></span>
+<span id="cb60-4"><a href="text-analysis.html#cb60-4"></a><span class="st">  </span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span></span>
+<span id="cb60-5"><a href="text-analysis.html#cb60-5"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(tf_idf, <span class="kw">fct_reorder</span>(word, tf_idf), <span class="dt">fill =</span> type)) <span class="op">+</span></span>
+<span id="cb60-6"><a href="text-analysis.html#cb60-6"></a><span class="st">  </span><span class="kw">geom_col</span>(<span class="dt">show.legend =</span> <span class="ot">FALSE</span>) <span class="op">+</span></span>
+<span id="cb60-7"><a href="text-analysis.html#cb60-7"></a><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>type, <span class="dt">ncol =</span> <span class="dv">1</span>, <span class="dt">scales =</span> <span class="st">&quot;free&quot;</span>) <span class="op">+</span></span>
+<span id="cb60-8"><a href="text-analysis.html#cb60-8"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;TF-IDF Results by Type&quot;</span>, </span>
+<span id="cb60-9"><a href="text-analysis.html#cb60-9"></a>       <span class="dt">x =</span> <span class="st">&quot;tf-idf&quot;</span>, </span>
+<span id="cb60-10"><a href="text-analysis.html#cb60-10"></a>       <span class="dt">y =</span> <span class="ot">NULL</span>) <span class="op">+</span></span>
+<span id="cb60-11"><a href="text-analysis.html#cb60-11"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.titleaxis.text=</span><span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">20</span>),</span>
+<span id="cb60-12"><a href="text-analysis.html#cb60-12"></a>        <span class="dt">axis.title=</span><span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">14</span>,<span class="dt">face=</span><span class="st">&quot;bold&quot;</span>),</span>
+<span id="cb60-13"><a href="text-analysis.html#cb60-13"></a>        <span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">hjust =</span> <span class="fl">0.5</span>, <span class="dt">vjust=</span><span class="dv">10</span>)) <span class="op">+</span></span>
+<span id="cb60-14"><a href="text-analysis.html#cb60-14"></a><span class="st">  </span><span class="kw">theme_bw</span>()</span>
+<span id="cb60-15"><a href="text-analysis.html#cb60-15"></a>type_tf_idf_plot</span></code></pre></div>
+<p><img src="07-Text-Analysis_files/figure-html/unnamed-chunk-15-1.png" width="960" /></p>
+</div>
+<div id="characteristic-words-by-subtype" class="section level2">
+<h2><span class="header-section-number">7.4</span> Characteristic Words by Subtype</h2>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="text-analysis.html#cb61-1"></a>subtype_count &lt;-<span class="st"> </span><span class="kw">prepare_text</span>(subtype_cards) <span class="op">%&gt;%</span></span>
+<span id="cb61-2"><a href="text-analysis.html#cb61-2"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">word =</span> <span class="kw">lemmatize_words</span>(word)) <span class="op">%&gt;%</span></span>
+<span id="cb61-3"><a href="text-analysis.html#cb61-3"></a><span class="st">  </span><span class="kw">count</span>(subtypes, word,<span class="dt">sort=</span><span class="ot">TRUE</span>)</span></code></pre></div>
+<pre><code>## Joining, by = &quot;word&quot;</code></pre>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="text-analysis.html#cb63-1"></a>subtype_tf_idf &lt;-<span class="st"> </span>subtype_count <span class="op">%&gt;%</span></span>
+<span id="cb63-2"><a href="text-analysis.html#cb63-2"></a><span class="st">  </span><span class="kw">bind_tf_idf</span>(word, subtypes, n) <span class="op">%&gt;%</span></span>
+<span id="cb63-3"><a href="text-analysis.html#cb63-3"></a><span class="st">  </span><span class="kw">group_by</span>(subtypes)<span class="op">%&gt;%</span></span>
+<span id="cb63-4"><a href="text-analysis.html#cb63-4"></a><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>n)<span class="op">%&gt;%</span></span>
+<span id="cb63-5"><a href="text-analysis.html#cb63-5"></a><span class="st">  </span><span class="kw">arrange</span>(<span class="kw">desc</span>(tf_idf))</span></code></pre></div>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="text-analysis.html#cb64-1"></a>mycolors &lt;-<span class="st"> </span><span class="kw">colorRampPalette</span>(<span class="kw">brewer.pal</span>(<span class="dv">8</span>, <span class="st">&quot;Set2&quot;</span>))(<span class="dv">30</span>)</span>
+<span id="cb64-2"><a href="text-analysis.html#cb64-2"></a></span>
+<span id="cb64-3"><a href="text-analysis.html#cb64-3"></a>subtype_tf_idf <span class="op">%&gt;%</span></span>
+<span id="cb64-4"><a href="text-analysis.html#cb64-4"></a><span class="st">  </span><span class="kw">group_by</span>(subtypes) <span class="op">%&gt;%</span></span>
+<span id="cb64-5"><a href="text-analysis.html#cb64-5"></a><span class="st">  </span><span class="kw">slice_max</span>(tf_idf, <span class="dt">n =</span> <span class="dv">10</span>) <span class="op">%&gt;%</span></span>
+<span id="cb64-6"><a href="text-analysis.html#cb64-6"></a><span class="st">  </span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span></span>
+<span id="cb64-7"><a href="text-analysis.html#cb64-7"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(tf_idf, <span class="kw">fct_reorder</span>(word, tf_idf), <span class="dt">fill =</span> subtypes)) <span class="op">+</span></span>
+<span id="cb64-8"><a href="text-analysis.html#cb64-8"></a><span class="st">  </span><span class="kw">geom_col</span>(<span class="dt">show.legend =</span> <span class="ot">FALSE</span>) <span class="op">+</span></span>
+<span id="cb64-9"><a href="text-analysis.html#cb64-9"></a><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>subtypes, <span class="dt">ncol =</span> <span class="dv">1</span>, <span class="dt">scales =</span> <span class="st">&quot;free&quot;</span>) <span class="op">+</span></span>
+<span id="cb64-10"><a href="text-analysis.html#cb64-10"></a><span class="st">  </span><span class="kw">scale_fill_manual</span>(<span class="dt">values =</span> mycolors) <span class="op">+</span></span>
+<span id="cb64-11"><a href="text-analysis.html#cb64-11"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title=</span><span class="st">&quot;TF-IDF Report for Subtypes&quot;</span>,</span>
+<span id="cb64-12"><a href="text-analysis.html#cb64-12"></a>       <span class="dt">subtitle =</span> <span class="st">&quot;&quot;</span>, </span>
+<span id="cb64-13"><a href="text-analysis.html#cb64-13"></a>       <span class="dt">x =</span> <span class="st">&quot;tf-id valuef&quot;</span>, </span>
+<span id="cb64-14"><a href="text-analysis.html#cb64-14"></a>       <span class="dt">y =</span> <span class="ot">NULL</span>) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb64-15"><a href="text-analysis.html#cb64-15"></a><span class="st">    </span><span class="kw">theme</span>(<span class="dt">axis.text=</span><span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">10</span>),</span>
+<span id="cb64-16"><a href="text-analysis.html#cb64-16"></a>        <span class="dt">axis.title=</span><span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">14</span>,<span class="dt">face=</span><span class="st">&quot;bold&quot;</span>)) </span></code></pre></div>
+<p><img src="07-Text-Analysis_files/figure-html/unnamed-chunk-17-1.png" width="960" /></p>
+</div>
+<div id="words-and-prices" class="section level2">
+<h2><span class="header-section-number">7.5</span> Words and Prices</h2>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="text-analysis.html#cb65-1"></a>word_price &lt;-<span class="st"> </span>text_mtg[<span class="dv">19</span><span class="op">:</span><span class="dv">23</span>] <span class="op">%&gt;%</span></span>
+<span id="cb65-2"><a href="text-analysis.html#cb65-2"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">allText =</span> allText, <span class="dt">meanPrice =</span> <span class="kw">rowMeans</span>(text_mtg[,<span class="dv">19</span><span class="op">:</span><span class="dv">22</span>]))</span>
+<span id="cb65-3"><a href="text-analysis.html#cb65-3"></a></span>
+<span id="cb65-4"><a href="text-analysis.html#cb65-4"></a>word_price_count &lt;-<span class="st"> </span><span class="kw">prepare_text</span>(word_price) <span class="op">%&gt;%</span></span>
+<span id="cb65-5"><a href="text-analysis.html#cb65-5"></a><span class="st">  </span><span class="kw">group_by</span>(word) <span class="op">%&gt;%</span></span>
+<span id="cb65-6"><a href="text-analysis.html#cb65-6"></a><span class="st">  </span><span class="kw">filter</span>(<span class="kw">n</span>()<span class="op">&gt;</span><span class="dv">5</span>) <span class="op">%&gt;%</span></span>
+<span id="cb65-7"><a href="text-analysis.html#cb65-7"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">mean_price_word =</span> <span class="kw">mean</span>(meanPrice)) </span></code></pre></div>
+<pre><code>## Joining, by = &quot;word&quot;</code></pre>
+<pre><code>## `summarise()` ungrouping output (override with `.groups` argument)</code></pre>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="text-analysis.html#cb68-1"></a>word_price_count<span class="op">%&gt;%</span></span>
+<span id="cb68-2"><a href="text-analysis.html#cb68-2"></a><span class="st">  </span><span class="kw">arrange</span>(<span class="kw">desc</span>((mean_price_word))) <span class="op">%&gt;%</span></span>
+<span id="cb68-3"><a href="text-analysis.html#cb68-3"></a><span class="st">  </span><span class="kw">head</span>(<span class="dv">10</span>) <span class="op">%&gt;%</span></span>
+<span id="cb68-4"><a href="text-analysis.html#cb68-4"></a><span class="st">  </span><span class="kw">kableFormat</span>(<span class="st">&quot;Words Associated with Greatest Mean Cost&quot;</span>)</span></code></pre></div>
+<table class="table table-striped table-condensed table-bordered" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:unnamed-chunk-18">Table 7.2: </span>Words Associated with Greatest Mean Cost
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+word
+</th>
+<th style="text-align:right;">
+mean_price_word
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+joining
+</td>
+<td style="text-align:right;">
+114.66682
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+parents
+</td>
+<td style="text-align:right;">
+114.40149
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+explore
+</td>
+<td style="text-align:right;">
+113.85063
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+brother
+</td>
+<td style="text-align:right;">
+80.40931
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ccc
+</td>
+<td style="text-align:right;">
+77.14685
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sneak
+</td>
+<td style="text-align:right;">
+62.74305
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+de
+</td>
+<td style="text-align:right;">
+53.62400
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+tocasia
+</td>
+<td style="text-align:right;">
+50.36793
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+seedling
+</td>
+<td style="text-align:right;">
+45.01387
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+clarity
+</td>
+<td style="text-align:right;">
+41.77917
+</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="text-analysis.html#cb69-1"></a>word_price_count<span class="op">%&gt;%</span></span>
+<span id="cb69-2"><a href="text-analysis.html#cb69-2"></a><span class="st">  </span><span class="kw">arrange</span>((mean_price_word)) <span class="op">%&gt;%</span></span>
+<span id="cb69-3"><a href="text-analysis.html#cb69-3"></a><span class="st">  </span><span class="kw">head</span>(<span class="dv">10</span>) <span class="op">%&gt;%</span></span>
+<span id="cb69-4"><a href="text-analysis.html#cb69-4"></a><span class="st">  </span><span class="kw">kableFormat</span>(<span class="st">&quot;Words Associated with Lowest Mean Cost&quot;</span>)</span></code></pre></div>
+<table class="table table-striped table-condensed table-bordered" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:unnamed-chunk-18">Table 7.2: </span>Words Associated with Lowest Mean Cost
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+word
+</th>
+<th style="text-align:right;">
+mean_price_word
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+american
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+asia
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+european
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+fc
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+championship
+</td>
+<td style="text-align:right;">
+0.0075000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+riverlands
+</td>
+<td style="text-align:right;">
+0.0130357
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+chao
+</td>
+<td style="text-align:right;">
+0.0132246
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+jiang
+</td>
+<td style="text-align:right;">
+0.0227500
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+bureaucrats
+</td>
+<td style="text-align:right;">
+0.0230901
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+skirmisher
+</td>
+<td style="text-align:right;">
+0.0233333
+</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="text-analysis.html#cb70-1"></a><span class="kw">mean</span>(word_price_count<span class="op">$</span>mean_price_word)</span></code></pre></div>
+<pre><code>## [1] 1.296415</code></pre>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="feature-analysis.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="discussion.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

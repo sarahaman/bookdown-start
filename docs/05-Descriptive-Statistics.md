@@ -48,16 +48,84 @@ cards$frameVersion <- cards$frameVersion %>% as.character()
 
 The following table gives an overview of the numerical variables.  The variable convertedManaCost is an aspect of the card that is used in play. The variable edhrecRank is a score given to the card by the website EDHREC which provides card information.  The last four variables (mtgo, mtgoFoil, paper, and paperFoil) are different printing of the cards.  Mtgo and mtgoFoil are digital versions of the cards whereas paper and paperFoil are physical. The distribution is heavily skewed with a majority of the cards in the low price range with a few extremely high prices outliers.
 
-
-|                   | convertedManaCost| edhrecRank|        mtgo|    mtgoFoil|        paper|   paperFoil|
-|:------------------|-----------------:|----------:|-----------:|-----------:|------------:|-----------:|
-|minimum            |      0.000000e+00|      1.000|   0.0000000|   0.0000000| 0.000000e+00|    0.000000|
-|lower-hinge        |      2.000000e+00|   2759.000|   0.0000000|   0.0000000| 3.000000e-02|    0.000000|
-|median             |      3.000000e+00|   7445.500|   0.0100000|   0.0100000| 1.400000e-01|    0.120000|
-|upper-hinge        |      4.000000e+00|  13105.000|   0.0300000|   0.0300000| 4.521053e-01|    0.900000|
-|maximum            |      1.000000e+06|  19281.000| 345.0200000| 100.6400000| 1.499900e+04| 4159.831579|
-|mean               |      4.469705e+01|   8113.562|   0.2491689|   0.3159343| 6.993864e+00|    3.626086|
-|standard deviation |      6.463173e+03|   5822.852|   2.5891530|   1.8520141| 1.297658e+02|   27.271963|
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:left;">   </th>
+   <th style="text-align:right;"> convertedManaCost </th>
+   <th style="text-align:right;"> edhrecRank </th>
+   <th style="text-align:right;"> mtgo </th>
+   <th style="text-align:right;"> mtgoFoil </th>
+   <th style="text-align:right;"> paper </th>
+   <th style="text-align:right;"> paperFoil </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> minimum </td>
+   <td style="text-align:right;"> 0.000000e+00 </td>
+   <td style="text-align:right;"> 1.000 </td>
+   <td style="text-align:right;"> 0.0000000 </td>
+   <td style="text-align:right;"> 0.0000000 </td>
+   <td style="text-align:right;"> 0.000000e+00 </td>
+   <td style="text-align:right;"> 0.000000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> lower-hinge </td>
+   <td style="text-align:right;"> 2.000000e+00 </td>
+   <td style="text-align:right;"> 2759.000 </td>
+   <td style="text-align:right;"> 0.0000000 </td>
+   <td style="text-align:right;"> 0.0000000 </td>
+   <td style="text-align:right;"> 3.000000e-02 </td>
+   <td style="text-align:right;"> 0.000000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> median </td>
+   <td style="text-align:right;"> 3.000000e+00 </td>
+   <td style="text-align:right;"> 7445.500 </td>
+   <td style="text-align:right;"> 0.0100000 </td>
+   <td style="text-align:right;"> 0.0100000 </td>
+   <td style="text-align:right;"> 1.400000e-01 </td>
+   <td style="text-align:right;"> 0.120000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> upper-hinge </td>
+   <td style="text-align:right;"> 4.000000e+00 </td>
+   <td style="text-align:right;"> 13105.000 </td>
+   <td style="text-align:right;"> 0.0300000 </td>
+   <td style="text-align:right;"> 0.0300000 </td>
+   <td style="text-align:right;"> 4.521053e-01 </td>
+   <td style="text-align:right;"> 0.900000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> maximum </td>
+   <td style="text-align:right;"> 1.000000e+06 </td>
+   <td style="text-align:right;"> 19281.000 </td>
+   <td style="text-align:right;"> 345.0200000 </td>
+   <td style="text-align:right;"> 100.6400000 </td>
+   <td style="text-align:right;"> 1.499900e+04 </td>
+   <td style="text-align:right;"> 4159.831579 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> mean </td>
+   <td style="text-align:right;"> 4.469705e+01 </td>
+   <td style="text-align:right;"> 8113.562 </td>
+   <td style="text-align:right;"> 0.2491689 </td>
+   <td style="text-align:right;"> 0.3159343 </td>
+   <td style="text-align:right;"> 6.993864e+00 </td>
+   <td style="text-align:right;"> 3.626086 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> standard deviation </td>
+   <td style="text-align:right;"> 6.463173e+03 </td>
+   <td style="text-align:right;"> 5822.852 </td>
+   <td style="text-align:right;"> 2.5891530 </td>
+   <td style="text-align:right;"> 1.8520141 </td>
+   <td style="text-align:right;"> 1.297658e+02 </td>
+   <td style="text-align:right;"> 27.271963 </td>
+  </tr>
+</tbody>
+</table>
 
 ## Distribution of Prices
 
@@ -301,8 +369,8 @@ cards[,c("rarity","mtgo","mtgoFoil","paper","paperFoil")] %>%
   )
 ```
 
-<!--html_preserve--><div id="htmlwidget-d35a33b5cff2f5155b09" style="width:672px;height:480px;" class="plotly html-widget"></div>
-<script type="application/json" data-for="htmlwidget-d35a33b5cff2f5155b09">{"x":{"visdat":{"503c7a167608":["function () ","plotlyVisDat"]},"cur_data":"503c7a167608","attrs":{"503c7a167608":{"x":{},"y":{},"mode":"marker","color":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":{"text":"Mean price by rarity and card type","x":0.02},"xaxis":{"domain":[0,1],"automargin":true,"title":"rarity","type":"category","categoryorder":"array","categoryarray":["common","mythic","rare","uncommon"]},"yaxis":{"domain":[0,1],"automargin":true,"title":"price"},"hovermode":"closest","showlegend":true},"source":"A","config":{"showSendToCloud":false},"data":[{"x":["common","mythic","rare","uncommon"],"y":[0.0575057284867871,1.7367773284915,0.399403155625285,0.0849635908628451],"mode":"marker","type":"bar","name":"mtgo","marker":{"color":"rgba(102,194,165,1)","line":{"color":"rgba(102,194,165,1)"}},"textfont":{"color":"rgba(102,194,165,1)"},"error_y":{"color":"rgba(102,194,165,1)"},"error_x":{"color":"rgba(102,194,165,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["common","mythic","rare","uncommon"],"y":[0.0505371357305026,2.60554269544854,0.464193686878123,0.114960837814128],"mode":"marker","type":"bar","name":"mtgoFoil","marker":{"color":"rgba(252,141,98,1)","line":{"color":"rgba(252,141,98,1)"}},"textfont":{"color":"rgba(252,141,98,1)"},"error_y":{"color":"rgba(252,141,98,1)"},"error_x":{"color":"rgba(252,141,98,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["common","mythic","rare","uncommon"],"y":[0.667920691194382,4.1850181969211,19.3777556316666,2.3454026698121],"mode":"marker","type":"bar","name":"paper","marker":{"color":"rgba(141,160,203,1)","line":{"color":"rgba(141,160,203,1)"}},"textfont":{"color":"rgba(141,160,203,1)"},"error_y":{"color":"rgba(141,160,203,1)"},"error_x":{"color":"rgba(141,160,203,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["common","mythic","rare","uncommon"],"y":[0.685170300746351,20.3807242689243,6.82029799951703,1.17401042127396],"mode":"marker","type":"bar","name":"paperFoil","marker":{"color":"rgba(231,138,195,1)","line":{"color":"rgba(231,138,195,1)"}},"textfont":{"color":"rgba(231,138,195,1)"},"error_y":{"color":"rgba(231,138,195,1)"},"error_x":{"color":"rgba(231,138,195,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script><!--/html_preserve-->
+<!--html_preserve--><div id="htmlwidget-a4948925e382454664bc" style="width:672px;height:480px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-a4948925e382454664bc">{"x":{"visdat":{"1ac816853354":["function () ","plotlyVisDat"]},"cur_data":"1ac816853354","attrs":{"1ac816853354":{"x":{},"y":{},"mode":"marker","color":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":{"text":"Mean price by rarity and card type","x":0.02},"xaxis":{"domain":[0,1],"automargin":true,"title":"rarity","type":"category","categoryorder":"array","categoryarray":["common","mythic","rare","uncommon"]},"yaxis":{"domain":[0,1],"automargin":true,"title":"price"},"hovermode":"closest","showlegend":true},"source":"A","config":{"showSendToCloud":false},"data":[{"x":["common","mythic","rare","uncommon"],"y":[0.0575057284867871,1.7367773284915,0.399403155625285,0.0849635908628451],"mode":"marker","type":"bar","name":"mtgo","marker":{"color":"rgba(102,194,165,1)","line":{"color":"rgba(102,194,165,1)"}},"textfont":{"color":"rgba(102,194,165,1)"},"error_y":{"color":"rgba(102,194,165,1)"},"error_x":{"color":"rgba(102,194,165,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["common","mythic","rare","uncommon"],"y":[0.0505371357305026,2.60554269544854,0.464193686878123,0.114960837814128],"mode":"marker","type":"bar","name":"mtgoFoil","marker":{"color":"rgba(252,141,98,1)","line":{"color":"rgba(252,141,98,1)"}},"textfont":{"color":"rgba(252,141,98,1)"},"error_y":{"color":"rgba(252,141,98,1)"},"error_x":{"color":"rgba(252,141,98,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["common","mythic","rare","uncommon"],"y":[0.667920691194382,4.1850181969211,19.3777556316666,2.3454026698121],"mode":"marker","type":"bar","name":"paper","marker":{"color":"rgba(141,160,203,1)","line":{"color":"rgba(141,160,203,1)"}},"textfont":{"color":"rgba(141,160,203,1)"},"error_y":{"color":"rgba(141,160,203,1)"},"error_x":{"color":"rgba(141,160,203,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["common","mythic","rare","uncommon"],"y":[0.685170300746351,20.3807242689243,6.82029799951703,1.17401042127396],"mode":"marker","type":"bar","name":"paperFoil","marker":{"color":"rgba(231,138,195,1)","line":{"color":"rgba(231,138,195,1)"}},"textfont":{"color":"rgba(231,138,195,1)"},"error_y":{"color":"rgba(231,138,195,1)"},"error_x":{"color":"rgba(231,138,195,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script><!--/html_preserve-->
 
 However, the 'rare' physical cards fetched the highest prices overall by far.
 
@@ -328,6 +396,6 @@ cards[,c("rarity","mtgo","mtgoFoil","paper","paperFoil")] %>%
   )
 ```
 
-<!--html_preserve--><div id="htmlwidget-03de428e57cf1ac1057d" style="width:672px;height:480px;" class="plotly html-widget"></div>
-<script type="application/json" data-for="htmlwidget-03de428e57cf1ac1057d">{"x":{"visdat":{"503c3d1472bc":["function () ","plotlyVisDat"]},"cur_data":"503c3d1472bc","attrs":{"503c3d1472bc":{"x":{},"y":{},"mode":"marker","color":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":{"text":"Maximum price by rarity and card type","x":0.02},"xaxis":{"domain":[0,1],"automargin":true,"title":"rarity","type":"category","categoryorder":"array","categoryarray":["common","mythic","rare","uncommon"]},"yaxis":{"domain":[0,1],"automargin":true,"title":"price"},"hovermode":"closest","showlegend":true},"source":"A","config":{"showSendToCloud":false},"data":[{"x":["common","mythic","rare","uncommon"],"y":[13.73,87.67,345.02,26.03],"mode":"marker","type":"bar","name":"mtgo","marker":{"color":"rgba(102,194,165,1)","line":{"color":"rgba(102,194,165,1)"}},"textfont":{"color":"rgba(102,194,165,1)"},"error_y":{"color":"rgba(102,194,165,1)"},"error_x":{"color":"rgba(102,194,165,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["common","mythic","rare","uncommon"],"y":[20.94,100.64,57.17,46.34],"mode":"marker","type":"bar","name":"mtgoFoil","marker":{"color":"rgba(252,141,98,1)","line":{"color":"rgba(252,141,98,1)"}},"textfont":{"color":"rgba(252,141,98,1)"},"error_y":{"color":"rgba(252,141,98,1)"},"error_x":{"color":"rgba(252,141,98,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["common","mythic","rare","uncommon"],"y":[350,212.31,14999,1399.99],"mode":"marker","type":"bar","name":"paper","marker":{"color":"rgba(141,160,203,1)","line":{"color":"rgba(141,160,203,1)"}},"textfont":{"color":"rgba(141,160,203,1)"},"error_y":{"color":"rgba(141,160,203,1)"},"error_x":{"color":"rgba(141,160,203,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["common","mythic","rare","uncommon"],"y":[334.99,599.39,4159.83157894737,207.058421052632],"mode":"marker","type":"bar","name":"paperFoil","marker":{"color":"rgba(231,138,195,1)","line":{"color":"rgba(231,138,195,1)"}},"textfont":{"color":"rgba(231,138,195,1)"},"error_y":{"color":"rgba(231,138,195,1)"},"error_x":{"color":"rgba(231,138,195,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script><!--/html_preserve-->
+<!--html_preserve--><div id="htmlwidget-be20e9cd133102c529f6" style="width:672px;height:480px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-be20e9cd133102c529f6">{"x":{"visdat":{"1ac8768b1140":["function () ","plotlyVisDat"]},"cur_data":"1ac8768b1140","attrs":{"1ac8768b1140":{"x":{},"y":{},"mode":"marker","color":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":{"text":"Maximum price by rarity and card type","x":0.02},"xaxis":{"domain":[0,1],"automargin":true,"title":"rarity","type":"category","categoryorder":"array","categoryarray":["common","mythic","rare","uncommon"]},"yaxis":{"domain":[0,1],"automargin":true,"title":"price"},"hovermode":"closest","showlegend":true},"source":"A","config":{"showSendToCloud":false},"data":[{"x":["common","mythic","rare","uncommon"],"y":[13.73,87.67,345.02,26.03],"mode":"marker","type":"bar","name":"mtgo","marker":{"color":"rgba(102,194,165,1)","line":{"color":"rgba(102,194,165,1)"}},"textfont":{"color":"rgba(102,194,165,1)"},"error_y":{"color":"rgba(102,194,165,1)"},"error_x":{"color":"rgba(102,194,165,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["common","mythic","rare","uncommon"],"y":[20.94,100.64,57.17,46.34],"mode":"marker","type":"bar","name":"mtgoFoil","marker":{"color":"rgba(252,141,98,1)","line":{"color":"rgba(252,141,98,1)"}},"textfont":{"color":"rgba(252,141,98,1)"},"error_y":{"color":"rgba(252,141,98,1)"},"error_x":{"color":"rgba(252,141,98,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["common","mythic","rare","uncommon"],"y":[350,212.31,14999,1399.99],"mode":"marker","type":"bar","name":"paper","marker":{"color":"rgba(141,160,203,1)","line":{"color":"rgba(141,160,203,1)"}},"textfont":{"color":"rgba(141,160,203,1)"},"error_y":{"color":"rgba(141,160,203,1)"},"error_x":{"color":"rgba(141,160,203,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["common","mythic","rare","uncommon"],"y":[334.99,599.39,4159.83157894737,207.058421052632],"mode":"marker","type":"bar","name":"paperFoil","marker":{"color":"rgba(231,138,195,1)","line":{"color":"rgba(231,138,195,1)"}},"textfont":{"color":"rgba(231,138,195,1)"},"error_y":{"color":"rgba(231,138,195,1)"},"error_x":{"color":"rgba(231,138,195,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script><!--/html_preserve-->
 
