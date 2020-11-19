@@ -1,7 +1,7 @@
 # Text Analysis
 
 
-```{r, message=FALSE, warning=FALSE}
+```{r, message=FALSE, warning=FALSE, include=FALSE}
 
 library(tidyverse)
 library(tidytext)
@@ -32,7 +32,7 @@ kableFormat <- function(dat, caption) {
 
 ```
 
-```{r}
+```{r, include=FALSE}
 
 # SETTING UP FORMATTING 
 
@@ -225,6 +225,7 @@ ggplotly(AllFreqBar, tooltip="text")
 
 ```
 
+`r knitr::include_graphics('raytraced_plot.png')`
 
 ```{r}
 all_cards_count %>%

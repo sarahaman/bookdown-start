@@ -221,7 +221,9 @@ fig
 # Group by both rarity and card artist
 # Averaged market prices of cards in each of these groups
 
+mergedDf$artist <- str_replace_all(mergedDf$artist, "[^[:alnum:]]", " ")
 artistDf <- aggregate( Market.Price ~ rarity+artist, mergedDf, mean )
+
 # Histogram of artists' average card selling price
 fig <- artistDf %>%
   plot_ly(
@@ -237,6 +239,7 @@ fig
 
 ```{r}
 # Boxplot of artists' selling prices
+
 artistDf %>%
   plot_ly() %>% 
   add_trace(x = ~as.numeric(rarity),y = ~Market.Price, color = ~rarity, type = "box", 
@@ -244,7 +247,8 @@ artistDf %>%
   add_markers(x = ~jitter(as.numeric(rarity)), y = ~Market.Price, color = ~rarity,
               marker = list(size = 6),
               hoverinfo = "text",
-              text = ~paste0("<br>Rarity: ",rarity,
+              text = ~paste0("Artist :", artist,
+                              "<br>Rarity: ",rarity,
                              "<br>Avg Price: ",round(Market.Price,2)),
               showlegend = FALSE) %>% 
   layout(legend = list(orientation = "h",

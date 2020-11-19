@@ -1,5 +1,9 @@
-tab:unnamed-chunk-4
 tab:unnamed-chunk-6
+tab:unnamed-chunk-7
+tab:unnamed-chunk-8
+tab:unnamed-chunk-9
+tab:unnamed-chunk-10
+tab:unnamed-chunk-4
 tab:unnamed-chunk-18
 introduction
 data-the-gathering

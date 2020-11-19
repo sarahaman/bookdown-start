@@ -38,6 +38,7 @@ library(devtools)
 library(rayshader)
 library(kableExtra)
 library(stringi)
+library(data.table)
 
 ```
 
@@ -53,6 +54,16 @@ kableFormat <- function(dat, caption) {
 
 ```
 
+```{r, message=FALSE, warning=FALSE}
+
+#Reading in the data for the functions 
+
+c <- read_csv("cards.csv")
+s <- read_csv("sets.csv")
+c19 <- read_csv("mean_2019_prices.csv")
+c20 <- read_csv("mtgMarketInfo.csv")
+
+```
 ## The Functions
 
 **CONSISTENT REPRESENTATION**
@@ -79,7 +90,153 @@ con_rep <- function(df){
 }
 ```
 
+**COMPLETENESS AND EASE OF MANIPULATION** 
+
+```{r}
+data_quality <- function(df){
+  
+  "
+  A function to quantitatively compute scores for a dataframe on the completeness and ease of manipulation data quality metrics. 
+  
+  Input: 
+    df: A data frame
+    
+  Output: 
+    qualityTable: A table reporting the scores on completeness and ease of manipulation for each column in the input data frame. 
+  "
+  
+  # Setting the index value, which will be used to index the column name 
+
+  index <- 1
+  
+  # Instantiating empty data frames for each of the queries
+  
+  completeness <- data.frame(Completeness=double())
+  eom <- data.frame(Ease_of_Manipulation=double())
+  names <- data.frame(ColumnName=character())
+  
+  # Populating the data frames using a for-loop
+  
+  for (i in df){
+    
+    # COLLECTING THE NAMES OF EACH COLUMN PASSED
+    
+    col <- colnames(df[index])
+    
+    # COMPLETENESS
+    # Takes the sum of the total NA, NULL, and NaN values in a column
+    # Divides them by the length of the column
+    # Subtracts this from one, as was suggested by Pipinio, Lee, and Wang
+    # And then rounds to output to the third decimal place
+    
+    c <- 1-(sum(is.na(i) + is.null(i) + is.nan(i))/length(i)) %>%
+      round(digits = 3)
+    
+    # EASE OF MANIPULATION
+    # "Case when" vectorises a series of if/else statements
+    # The function checks the type of the column and then sets the variable,
+    # e, to the corresponding value. 
+    
+    e <- case_when(
+      typeof(i) == "logical" ~ 1,
+      typeof(i) == "integer" ~ .9,
+      typeof(i) == "numeric" ~ .8,
+      typeof(i) == "double" ~ .8,
+      typeof(i) == "complex" ~ .7,
+      typeof(i) == "character" ~ .6,
+      typeof(i) == "list" ~ .5, 
+      typeof(i) == "raw" ~ 0,
+      TRUE ~ 0)
+    
+    #The index used to collect column names is increased by one
+    
+    index = index + 1
+    
+    #Appending the output for each column to their respective data frames
+    
+    completeness[nrow(completeness)+1,] <- c
+    eom[nrow(eom)+1,] <- e
+    names[nrow(names)+1,] <- col
+  }
+  
+  #Binding the columns of the three tables into an output table
+  qualityTable <- cbind(names, completeness, eom)
+  
+  return(qualityTable)
+}
+```
 
 ## Quality Assessments
-We assessed data quality using the metrics outlined in Pipino, Lee, and Wang (2002). For each of these metrics, we provide a brief commentary on how the data fared. Several of the data quality metrics were more pertinent to our analysis, so we provide deeper insight into them.
+We assessed data quality using the metrics outlined in Pipino, Lee, and Wang (2002). For each of these metrics, we provide a brief commentary on how the data fared. Several of the data quality metrics were more pertinent to our analysis, so we provide deeper insight into them. For the subjective measures, each member of the research team produced a subjective score based off of their experience with working with the data. These scores were averaged to produce the score given by the team to the data as a whole. The objective measurements will be preformed on all four of the raw datasets used. 
+
+1. **Accessibility**  
+The data were fairly accessible; the card and set information could be directly downloaded as a CSV. Given our skill set, the JSON file used in the 2019 data was not difficult to gather. Collecting the 2020 market data presented a slight hurtle, but not so far as it made the data inaccessible. All of the raters provided similar scores, which was averaged for a total score of 7. 
+
+2. **Believability**   
+All of these data were originally web-scraped from either official information about the cards and the sets, the process for which is explained in detail on the [MTGJSON](https://mtgjson.com/faq/) website, or from the official Magic the Gathering card market itself. All of the raters provided similar scores, which were averaged for a score of 9.3. 
+
+3. **Conciseness**  
+Conciseness varied between data sets; the cards data provided extraneous and duplicate information. However, the other data sets were more streamlined because we had control over which variables we scraped or selected. All raters provided very similar scores for this metric, for an average score of 7.
+
+4. **Consistent Representation**
+
+The output of our objective function can be seen below. 
+
+```{r}
+
+cc <- con_rep(c)
+cs <- con_rep(s)
+c19c <- con_rep(c19)
+c20c <- con_rep(c20)
+
+con_vector <- c("Cards" = cc, "Sets" = cs, "Market Data 2019" = c19c, "Market Data 2020" = c20c)
+  
+con_vector %>% 
+  kable("html", col.names="Score", escape = FALSE, caption = "Consistent Representation Scores") %>%
+  kable_styling(bootstrap_options = c("striped", "condensed", "bordered"),
+                full_width = FALSE)
+
+```
+5. **Completeness and Ease of Manipulation** 
+
+```{r}
+
+dc <- data_quality(c) %>%
+  kableFormat("Completeness and EoM for Cards")
+dc
+
+```
+
+```{r}
+
+ds <- data_quality(s) %>%
+  kableFormat("Completeness and EoM for Sets")
+ds
+
+```
+```{r}
+
+dc19 <- data_quality(c19) %>%
+  kableFormat("Completeness and EoM for the 2019 Market Data")
+dc19
+
+```
+```{r}
+
+dc20 <- data_quality(c20) %>%
+  kableFormat("Completeness and EoM for the 2020 Market Data")
+dc20
+
+```
+
+
+6. **Reputation**   
+As the data was scraped from official sources on the topic, the apparent reputation of the data is presumed to be high. Online research into public opinion on MTGJSON on the official Magic the Gathering Forum and the Magic the Gathering Reddit suggests that it has a very good reputation among data savvy MtG players and is thought to be very useful. The inter-rater scores for this category were very similar, and were considered in conjunction with a score produced for visible public opinion on the data. The reputation score was calculated as 8.75. 
+
+7. **Timeliness**    
+The timeliness of the data is variable. Though the 2019 data was pulled at the end of the year and is relatively recent, respective to other data sets on the internet, was not sufficient for all of our needs. This is why we pulled the 2020 data directly from the live website. The cards and sets data were up to date. The inter-rater scores were again very similar for this category. These data were attributed a timeliness score of 7.33. 
+
+
+
+
 

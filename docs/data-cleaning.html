@@ -219,148 +219,148 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="the-cleaning-script" class="section level2">
 <h2><span class="header-section-number">4.1</span> The Cleaning Script</h2>
 <p>The script below reads in the csv’s needed and, at the end, outputs a merged CSV file containing the card and 2019 prices data joined by applicable columns. The inline comments explain what the script is doing at each stage. This data will later be compared with the 2020 price data, which is fundamentally a very different data set, though it has some variables that can be directly compared. This will be expanded on during the analysis.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="data-cleaning.html#cb4-1"></a><span class="co">###############################################</span></span>
-<span id="cb4-2"><a href="data-cleaning.html#cb4-2"></a><span class="co">##########    </span><span class="al">###</span><span class="co">    CARDS    </span><span class="al">###</span><span class="co">    ##########</span></span>
-<span id="cb4-3"><a href="data-cleaning.html#cb4-3"></a><span class="co">###############################################</span></span>
-<span id="cb4-4"><a href="data-cleaning.html#cb4-4"></a></span>
-<span id="cb4-5"><a href="data-cleaning.html#cb4-5"></a><span class="co"># READING IN THE DATA</span></span>
-<span id="cb4-6"><a href="data-cleaning.html#cb4-6"></a>cardsRaw &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;cards.csv&quot;</span>, <span class="dt">col_names =</span> <span class="ot">TRUE</span>)</span>
-<span id="cb4-7"><a href="data-cleaning.html#cb4-7"></a><span class="co"># head(cardsRaw)</span></span>
-<span id="cb4-8"><a href="data-cleaning.html#cb4-8"></a></span>
-<span id="cb4-9"><a href="data-cleaning.html#cb4-9"></a><span class="co">#SELECTING RELEVANT COLUMNS</span></span>
-<span id="cb4-10"><a href="data-cleaning.html#cb4-10"></a>keepCols &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;artist&quot;</span>,<span class="st">&quot;uuid&quot;</span>, <span class="st">&quot;mcmId&quot;</span>, <span class="st">&quot;mtgjsonV4Id&quot;</span>, <span class="st">&quot;multiverseId&quot;</span>, <span class="st">&quot;name&quot;</span>, <span class="st">&quot;artist&quot;</span>, <span class="st">&quot;type&quot;</span>, <span class="st">&quot;subtypes&quot;</span>, <span class="st">&quot;supertypes&quot;</span>, <span class="st">&quot;manaCost&quot;</span>, <span class="st">&quot;convertedManaCost&quot;</span>, <span class="st">&quot;keywords&quot;</span>, <span class="st">&quot;text&quot;</span>, <span class="st">&quot;flavorText&quot;</span>,  <span class="st">&quot;power&quot;</span>, <span class="st">&quot;toughness&quot;</span>, <span class="st">&quot;rarity&quot;</span>, <span class="st">&quot;edhrecRank&quot;</span>, <span class="st">&quot;isOnlineOnly&quot;</span>)</span>
-<span id="cb4-11"><a href="data-cleaning.html#cb4-11"></a>cards &lt;-<span class="st"> </span><span class="kw">select_</span>(cardsRaw, <span class="dt">.dots =</span> keepCols)</span>
-<span id="cb4-12"><a href="data-cleaning.html#cb4-12"></a><span class="co"># head(cards)</span></span>
-<span id="cb4-13"><a href="data-cleaning.html#cb4-13"></a></span>
-<span id="cb4-14"><a href="data-cleaning.html#cb4-14"></a><span class="co"># CLEANING TYPES</span></span>
-<span id="cb4-15"><a href="data-cleaning.html#cb4-15"></a>cards<span class="op">$</span>type &lt;-<span class="st"> </span><span class="kw">word</span>(cards<span class="op">$</span>type, <span class="dv">1</span>, <span class="dt">sep=</span><span class="st">&quot; —&quot;</span>)</span>
-<span id="cb4-16"><a href="data-cleaning.html#cb4-16"></a></span>
-<span id="cb4-17"><a href="data-cleaning.html#cb4-17"></a><span class="co"># REMOVING SPECIAL CHARACTERS FROM THE TEXT VARIABLES</span></span>
-<span id="cb4-18"><a href="data-cleaning.html#cb4-18"></a>cards<span class="op">$</span>text &lt;-<span class="st"> </span><span class="kw">str_replace_all</span>(cards<span class="op">$</span>text, <span class="st">&quot;[[:punct:]]&quot;</span>, <span class="st">&quot;&quot;</span>)</span>
-<span id="cb4-19"><a href="data-cleaning.html#cb4-19"></a>cards<span class="op">$</span>flavorText &lt;-<span class="st"> </span><span class="kw">str_replace_all</span>(cards<span class="op">$</span>flavorText, <span class="st">&quot;[[:punct:]]&quot;</span>, <span class="st">&quot;&quot;</span>)</span>
-<span id="cb4-20"><a href="data-cleaning.html#cb4-20"></a></span>
-<span id="cb4-21"><a href="data-cleaning.html#cb4-21"></a><span class="co"># CLEANING THE MANA CLUSTERF**K</span></span>
-<span id="cb4-22"><a href="data-cleaning.html#cb4-22"></a><span class="co"># If the manaCost is NA, replace it with Z so that it can be processed by str_detect. Converted back later.</span></span>
-<span id="cb4-23"><a href="data-cleaning.html#cb4-23"></a>cards<span class="op">$</span>manaCost &lt;-<span class="st"> </span><span class="kw">replace_na</span>(cards<span class="op">$</span>manaCost, <span class="st">&quot;Z&quot;</span>)</span>
-<span id="cb4-24"><a href="data-cleaning.html#cb4-24"></a></span>
-<span id="cb4-25"><a href="data-cleaning.html#cb4-25"></a><span class="co">#Removing the brackets</span></span>
-<span id="cb4-26"><a href="data-cleaning.html#cb4-26"></a>cards<span class="op">$</span>manaCost =<span class="st"> </span><span class="kw">str_replace_all</span>(cards<span class="op">$</span>manaCost, <span class="st">&quot;[{}]&quot;</span>, <span class="st">&quot;&quot;</span>)</span>
-<span id="cb4-27"><a href="data-cleaning.html#cb4-27"></a></span>
-<span id="cb4-28"><a href="data-cleaning.html#cb4-28"></a><span class="co">#Creating a variable to hold the &#39;generic&#39; mana cost</span></span>
-<span id="cb4-29"><a href="data-cleaning.html#cb4-29"></a>cards<span class="op">$</span>genericManaCost &lt;-<span class="st"> </span><span class="ot">NA</span></span>
-<span id="cb4-30"><a href="data-cleaning.html#cb4-30"></a></span>
-<span id="cb4-31"><a href="data-cleaning.html#cb4-31"></a><span class="co"># Counting the generic mana cost for each row</span></span>
-<span id="cb4-32"><a href="data-cleaning.html#cb4-32"></a>  <span class="co"># If X is included in the data, that means the # of generic mana is determined by the game environment</span></span>
-<span id="cb4-33"><a href="data-cleaning.html#cb4-33"></a></span>
-<span id="cb4-34"><a href="data-cleaning.html#cb4-34"></a>c =<span class="st"> </span><span class="dv">1</span></span>
-<span id="cb4-35"><a href="data-cleaning.html#cb4-35"></a><span class="cf">for</span> (i <span class="cf">in</span> cards<span class="op">$</span>manaCost){</span>
-<span id="cb4-36"><a href="data-cleaning.html#cb4-36"></a>  a =<span class="st"> </span><span class="kw">str_detect</span>(i, <span class="st">&quot;.*[0-9].*&quot;</span>)</span>
-<span id="cb4-37"><a href="data-cleaning.html#cb4-37"></a>  <span class="cf">if</span> ( a <span class="op">==</span><span class="st"> </span><span class="ot">TRUE</span>){</span>
-<span id="cb4-38"><a href="data-cleaning.html#cb4-38"></a>    <span class="cf">if</span> (<span class="kw">substr</span>(i, <span class="dt">start =</span> <span class="dv">1</span>, <span class="dt">stop =</span> <span class="dv">1</span>) <span class="op">==</span><span class="st"> &#39;X&#39;</span>){</span>
-<span id="cb4-39"><a href="data-cleaning.html#cb4-39"></a>      cards<span class="op">$</span>genericManaCost[c] &lt;-<span class="st"> &quot;Determined in Game&quot;</span></span>
-<span id="cb4-40"><a href="data-cleaning.html#cb4-40"></a>    } <span class="cf">else</span> {</span>
-<span id="cb4-41"><a href="data-cleaning.html#cb4-41"></a>    cards<span class="op">$</span>genericManaCost[c] &lt;-<span class="st"> </span><span class="kw">substr</span>(i, <span class="dt">start =</span> <span class="dv">1</span>, <span class="dt">stop =</span> <span class="dv">1</span>) </span>
-<span id="cb4-42"><a href="data-cleaning.html#cb4-42"></a>    }</span>
-<span id="cb4-43"><a href="data-cleaning.html#cb4-43"></a>  } <span class="cf">else</span> {</span>
-<span id="cb4-44"><a href="data-cleaning.html#cb4-44"></a>    cards<span class="op">$</span>genericManaCost[c] &lt;-<span class="st"> &quot;No Generic Cost&quot;</span></span>
-<span id="cb4-45"><a href="data-cleaning.html#cb4-45"></a>  }</span>
-<span id="cb4-46"><a href="data-cleaning.html#cb4-46"></a>c =<span class="st"> </span>c <span class="op">+</span><span class="st"> </span><span class="dv">1</span></span>
-<span id="cb4-47"><a href="data-cleaning.html#cb4-47"></a>}</span>
-<span id="cb4-48"><a href="data-cleaning.html#cb4-48"></a></span>
-<span id="cb4-49"><a href="data-cleaning.html#cb4-49"></a><span class="co"># Cleaning manaCost to remove data pertaining to generic mana</span></span>
-<span id="cb4-50"><a href="data-cleaning.html#cb4-50"></a>cards<span class="op">$</span>manaCost &lt;-<span class="st"> </span><span class="kw">str_replace_all</span>(cards<span class="op">$</span>manaCost, <span class="st">&#39;X&#39;</span>, <span class="st">&#39;&#39;</span>) <span class="op">%&gt;%</span></span>
-<span id="cb4-51"><a href="data-cleaning.html#cb4-51"></a><span class="st">  </span><span class="kw">removeNumbers</span>()</span>
-<span id="cb4-52"><a href="data-cleaning.html#cb4-52"></a></span>
-<span id="cb4-53"><a href="data-cleaning.html#cb4-53"></a><span class="co"># HANDLING CARD COLOR</span></span>
-<span id="cb4-54"><a href="data-cleaning.html#cb4-54"></a><span class="co"># Creating the color variable</span></span>
-<span id="cb4-55"><a href="data-cleaning.html#cb4-55"></a>cards<span class="op">$</span>manaColor &lt;-<span class="st"> </span><span class="ot">NA</span></span>
-<span id="cb4-56"><a href="data-cleaning.html#cb4-56"></a></span>
-<span id="cb4-57"><a href="data-cleaning.html#cb4-57"></a><span class="co"># Splitting the letters so that they can be compared, these are put in a temporary variable </span></span>
-<span id="cb4-58"><a href="data-cleaning.html#cb4-58"></a>cards<span class="op">$</span>temp &lt;-<span class="st"> </span><span class="kw">str_split</span>(cards<span class="op">$</span>manaCost, <span class="st">&quot;&quot;</span>)</span>
-<span id="cb4-59"><a href="data-cleaning.html#cb4-59"></a></span>
-<span id="cb4-60"><a href="data-cleaning.html#cb4-60"></a><span class="co"># Identifying the mana color </span></span>
-<span id="cb4-61"><a href="data-cleaning.html#cb4-61"></a>  <span class="co"># If the card deals with more than one type of mana, it is assigned to the category &quot;Multiple Types&quot;</span></span>
-<span id="cb4-62"><a href="data-cleaning.html#cb4-62"></a>c =<span class="st"> </span><span class="dv">1</span></span>
-<span id="cb4-63"><a href="data-cleaning.html#cb4-63"></a><span class="cf">for</span> (i <span class="cf">in</span> cards<span class="op">$</span>temp){</span>
-<span id="cb4-64"><a href="data-cleaning.html#cb4-64"></a>  <span class="cf">if</span> (<span class="kw">length</span>(i) <span class="op">&lt;=</span><span class="st"> </span><span class="dv">1</span>){</span>
-<span id="cb4-65"><a href="data-cleaning.html#cb4-65"></a>    cards<span class="op">$</span>manaColor[c] &lt;-<span class="st"> </span>i[<span class="dv">1</span>]</span>
-<span id="cb4-66"><a href="data-cleaning.html#cb4-66"></a>  } <span class="cf">else</span> <span class="cf">if</span>(i[<span class="dv">1</span>] <span class="op">==</span><span class="st"> </span>i[<span class="dv">2</span>]) {</span>
-<span id="cb4-67"><a href="data-cleaning.html#cb4-67"></a>    cards<span class="op">$</span>manaColor[c] &lt;-<span class="st"> </span>i[<span class="dv">1</span>]</span>
-<span id="cb4-68"><a href="data-cleaning.html#cb4-68"></a>  } <span class="cf">else</span> {</span>
-<span id="cb4-69"><a href="data-cleaning.html#cb4-69"></a>    cards<span class="op">$</span>manaColor[c] &lt;-<span class="st"> &quot;Multiple Types&quot;</span></span>
-<span id="cb4-70"><a href="data-cleaning.html#cb4-70"></a>}</span>
-<span id="cb4-71"><a href="data-cleaning.html#cb4-71"></a>c =<span class="st"> </span>c<span class="op">+</span><span class="dv">1</span></span>
-<span id="cb4-72"><a href="data-cleaning.html#cb4-72"></a>}</span>
-<span id="cb4-73"><a href="data-cleaning.html#cb4-73"></a></span>
-<span id="cb4-74"><a href="data-cleaning.html#cb4-74"></a><span class="co"># Colored mana cost is calculated by simply taking the length of the manaCost string (i.e., WWW would be 3)</span></span>
-<span id="cb4-75"><a href="data-cleaning.html#cb4-75"></a>cards<span class="op">$</span>colorManaCost &lt;-<span class="st"> </span><span class="kw">nchar</span>(cards<span class="op">$</span>manaCost) </span>
-<span id="cb4-76"><a href="data-cleaning.html#cb4-76"></a></span>
-<span id="cb4-77"><a href="data-cleaning.html#cb4-77"></a><span class="co">#Handling NA&#39;s </span></span>
-<span id="cb4-78"><a href="data-cleaning.html#cb4-78"></a>cards<span class="op">$</span>manaColor[<span class="kw">is.na</span>(cards<span class="op">$</span>manaColor)] &lt;-<span class="st"> &quot;No Color&quot;</span></span>
-<span id="cb4-79"><a href="data-cleaning.html#cb4-79"></a>cards<span class="op">$</span>manaColor[cards<span class="op">$</span>manaColor <span class="op">==</span><span class="st"> &#39;Z&#39;</span>] &lt;-<span class="st"> &quot;No Color&quot;</span></span>
-<span id="cb4-80"><a href="data-cleaning.html#cb4-80"></a>cards<span class="op">$</span>colorManaCost &lt;-<span class="st"> </span><span class="kw">ifelse</span>(cards<span class="op">$</span>manaColor <span class="op">==</span><span class="st"> &quot;No Color&quot;</span>, <span class="st">&quot;No Color Cost&quot;</span>, cards<span class="op">$</span>colorManaCost)</span>
-<span id="cb4-81"><a href="data-cleaning.html#cb4-81"></a></span>
-<span id="cb4-82"><a href="data-cleaning.html#cb4-82"></a><span class="co">#Removing the depreciated columns</span></span>
-<span id="cb4-83"><a href="data-cleaning.html#cb4-83"></a>cards &lt;-<span class="st"> </span><span class="kw">subset</span>(cards, <span class="dt">select =</span> <span class="op">-</span><span class="kw">c</span>(temp, manaCost))</span>
-<span id="cb4-84"><a href="data-cleaning.html#cb4-84"></a></span>
-<span id="cb4-85"><a href="data-cleaning.html#cb4-85"></a><span class="co">###############################################</span></span>
-<span id="cb4-86"><a href="data-cleaning.html#cb4-86"></a><span class="co">##########    </span><span class="al">###</span><span class="co">    SETS     </span><span class="al">###</span><span class="co">    ##########</span></span>
-<span id="cb4-87"><a href="data-cleaning.html#cb4-87"></a><span class="co">###############################################</span></span>
-<span id="cb4-88"><a href="data-cleaning.html#cb4-88"></a></span>
-<span id="cb4-89"><a href="data-cleaning.html#cb4-89"></a><span class="co"># READING IN THE DATA</span></span>
-<span id="cb4-90"><a href="data-cleaning.html#cb4-90"></a>setsRaw &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;sets.csv&quot;</span>, <span class="dt">col_names =</span> <span class="ot">TRUE</span>)</span>
-<span id="cb4-91"><a href="data-cleaning.html#cb4-91"></a><span class="co"># head(setsRaw)</span></span>
-<span id="cb4-92"><a href="data-cleaning.html#cb4-92"></a></span>
-<span id="cb4-93"><a href="data-cleaning.html#cb4-93"></a><span class="co">#SELECTING RELEVANT COLUMNS</span></span>
-<span id="cb4-94"><a href="data-cleaning.html#cb4-94"></a>keepColsSets &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;mcmId&quot;</span>, <span class="st">&quot;name&quot;</span>, <span class="st">&quot;releaseDate&quot;</span>)</span>
-<span id="cb4-95"><a href="data-cleaning.html#cb4-95"></a>sets &lt;-<span class="st"> </span><span class="kw">select_</span>(setsRaw, <span class="dt">.dots =</span> keepColsSets) <span class="op">%&gt;%</span></span>
-<span id="cb4-96"><a href="data-cleaning.html#cb4-96"></a><span class="st">  </span><span class="kw">rename</span>(</span>
-<span id="cb4-97"><a href="data-cleaning.html#cb4-97"></a>    <span class="st">&quot;setName&quot;</span> =<span class="st"> &quot;name&quot;</span></span>
-<span id="cb4-98"><a href="data-cleaning.html#cb4-98"></a>  )</span>
-<span id="cb4-99"><a href="data-cleaning.html#cb4-99"></a>sets &lt;-<span class="st"> </span>sets[<span class="op">!</span><span class="kw">is.na</span>(sets<span class="op">$</span>mcmId), ]</span>
-<span id="cb4-100"><a href="data-cleaning.html#cb4-100"></a></span>
-<span id="cb4-101"><a href="data-cleaning.html#cb4-101"></a></span>
-<span id="cb4-102"><a href="data-cleaning.html#cb4-102"></a><span class="co">###############################################</span></span>
-<span id="cb4-103"><a href="data-cleaning.html#cb4-103"></a><span class="co">##########    </span><span class="al">###</span><span class="co">    JOIN     </span><span class="al">###</span><span class="co">    ##########</span></span>
-<span id="cb4-104"><a href="data-cleaning.html#cb4-104"></a><span class="co">###############################################</span></span>
-<span id="cb4-105"><a href="data-cleaning.html#cb4-105"></a><span class="co"># Joining cards with sets on MCM ID</span></span>
-<span id="cb4-106"><a href="data-cleaning.html#cb4-106"></a>mtg &lt;-<span class="st"> </span><span class="kw">left_join</span>(cards, sets, <span class="dt">by =</span> <span class="st">&quot;mcmId&quot;</span>)</span>
-<span id="cb4-107"><a href="data-cleaning.html#cb4-107"></a></span>
-<span id="cb4-108"><a href="data-cleaning.html#cb4-108"></a><span class="co"># head(mtg)</span></span>
-<span id="cb4-109"><a href="data-cleaning.html#cb4-109"></a><span class="co"># sum(is.na(mtg$releaseDate))</span></span>
-<span id="cb4-110"><a href="data-cleaning.html#cb4-110"></a></span>
-<span id="cb4-111"><a href="data-cleaning.html#cb4-111"></a><span class="co">###############################################</span></span>
-<span id="cb4-112"><a href="data-cleaning.html#cb4-112"></a><span class="co">##########    ##    PRICES     ##    ##########</span></span>
-<span id="cb4-113"><a href="data-cleaning.html#cb4-113"></a><span class="co">###############################################</span></span>
-<span id="cb4-114"><a href="data-cleaning.html#cb4-114"></a></span>
-<span id="cb4-115"><a href="data-cleaning.html#cb4-115"></a><span class="co"># READING IN THE DATA</span></span>
-<span id="cb4-116"><a href="data-cleaning.html#cb4-116"></a></span>
-<span id="cb4-117"><a href="data-cleaning.html#cb4-117"></a>prices19 &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;mean_2019_prices.csv&quot;</span>, <span class="dt">col_names =</span> <span class="ot">TRUE</span>)</span>
-<span id="cb4-118"><a href="data-cleaning.html#cb4-118"></a>mtg_prices19 &lt;-<span class="st"> </span><span class="kw">inner_join</span>(mtg, prices19, <span class="dt">by =</span> <span class="kw">c</span>(<span class="st">&quot;mtgjsonV4Id&quot;</span> =<span class="st"> &quot;uuid&quot;</span>))</span>
-<span id="cb4-119"><a href="data-cleaning.html#cb4-119"></a></span>
-<span id="cb4-120"><a href="data-cleaning.html#cb4-120"></a>columnOrder &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;uuid&quot;</span>, <span class="st">&quot;mtgjsonV4Id&quot;</span>, <span class="st">&quot;name&quot;</span>, <span class="st">&quot;artist&quot;</span>, <span class="st">&quot;type&quot;</span>, <span class="st">&quot;subtypes&quot;</span>, <span class="st">&quot;supertypes&quot;</span>, <span class="st">&quot;keywords&quot;</span>, <span class="st">&quot;text&quot;</span>, <span class="st">&quot;flavorText&quot;</span>, <span class="st">&quot;power&quot;</span>, <span class="st">&quot;toughness&quot;</span>, <span class="st">&quot;rarity&quot;</span>, <span class="st">&quot;edhrecRank&quot;</span>, <span class="st">&quot;isOnlineOnly&quot;</span>, <span class="st">&quot;convertedManaCost&quot;</span>, <span class="st">&quot;genericManaCost&quot;</span>, <span class="st">&quot;manaColor&quot;</span>, <span class="st">&quot;colorManaCost&quot;</span>, <span class="st">&quot;setName&quot;</span>, <span class="st">&quot;releaseDate&quot;</span>, <span class="st">&quot;mtgo&quot;</span>, <span class="st">&quot;mtgoFoil&quot;</span>, <span class="st">&quot;paper&quot;</span>, <span class="st">&quot;paperFoil&quot;</span>)</span>
-<span id="cb4-121"><a href="data-cleaning.html#cb4-121"></a>mtg_prices19 &lt;-<span class="st"> </span>mtg_prices19[, columnOrder]</span>
-<span id="cb4-122"><a href="data-cleaning.html#cb4-122"></a></span>
-<span id="cb4-123"><a href="data-cleaning.html#cb4-123"></a><span class="co"># write.csv(mtg_prices19, &quot;cleanData_New.csv&quot;)</span></span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="data-cleaning.html#cb11-1"></a><span class="co">###############################################</span></span>
+<span id="cb11-2"><a href="data-cleaning.html#cb11-2"></a><span class="co">##########    </span><span class="al">###</span><span class="co">    CARDS    </span><span class="al">###</span><span class="co">    ##########</span></span>
+<span id="cb11-3"><a href="data-cleaning.html#cb11-3"></a><span class="co">###############################################</span></span>
+<span id="cb11-4"><a href="data-cleaning.html#cb11-4"></a></span>
+<span id="cb11-5"><a href="data-cleaning.html#cb11-5"></a><span class="co"># READING IN THE DATA</span></span>
+<span id="cb11-6"><a href="data-cleaning.html#cb11-6"></a>cardsRaw &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;cards.csv&quot;</span>, <span class="dt">col_names =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb11-7"><a href="data-cleaning.html#cb11-7"></a><span class="co"># head(cardsRaw)</span></span>
+<span id="cb11-8"><a href="data-cleaning.html#cb11-8"></a></span>
+<span id="cb11-9"><a href="data-cleaning.html#cb11-9"></a><span class="co">#SELECTING RELEVANT COLUMNS</span></span>
+<span id="cb11-10"><a href="data-cleaning.html#cb11-10"></a>keepCols &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;artist&quot;</span>,<span class="st">&quot;uuid&quot;</span>, <span class="st">&quot;mcmId&quot;</span>, <span class="st">&quot;mtgjsonV4Id&quot;</span>, <span class="st">&quot;multiverseId&quot;</span>, <span class="st">&quot;name&quot;</span>, <span class="st">&quot;artist&quot;</span>, <span class="st">&quot;type&quot;</span>, <span class="st">&quot;subtypes&quot;</span>, <span class="st">&quot;supertypes&quot;</span>, <span class="st">&quot;manaCost&quot;</span>, <span class="st">&quot;convertedManaCost&quot;</span>, <span class="st">&quot;keywords&quot;</span>, <span class="st">&quot;text&quot;</span>, <span class="st">&quot;flavorText&quot;</span>,  <span class="st">&quot;power&quot;</span>, <span class="st">&quot;toughness&quot;</span>, <span class="st">&quot;rarity&quot;</span>, <span class="st">&quot;edhrecRank&quot;</span>, <span class="st">&quot;isOnlineOnly&quot;</span>)</span>
+<span id="cb11-11"><a href="data-cleaning.html#cb11-11"></a>cards &lt;-<span class="st"> </span><span class="kw">select_</span>(cardsRaw, <span class="dt">.dots =</span> keepCols)</span>
+<span id="cb11-12"><a href="data-cleaning.html#cb11-12"></a><span class="co"># head(cards)</span></span>
+<span id="cb11-13"><a href="data-cleaning.html#cb11-13"></a></span>
+<span id="cb11-14"><a href="data-cleaning.html#cb11-14"></a><span class="co"># CLEANING TYPES</span></span>
+<span id="cb11-15"><a href="data-cleaning.html#cb11-15"></a>cards<span class="op">$</span>type &lt;-<span class="st"> </span><span class="kw">word</span>(cards<span class="op">$</span>type, <span class="dv">1</span>, <span class="dt">sep=</span><span class="st">&quot; —&quot;</span>)</span>
+<span id="cb11-16"><a href="data-cleaning.html#cb11-16"></a></span>
+<span id="cb11-17"><a href="data-cleaning.html#cb11-17"></a><span class="co"># REMOVING SPECIAL CHARACTERS FROM THE TEXT VARIABLES</span></span>
+<span id="cb11-18"><a href="data-cleaning.html#cb11-18"></a>cards<span class="op">$</span>text &lt;-<span class="st"> </span><span class="kw">str_replace_all</span>(cards<span class="op">$</span>text, <span class="st">&quot;[[:punct:]]&quot;</span>, <span class="st">&quot;&quot;</span>)</span>
+<span id="cb11-19"><a href="data-cleaning.html#cb11-19"></a>cards<span class="op">$</span>flavorText &lt;-<span class="st"> </span><span class="kw">str_replace_all</span>(cards<span class="op">$</span>flavorText, <span class="st">&quot;[[:punct:]]&quot;</span>, <span class="st">&quot;&quot;</span>)</span>
+<span id="cb11-20"><a href="data-cleaning.html#cb11-20"></a></span>
+<span id="cb11-21"><a href="data-cleaning.html#cb11-21"></a><span class="co"># CLEANING THE MANA CLUSTERF**K</span></span>
+<span id="cb11-22"><a href="data-cleaning.html#cb11-22"></a><span class="co"># If the manaCost is NA, replace it with Z so that it can be processed by str_detect. Converted back later.</span></span>
+<span id="cb11-23"><a href="data-cleaning.html#cb11-23"></a>cards<span class="op">$</span>manaCost &lt;-<span class="st"> </span><span class="kw">replace_na</span>(cards<span class="op">$</span>manaCost, <span class="st">&quot;Z&quot;</span>)</span>
+<span id="cb11-24"><a href="data-cleaning.html#cb11-24"></a></span>
+<span id="cb11-25"><a href="data-cleaning.html#cb11-25"></a><span class="co">#Removing the brackets</span></span>
+<span id="cb11-26"><a href="data-cleaning.html#cb11-26"></a>cards<span class="op">$</span>manaCost =<span class="st"> </span><span class="kw">str_replace_all</span>(cards<span class="op">$</span>manaCost, <span class="st">&quot;[{}]&quot;</span>, <span class="st">&quot;&quot;</span>)</span>
+<span id="cb11-27"><a href="data-cleaning.html#cb11-27"></a></span>
+<span id="cb11-28"><a href="data-cleaning.html#cb11-28"></a><span class="co">#Creating a variable to hold the &#39;generic&#39; mana cost</span></span>
+<span id="cb11-29"><a href="data-cleaning.html#cb11-29"></a>cards<span class="op">$</span>genericManaCost &lt;-<span class="st"> </span><span class="ot">NA</span></span>
+<span id="cb11-30"><a href="data-cleaning.html#cb11-30"></a></span>
+<span id="cb11-31"><a href="data-cleaning.html#cb11-31"></a><span class="co"># Counting the generic mana cost for each row</span></span>
+<span id="cb11-32"><a href="data-cleaning.html#cb11-32"></a>  <span class="co"># If X is included in the data, that means the # of generic mana is determined by the game environment</span></span>
+<span id="cb11-33"><a href="data-cleaning.html#cb11-33"></a></span>
+<span id="cb11-34"><a href="data-cleaning.html#cb11-34"></a>c =<span class="st"> </span><span class="dv">1</span></span>
+<span id="cb11-35"><a href="data-cleaning.html#cb11-35"></a><span class="cf">for</span> (i <span class="cf">in</span> cards<span class="op">$</span>manaCost){</span>
+<span id="cb11-36"><a href="data-cleaning.html#cb11-36"></a>  a =<span class="st"> </span><span class="kw">str_detect</span>(i, <span class="st">&quot;.*[0-9].*&quot;</span>)</span>
+<span id="cb11-37"><a href="data-cleaning.html#cb11-37"></a>  <span class="cf">if</span> ( a <span class="op">==</span><span class="st"> </span><span class="ot">TRUE</span>){</span>
+<span id="cb11-38"><a href="data-cleaning.html#cb11-38"></a>    <span class="cf">if</span> (<span class="kw">substr</span>(i, <span class="dt">start =</span> <span class="dv">1</span>, <span class="dt">stop =</span> <span class="dv">1</span>) <span class="op">==</span><span class="st"> &#39;X&#39;</span>){</span>
+<span id="cb11-39"><a href="data-cleaning.html#cb11-39"></a>      cards<span class="op">$</span>genericManaCost[c] &lt;-<span class="st"> &quot;Determined in Game&quot;</span></span>
+<span id="cb11-40"><a href="data-cleaning.html#cb11-40"></a>    } <span class="cf">else</span> {</span>
+<span id="cb11-41"><a href="data-cleaning.html#cb11-41"></a>    cards<span class="op">$</span>genericManaCost[c] &lt;-<span class="st"> </span><span class="kw">substr</span>(i, <span class="dt">start =</span> <span class="dv">1</span>, <span class="dt">stop =</span> <span class="dv">1</span>) </span>
+<span id="cb11-42"><a href="data-cleaning.html#cb11-42"></a>    }</span>
+<span id="cb11-43"><a href="data-cleaning.html#cb11-43"></a>  } <span class="cf">else</span> {</span>
+<span id="cb11-44"><a href="data-cleaning.html#cb11-44"></a>    cards<span class="op">$</span>genericManaCost[c] &lt;-<span class="st"> &quot;No Generic Cost&quot;</span></span>
+<span id="cb11-45"><a href="data-cleaning.html#cb11-45"></a>  }</span>
+<span id="cb11-46"><a href="data-cleaning.html#cb11-46"></a>c =<span class="st"> </span>c <span class="op">+</span><span class="st"> </span><span class="dv">1</span></span>
+<span id="cb11-47"><a href="data-cleaning.html#cb11-47"></a>}</span>
+<span id="cb11-48"><a href="data-cleaning.html#cb11-48"></a></span>
+<span id="cb11-49"><a href="data-cleaning.html#cb11-49"></a><span class="co"># Cleaning manaCost to remove data pertaining to generic mana</span></span>
+<span id="cb11-50"><a href="data-cleaning.html#cb11-50"></a>cards<span class="op">$</span>manaCost &lt;-<span class="st"> </span><span class="kw">str_replace_all</span>(cards<span class="op">$</span>manaCost, <span class="st">&#39;X&#39;</span>, <span class="st">&#39;&#39;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb11-51"><a href="data-cleaning.html#cb11-51"></a><span class="st">  </span><span class="kw">removeNumbers</span>()</span>
+<span id="cb11-52"><a href="data-cleaning.html#cb11-52"></a></span>
+<span id="cb11-53"><a href="data-cleaning.html#cb11-53"></a><span class="co"># HANDLING CARD COLOR</span></span>
+<span id="cb11-54"><a href="data-cleaning.html#cb11-54"></a><span class="co"># Creating the color variable</span></span>
+<span id="cb11-55"><a href="data-cleaning.html#cb11-55"></a>cards<span class="op">$</span>manaColor &lt;-<span class="st"> </span><span class="ot">NA</span></span>
+<span id="cb11-56"><a href="data-cleaning.html#cb11-56"></a></span>
+<span id="cb11-57"><a href="data-cleaning.html#cb11-57"></a><span class="co"># Splitting the letters so that they can be compared, these are put in a temporary variable </span></span>
+<span id="cb11-58"><a href="data-cleaning.html#cb11-58"></a>cards<span class="op">$</span>temp &lt;-<span class="st"> </span><span class="kw">str_split</span>(cards<span class="op">$</span>manaCost, <span class="st">&quot;&quot;</span>)</span>
+<span id="cb11-59"><a href="data-cleaning.html#cb11-59"></a></span>
+<span id="cb11-60"><a href="data-cleaning.html#cb11-60"></a><span class="co"># Identifying the mana color </span></span>
+<span id="cb11-61"><a href="data-cleaning.html#cb11-61"></a>  <span class="co"># If the card deals with more than one type of mana, it is assigned to the category &quot;Multiple Types&quot;</span></span>
+<span id="cb11-62"><a href="data-cleaning.html#cb11-62"></a>c =<span class="st"> </span><span class="dv">1</span></span>
+<span id="cb11-63"><a href="data-cleaning.html#cb11-63"></a><span class="cf">for</span> (i <span class="cf">in</span> cards<span class="op">$</span>temp){</span>
+<span id="cb11-64"><a href="data-cleaning.html#cb11-64"></a>  <span class="cf">if</span> (<span class="kw">length</span>(i) <span class="op">&lt;=</span><span class="st"> </span><span class="dv">1</span>){</span>
+<span id="cb11-65"><a href="data-cleaning.html#cb11-65"></a>    cards<span class="op">$</span>manaColor[c] &lt;-<span class="st"> </span>i[<span class="dv">1</span>]</span>
+<span id="cb11-66"><a href="data-cleaning.html#cb11-66"></a>  } <span class="cf">else</span> <span class="cf">if</span>(i[<span class="dv">1</span>] <span class="op">==</span><span class="st"> </span>i[<span class="dv">2</span>]) {</span>
+<span id="cb11-67"><a href="data-cleaning.html#cb11-67"></a>    cards<span class="op">$</span>manaColor[c] &lt;-<span class="st"> </span>i[<span class="dv">1</span>]</span>
+<span id="cb11-68"><a href="data-cleaning.html#cb11-68"></a>  } <span class="cf">else</span> {</span>
+<span id="cb11-69"><a href="data-cleaning.html#cb11-69"></a>    cards<span class="op">$</span>manaColor[c] &lt;-<span class="st"> &quot;Multiple Types&quot;</span></span>
+<span id="cb11-70"><a href="data-cleaning.html#cb11-70"></a>}</span>
+<span id="cb11-71"><a href="data-cleaning.html#cb11-71"></a>c =<span class="st"> </span>c<span class="op">+</span><span class="dv">1</span></span>
+<span id="cb11-72"><a href="data-cleaning.html#cb11-72"></a>}</span>
+<span id="cb11-73"><a href="data-cleaning.html#cb11-73"></a></span>
+<span id="cb11-74"><a href="data-cleaning.html#cb11-74"></a><span class="co"># Colored mana cost is calculated by simply taking the length of the manaCost string (i.e., WWW would be 3)</span></span>
+<span id="cb11-75"><a href="data-cleaning.html#cb11-75"></a>cards<span class="op">$</span>colorManaCost &lt;-<span class="st"> </span><span class="kw">nchar</span>(cards<span class="op">$</span>manaCost) </span>
+<span id="cb11-76"><a href="data-cleaning.html#cb11-76"></a></span>
+<span id="cb11-77"><a href="data-cleaning.html#cb11-77"></a><span class="co">#Handling NA&#39;s </span></span>
+<span id="cb11-78"><a href="data-cleaning.html#cb11-78"></a>cards<span class="op">$</span>manaColor[<span class="kw">is.na</span>(cards<span class="op">$</span>manaColor)] &lt;-<span class="st"> &quot;No Color&quot;</span></span>
+<span id="cb11-79"><a href="data-cleaning.html#cb11-79"></a>cards<span class="op">$</span>manaColor[cards<span class="op">$</span>manaColor <span class="op">==</span><span class="st"> &#39;Z&#39;</span>] &lt;-<span class="st"> &quot;No Color&quot;</span></span>
+<span id="cb11-80"><a href="data-cleaning.html#cb11-80"></a>cards<span class="op">$</span>colorManaCost &lt;-<span class="st"> </span><span class="kw">ifelse</span>(cards<span class="op">$</span>manaColor <span class="op">==</span><span class="st"> &quot;No Color&quot;</span>, <span class="st">&quot;No Color Cost&quot;</span>, cards<span class="op">$</span>colorManaCost)</span>
+<span id="cb11-81"><a href="data-cleaning.html#cb11-81"></a></span>
+<span id="cb11-82"><a href="data-cleaning.html#cb11-82"></a><span class="co">#Removing the depreciated columns</span></span>
+<span id="cb11-83"><a href="data-cleaning.html#cb11-83"></a>cards &lt;-<span class="st"> </span><span class="kw">subset</span>(cards, <span class="dt">select =</span> <span class="op">-</span><span class="kw">c</span>(temp, manaCost))</span>
+<span id="cb11-84"><a href="data-cleaning.html#cb11-84"></a></span>
+<span id="cb11-85"><a href="data-cleaning.html#cb11-85"></a><span class="co">###############################################</span></span>
+<span id="cb11-86"><a href="data-cleaning.html#cb11-86"></a><span class="co">##########    </span><span class="al">###</span><span class="co">    SETS     </span><span class="al">###</span><span class="co">    ##########</span></span>
+<span id="cb11-87"><a href="data-cleaning.html#cb11-87"></a><span class="co">###############################################</span></span>
+<span id="cb11-88"><a href="data-cleaning.html#cb11-88"></a></span>
+<span id="cb11-89"><a href="data-cleaning.html#cb11-89"></a><span class="co"># READING IN THE DATA</span></span>
+<span id="cb11-90"><a href="data-cleaning.html#cb11-90"></a>setsRaw &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;sets.csv&quot;</span>, <span class="dt">col_names =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb11-91"><a href="data-cleaning.html#cb11-91"></a><span class="co"># head(setsRaw)</span></span>
+<span id="cb11-92"><a href="data-cleaning.html#cb11-92"></a></span>
+<span id="cb11-93"><a href="data-cleaning.html#cb11-93"></a><span class="co">#SELECTING RELEVANT COLUMNS</span></span>
+<span id="cb11-94"><a href="data-cleaning.html#cb11-94"></a>keepColsSets &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;mcmId&quot;</span>, <span class="st">&quot;name&quot;</span>, <span class="st">&quot;releaseDate&quot;</span>)</span>
+<span id="cb11-95"><a href="data-cleaning.html#cb11-95"></a>sets &lt;-<span class="st"> </span><span class="kw">select_</span>(setsRaw, <span class="dt">.dots =</span> keepColsSets) <span class="op">%&gt;%</span></span>
+<span id="cb11-96"><a href="data-cleaning.html#cb11-96"></a><span class="st">  </span><span class="kw">rename</span>(</span>
+<span id="cb11-97"><a href="data-cleaning.html#cb11-97"></a>    <span class="st">&quot;setName&quot;</span> =<span class="st"> &quot;name&quot;</span></span>
+<span id="cb11-98"><a href="data-cleaning.html#cb11-98"></a>  )</span>
+<span id="cb11-99"><a href="data-cleaning.html#cb11-99"></a>sets &lt;-<span class="st"> </span>sets[<span class="op">!</span><span class="kw">is.na</span>(sets<span class="op">$</span>mcmId), ]</span>
+<span id="cb11-100"><a href="data-cleaning.html#cb11-100"></a></span>
+<span id="cb11-101"><a href="data-cleaning.html#cb11-101"></a></span>
+<span id="cb11-102"><a href="data-cleaning.html#cb11-102"></a><span class="co">###############################################</span></span>
+<span id="cb11-103"><a href="data-cleaning.html#cb11-103"></a><span class="co">##########    </span><span class="al">###</span><span class="co">    JOIN     </span><span class="al">###</span><span class="co">    ##########</span></span>
+<span id="cb11-104"><a href="data-cleaning.html#cb11-104"></a><span class="co">###############################################</span></span>
+<span id="cb11-105"><a href="data-cleaning.html#cb11-105"></a><span class="co"># Joining cards with sets on MCM ID</span></span>
+<span id="cb11-106"><a href="data-cleaning.html#cb11-106"></a>mtg &lt;-<span class="st"> </span><span class="kw">left_join</span>(cards, sets, <span class="dt">by =</span> <span class="st">&quot;mcmId&quot;</span>)</span>
+<span id="cb11-107"><a href="data-cleaning.html#cb11-107"></a></span>
+<span id="cb11-108"><a href="data-cleaning.html#cb11-108"></a><span class="co"># head(mtg)</span></span>
+<span id="cb11-109"><a href="data-cleaning.html#cb11-109"></a><span class="co"># sum(is.na(mtg$releaseDate))</span></span>
+<span id="cb11-110"><a href="data-cleaning.html#cb11-110"></a></span>
+<span id="cb11-111"><a href="data-cleaning.html#cb11-111"></a><span class="co">###############################################</span></span>
+<span id="cb11-112"><a href="data-cleaning.html#cb11-112"></a><span class="co">##########    ##    PRICES     ##    ##########</span></span>
+<span id="cb11-113"><a href="data-cleaning.html#cb11-113"></a><span class="co">###############################################</span></span>
+<span id="cb11-114"><a href="data-cleaning.html#cb11-114"></a></span>
+<span id="cb11-115"><a href="data-cleaning.html#cb11-115"></a><span class="co"># READING IN THE DATA</span></span>
+<span id="cb11-116"><a href="data-cleaning.html#cb11-116"></a></span>
+<span id="cb11-117"><a href="data-cleaning.html#cb11-117"></a>prices19 &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;mean_2019_prices.csv&quot;</span>, <span class="dt">col_names =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb11-118"><a href="data-cleaning.html#cb11-118"></a>mtg_prices19 &lt;-<span class="st"> </span><span class="kw">inner_join</span>(mtg, prices19, <span class="dt">by =</span> <span class="kw">c</span>(<span class="st">&quot;mtgjsonV4Id&quot;</span> =<span class="st"> &quot;uuid&quot;</span>))</span>
+<span id="cb11-119"><a href="data-cleaning.html#cb11-119"></a></span>
+<span id="cb11-120"><a href="data-cleaning.html#cb11-120"></a>columnOrder &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;uuid&quot;</span>, <span class="st">&quot;mtgjsonV4Id&quot;</span>, <span class="st">&quot;name&quot;</span>, <span class="st">&quot;artist&quot;</span>, <span class="st">&quot;type&quot;</span>, <span class="st">&quot;subtypes&quot;</span>, <span class="st">&quot;supertypes&quot;</span>, <span class="st">&quot;keywords&quot;</span>, <span class="st">&quot;text&quot;</span>, <span class="st">&quot;flavorText&quot;</span>, <span class="st">&quot;power&quot;</span>, <span class="st">&quot;toughness&quot;</span>, <span class="st">&quot;rarity&quot;</span>, <span class="st">&quot;edhrecRank&quot;</span>, <span class="st">&quot;isOnlineOnly&quot;</span>, <span class="st">&quot;convertedManaCost&quot;</span>, <span class="st">&quot;genericManaCost&quot;</span>, <span class="st">&quot;manaColor&quot;</span>, <span class="st">&quot;colorManaCost&quot;</span>, <span class="st">&quot;setName&quot;</span>, <span class="st">&quot;releaseDate&quot;</span>, <span class="st">&quot;mtgo&quot;</span>, <span class="st">&quot;mtgoFoil&quot;</span>, <span class="st">&quot;paper&quot;</span>, <span class="st">&quot;paperFoil&quot;</span>)</span>
+<span id="cb11-121"><a href="data-cleaning.html#cb11-121"></a>mtg_prices19 &lt;-<span class="st"> </span>mtg_prices19[, columnOrder]</span>
+<span id="cb11-122"><a href="data-cleaning.html#cb11-122"></a></span>
+<span id="cb11-123"><a href="data-cleaning.html#cb11-123"></a><span class="co"># write.csv(mtg_prices19, &quot;cleanData_New.csv&quot;)</span></span></code></pre></div>
 <div id="post-download-formatting" class="section level3">
 <h3><span class="header-section-number">4.1.1</span> Post-Download Formatting</h3>
 <p>Because certain facets of the data cannot be retained when the data is formatted as a .CSV, we produced a ‘post-download formatting’ block which can be copied and pasted in at the beginning of any R file using the above CSV to convert the data to the ideal format for manipulation.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="data-cleaning.html#cb5-1"></a><span class="co"># TOKENIZING SUBTYPES</span></span>
-<span id="cb5-2"><a href="data-cleaning.html#cb5-2"></a>mtg<span class="op">$</span>subtypes &lt;-<span class="st"> </span><span class="kw">str_split</span>(mtg<span class="op">$</span>subtypes, <span class="st">&quot;,&quot;</span>)</span>
-<span id="cb5-3"><a href="data-cleaning.html#cb5-3"></a></span>
-<span id="cb5-4"><a href="data-cleaning.html#cb5-4"></a><span class="co"># TOKENIZING KEYWORDS</span></span>
-<span id="cb5-5"><a href="data-cleaning.html#cb5-5"></a>mtg<span class="op">$</span>keywords &lt;-<span class="st"> </span><span class="kw">str_split</span>(mtg<span class="op">$</span>keywords, <span class="st">&quot;,&quot;</span>)</span>
-<span id="cb5-6"><a href="data-cleaning.html#cb5-6"></a></span>
-<span id="cb5-7"><a href="data-cleaning.html#cb5-7"></a><span class="co"># TURNING RARITY INTO A FACTOR </span></span>
-<span id="cb5-8"><a href="data-cleaning.html#cb5-8"></a>mtg<span class="op">$</span>rarity &lt;-<span class="st"> </span><span class="kw">factor</span>(mtg<span class="op">$</span>rarity, <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">&quot;common&quot;</span>, <span class="st">&quot;uncommon&quot;</span>, <span class="st">&quot;rare&quot;</span>, <span class="st">&quot;mythic&quot;</span>), <span class="dt">ordered =</span> <span class="ot">TRUE</span>)</span>
-<span id="cb5-9"><a href="data-cleaning.html#cb5-9"></a></span>
-<span id="cb5-10"><a href="data-cleaning.html#cb5-10"></a><span class="co">#FORMATTING POWER AND TOUGHNESS CORRECTLY</span></span>
-<span id="cb5-11"><a href="data-cleaning.html#cb5-11"></a>  <span class="co"># forces some to numeric, however upon investigation the cards turned to NA&#39;s are &#39;booster&#39; cards, which are like spell cards</span></span>
-<span id="cb5-12"><a href="data-cleaning.html#cb5-12"></a>  <span class="co"># these cards can be identified by their key words</span></span>
-<span id="cb5-13"><a href="data-cleaning.html#cb5-13"></a>mtg<span class="op">$</span>power &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(mtg<span class="op">$</span>power)</span>
-<span id="cb5-14"><a href="data-cleaning.html#cb5-14"></a>mtg<span class="op">$</span>toughness &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(mtg<span class="op">$</span>toughness)</span></code></pre></div>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="data-cleaning.html#cb6-1"></a><span class="kw">head</span>(mtg, <span class="dv">5</span>) <span class="op">%&gt;%</span></span>
-<span id="cb6-2"><a href="data-cleaning.html#cb6-2"></a><span class="st">  </span><span class="kw">kableFormat</span>(<span class="st">&quot;Clean Magic the Gathering Data&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="data-cleaning.html#cb12-1"></a><span class="co"># TOKENIZING SUBTYPES</span></span>
+<span id="cb12-2"><a href="data-cleaning.html#cb12-2"></a>mtg<span class="op">$</span>subtypes &lt;-<span class="st"> </span><span class="kw">str_split</span>(mtg<span class="op">$</span>subtypes, <span class="st">&quot;,&quot;</span>)</span>
+<span id="cb12-3"><a href="data-cleaning.html#cb12-3"></a></span>
+<span id="cb12-4"><a href="data-cleaning.html#cb12-4"></a><span class="co"># TOKENIZING KEYWORDS</span></span>
+<span id="cb12-5"><a href="data-cleaning.html#cb12-5"></a>mtg<span class="op">$</span>keywords &lt;-<span class="st"> </span><span class="kw">str_split</span>(mtg<span class="op">$</span>keywords, <span class="st">&quot;,&quot;</span>)</span>
+<span id="cb12-6"><a href="data-cleaning.html#cb12-6"></a></span>
+<span id="cb12-7"><a href="data-cleaning.html#cb12-7"></a><span class="co"># TURNING RARITY INTO A FACTOR </span></span>
+<span id="cb12-8"><a href="data-cleaning.html#cb12-8"></a>mtg<span class="op">$</span>rarity &lt;-<span class="st"> </span><span class="kw">factor</span>(mtg<span class="op">$</span>rarity, <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">&quot;common&quot;</span>, <span class="st">&quot;uncommon&quot;</span>, <span class="st">&quot;rare&quot;</span>, <span class="st">&quot;mythic&quot;</span>), <span class="dt">ordered =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb12-9"><a href="data-cleaning.html#cb12-9"></a></span>
+<span id="cb12-10"><a href="data-cleaning.html#cb12-10"></a><span class="co">#FORMATTING POWER AND TOUGHNESS CORRECTLY</span></span>
+<span id="cb12-11"><a href="data-cleaning.html#cb12-11"></a>  <span class="co"># forces some to numeric, however upon investigation the cards turned to NA&#39;s are &#39;booster&#39; cards, which are like spell cards</span></span>
+<span id="cb12-12"><a href="data-cleaning.html#cb12-12"></a>  <span class="co"># these cards can be identified by their key words</span></span>
+<span id="cb12-13"><a href="data-cleaning.html#cb12-13"></a>mtg<span class="op">$</span>power &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(mtg<span class="op">$</span>power)</span>
+<span id="cb12-14"><a href="data-cleaning.html#cb12-14"></a>mtg<span class="op">$</span>toughness &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(mtg<span class="op">$</span>toughness)</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="data-cleaning.html#cb13-1"></a><span class="kw">head</span>(mtg, <span class="dv">5</span>) <span class="op">%&gt;%</span></span>
+<span id="cb13-2"><a href="data-cleaning.html#cb13-2"></a><span class="st">  </span><span class="kw">kableFormat</span>(<span class="st">&quot;Clean Magic the Gathering Data&quot;</span>)</span></code></pre></div>
 <table class="table table-striped table-condensed table-bordered" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <caption>
 <span id="tab:unnamed-chunk-4">Table 4.1: </span>Clean Magic the Gathering Data
