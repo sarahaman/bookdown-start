@@ -1,6 +1,6 @@
-book_filename: "bookdown-start"
+book_filename: "Data-the-Gathering"
 chapter_name: "Chapter "
-repo: https://github.com/seankross/bookdown-start
+repo: https://github.com/sarahaman/dataTheMungening
 output_dir: docs
 rmd_files: ["index.Rmd", "01-Introduction.Rmd", "02-Data-the-Gathering.Rmd", "03-Data-Quality-Metrics.Rmd", "04-Data-Cleaning.Rmd", "05-Descriptive-Statistics.Rmd", "06-Feature-Analysis.Rmd", "07-Text-Analysis.Rmd","08-Discussion.Rmd"]
 clean: [packages.bib, bookdown.bbl]
