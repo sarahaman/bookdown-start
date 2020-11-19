@@ -1,0 +1,43 @@
+# Feature Analysis
+
+
+```{r, message=FALSE, warning=FALSE, include=FALSE}
+
+###############################################
+##########    ###  LIBRARIES  ###    ##########
+###############################################
+
+library(tidyverse)
+library(plotly)
+library(ggplot2)
+library(gganimate)
+library(magick)
+library(gifski)
+library(png)
+library(knitr)
+library(PerformanceAnalytics)
+library(ggpubr)
+library(lubridate)
+library(ggthemes)
+library(extrafont)
+library(tm)
+library(tidytext)
+library(textdata)
+library(gridExtra)
+library(scales)
+library(wordcloud)
+library(reshape2)
+library(textstem)
+library(RColorBrewer)
+library(echarts4r)
+library(devtools)
+library(rayshader)
+library(kableExtra)
+library(stringi)
+
+```
+
+## Prices
+## Artist Influence
+## Game Mechanics
+## Text Features
