@@ -19,7 +19,7 @@ the-cleaning-script
 post-download-formatting
 descriptive-statistics
 set-up
-descriptives
+descriptive-statistics-1
 distribution-of-prices
 correlation-of-numerical-data
 printing-type

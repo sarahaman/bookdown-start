@@ -38,7 +38,7 @@ library(stringi)
 
 ```
 
-```{r, warning=FALSE}
+```{r, include=FALSE}
 # cleaned Card data with price data
 cards <-  read_csv('AllCardsAlt.csv')
 cards <- tibble(cards)
@@ -48,9 +48,9 @@ cards$year <- cards$year %>% as.character()
 cards$frameVersion <- cards$frameVersion %>% as.character()
 ```
 
-## Descriptives
+## Descriptive Statistics
 
-The following table gives an overview of the numerical variables.  The variable convertedManaCost is an aspect of the card that is used in play. The variable edhrecRank is a score given to the card by the website EDHREC which provides card information.  The last four variables (mtgo, mtgoFoil, paper, and paperFoil) are different printing of the cards.  Mtgo and mtgoFoil are digital versions of the cards whereas paper and paperFoil are physical. The distribution is heavily skewed with a majority of the cards in the low price range with a few extremely high prices outliers.
+The following table gives an overview of the numerical variables.  The variable convertedManaCost is an aspect of the card that is used in play. The variable edhrecRank is a numerical score given to the card by the website EDHREC.com which provides card information.  The last four variables (mtgo, mtgoFoil, paper, and paperFoil) indicate different printing of the cards.  Mtgo and mtgoFoil are digital versions of the cards whereas paper and paperFoil are physical. The 'Foil' distinction indicates a shiny quality, either rear or simulated, to the surface of the card. The distribution is heavily skewed with a majority of the cards in the low price range with a few extremely high outliers.  
 
 ```{r,warning=FALSE, echo=FALSE, results='asis'}
 all.five <-
@@ -70,9 +70,10 @@ row.names(all.five) <- c('minimum', 'lower-hinge',
 kable(all.five)
 ```
 
-## Distribution of Prices
+### Distribution of Prices
 
-Every type of card printing followed the same type of right skewed price distribution. The vast majority of the cards are priced in the lower range with some exreme outliers.
+Each type of card printing follow the same type of right skewed price distribution. The vast majority of the cards are priced in the lower range with some extreme outliers.
+
 ```{r, warning=FALSE}
 p1 <- 
 cards[,'paper'] %>% 
@@ -101,7 +102,8 @@ cards[,'mtgoFoil'] %>%
 ggarrange(p1,p2,p3,p4,nrow=2,ncol=2)
 ```
 
-The following displays the distribution at the lower range of price (<$10).
+
+The following displays the distribution at the lower range of price (<$10). This shows that even at the lower range of prices the distribution is right skewed and centered close to zero.
 
 ```{r, warning=FALSE}
 p1 <- 
@@ -132,8 +134,10 @@ ggarrange(p1,p2,p3,p4,nrow=2,ncol=2)
 ```
 
 
-## Correlation of Numerical Data
-None of the numerical categories show much correlation with the price variables.
+### Correlation of Numerical Data
+
+None of the numerical categories show much correlation with the price variables. However, there is some small correlation between the price variables themselves.
+
 ```{r, warning=FALSE}
 cards %>% 
   sample_n(5000) %>%
@@ -142,10 +146,10 @@ cards %>%
 ```
 
 
+### Printing type
 
-## Printing type
+This is a comparison of card price in one type of printing corresponds to its price in another type of printing.  Often, higher prices in one type of printing correspond to higher prices in another.
 
-The following is a comparison of how cards price in one type of printing corresponds to its price in another type of printing.  Often, higher prices in one type of printing correspond to higher prices in another.
 ```{r, warning=FALSE}
 q1 <- 
 cards[,c("name","paper","paperFoil")]  %>%
@@ -193,9 +197,10 @@ ggarrange(q1,q2,q3,q4,q5,q6,ncol=2,nrow=3)
 ```
 
 
-## Frame Version
+### Frame Version
 
-The frame version variable describes the style of the border around the card and is named by year. The earliest version of the frame is dominated by the 'paper' card type.  The later frame versions show that physical cards fetch higher prices on average with the foil versions fetch the highest price.
+The frame version variable describes the style of the border around the card and is named by year. The earliest version of the frame is dominated by the 'paper' card type.  The later frame versions show that physical cards fetch higher prices on average with the foil versions fetching the highest price.
+
 ```{r, warning=FALSE}
 # prices by frameVersion (Version of the card frame style.)
 cards[,c("frameVersion","mtgo","mtgoFoil","paper","paperFoil")] %>% 
@@ -212,9 +217,10 @@ cards[,c("frameVersion","mtgo","mtgoFoil","paper","paperFoil")] %>%
   xlab('Frame Version')
 ```
 
-## Release Date
+### Release Date
 
 The cards with the earliest release date fetch the highest prices by far followed by the cards released in 2001. The graph of the proportion of printings shows that foil cards begin to dominate the field around 1999. Interestingly, the 2001 release year had the greatest proportion of foil cards which may factor into the reason why that year had the second highest average price
+
 ```{r}
 #mean price by release date and printing type
 cards %>% 
@@ -250,9 +256,10 @@ cards %>%
 ```
 
 
-## Rarity
+### Rarity
 
 In the plot of mean price by rarity, the physical cards fetch a higher price than the digital versions. The 'mythic' paper cards with foil fetch the highest price on average followed by the 'rare' paper cards.
+
 ```{r, warning=FALSE}
 # rarity vs price
 cards[,c("rarity","mtgo","mtgoFoil","paper","paperFoil")] %>% 
@@ -296,4 +303,3 @@ cards[,c("rarity","mtgo","mtgoFoil","paper","paperFoil")] %>%
     title = list(text = 'Maximum price by rarity and card type', x=0.02)
   )
 ```
-
